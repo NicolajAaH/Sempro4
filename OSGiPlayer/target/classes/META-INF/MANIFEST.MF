@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1646986877832
+Build-Jdk: 1.8.0_322
+Built-By: nicolajaalykkehansen
+Bundle-Description: Generated using Pax-Construct
+Bundle-ManifestVersion: 2
+Bundle-Name: OSGiPlayer
+Bundle-SymbolicName: dk.sdu.mmmi.player
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Tool: Bnd-3.5.0.201709291849
