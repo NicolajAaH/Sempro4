@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1646984583897
+Build-Jdk: 1.8.0_322
+Built-By: nicolajaalykkehansen
+Bundle-Description: Generated using Pax-Construct
+Bundle-ManifestVersion: 2
+Bundle-Name: OSGiCommon
+Bundle-SymbolicName: dk.sdu.mmmi.common
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: dk.sdu.mmmi.cbse.common.data;version="1.0.0.SNAPSHOT";us
+ es:="dk.sdu.mmmi.cbse.common.data.entityparts,dk.sdu.mmmi.cbse.common.e
+ vents",dk.sdu.mmmi.cbse.common.data.entityparts;version="1.0.0.SNAPSHOT
+ ";uses:="dk.sdu.mmmi.cbse.common.data",dk.sdu.mmmi.cbse.common.events;v
+ ersion="1.0.0.SNAPSHOT";uses:="dk.sdu.mmmi.cbse.common.data",dk.sdu.mmm
+ i.cbse.common.services;version="1.0.0.SNAPSHOT";uses:="dk.sdu.mmmi.cbse
+ .common.data"
+Import-Package: dk.sdu.mmmi.cbse.common.data;version="[1.0,2)",dk.sdu.mm
+ mi.cbse.common.data.entityparts;version="[1.0,2)",dk.sdu.mmmi.cbse.comm
+ on.events;version="[1.0,2)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-3.5.0.201709291849
