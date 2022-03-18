@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1646988401144
+Bnd-LastModified: 1647591673128
 Build-Jdk: 1.8.0_322
 Built-By: nicolajaalykkehansen
 Bundle-Description: Generated using Pax-Construct
@@ -20,11 +20,12 @@ Export-Package: dk.sdu.mmmi.cbse;version="1.0.0.SNAPSHOT";uses:="com.bad
  mmon.data"
 Import-Package: com.badlogic.gdx;version="[1.0,2)",com.badlogic.gdx.back
  ends.lwjgl;version="[1.0,2)",com.badlogic.gdx.graphics;version="[1.0,2)
- ",com.badlogic.gdx.graphics.glutils;version="[1.0,2)",dk.sdu.mmmi.cbse.
- common.data;version="[1.0,2)",dk.sdu.mmmi.cbse.common.data.entityparts;
- version="[1.0,2)",dk.sdu.mmmi.cbse.common.events;version="[1.0,2)",dk.s
- du.mmmi.cbse.common.services;version="[1.0,2)",dk.sdu.mmmi.cbse.core.ma
- nagers;version="[1.0,2)"
+ ",com.badlogic.gdx.graphics.glutils;version="[1.0,2)",com.badlogic.gdx.
+ maps.tiled;version="[1.0,2)",com.badlogic.gdx.maps.tiled.renderers;vers
+ ion="[1.0,2)",dk.sdu.mmmi.cbse.common.data;version="[1.0,2)",dk.sdu.mmm
+ i.cbse.common.data.entityparts;version="[1.0,2)",dk.sdu.mmmi.cbse.commo
+ n.events;version="[1.0,2)",dk.sdu.mmmi.cbse.common.services;version="[1
+ .0,2)",dk.sdu.mmmi.cbse.core.managers;version="[1.0,2)"
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
 Service-Component: META-INF/core.xml
 Tool: Bnd-3.5.0.201709291849

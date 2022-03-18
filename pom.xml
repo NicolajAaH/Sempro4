@@ -58,6 +58,7 @@
     <module>OSGiProjectile</module>
     <module>OSGiCollision</module>
     <module>OSGiCommonProjectile</module>
+    <module>OSGiCommonPlayer</module>
   </modules>
 
   <build>
