@@ -2,11 +2,15 @@ package dk.sdu.mmmi.cbse;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.*;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -14,20 +18,24 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
+
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
 
-    private static OrthographicCamera cam;
+    private OrthographicCamera cam;
     private ShapeRenderer sr;
     private final GameData gameData = new GameData();
     private static World world = new World();
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
+    private TiledMap tiledMap;
+    private OrthogonalTiledMapRenderer renderer;
 
-    public Game(){
+    public Game() {
         init();
     }
 
@@ -44,6 +52,11 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
+        tiledMap = new TmxMapLoader().load("Map.tmx");
+
+        renderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+        cam = new OrthographicCamera();
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
 
@@ -66,6 +79,9 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
+        renderer.setView(cam);
+        renderer.render();
+
         update();
         draw();
     }
@@ -74,6 +90,10 @@ public class Game implements ApplicationListener {
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
             entityProcessorService.process(gameData, world);
+            renderer.getBatch().begin();
+
+            entityProcessorService.draw(renderer.getBatch(), world);
+            renderer.getBatch().end();
         }
 
         // Post Update
@@ -83,27 +103,14 @@ public class Game implements ApplicationListener {
     }
 
     private void draw() {
-        for (Entity entity : world.getEntities()) {
-            sr.setColor(1, 1, 1, 1);
 
-            sr.begin(ShapeRenderer.ShapeType.Line);
-
-            float[] shapex = entity.getShapeX();
-            float[] shapey = entity.getShapeY();
-
-            for (int i = 0, j = shapex.length - 1;
-                    i < shapex.length;
-                    j = i++) {
-
-                sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
-            }
-
-            sr.end();
-        }
     }
 
     @Override
     public void resize(int width, int height) {
+        cam.viewportHeight = height;
+        cam.viewportWidth = width;
+        cam.update();
     }
 
     @Override
@@ -113,6 +120,7 @@ public class Game implements ApplicationListener {
     @Override
     public void resume() {
     }
+
 
     @Override
     public void dispose() {
@@ -144,5 +152,7 @@ public class Game implements ApplicationListener {
         this.gamePluginList.remove(plugin);
         plugin.stop(gameData, world);
     }
+
+
 
 }

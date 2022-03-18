@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
 import java.io.Serializable;
 import java.util.Collection;
@@ -7,16 +9,19 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Entity implements Serializable {
+public class Entity extends Sprite implements Serializable {
     private final UUID ID = UUID.randomUUID();
 
-    private float[] shapeX = new float[4];
-    private float[] shapeY = new float[4];
+    private Vector2 velocity; //movement velocity
+
+    private float speed;
+
     private float radius;
     private Map<Class, EntityPart> parts;
     
-    public Entity() {
-        parts = new ConcurrentHashMap<>();
+    public Entity(Sprite sprite) {
+        super(sprite);
+        //parts = new ConcurrentHashMap<>();
     }
     
     public void add(EntityPart part) {
@@ -43,19 +48,5 @@ public class Entity implements Serializable {
         return ID.toString();
     }
 
-    public float[] getShapeX() {
-        return shapeX;
-    }
 
-    public void setShapeX(float[] shapeX) {
-        this.shapeX = shapeX;
-    }
-
-    public float[] getShapeY() {
-        return shapeY;
-    }
-
-    public void setShapeY(float[] shapeY) {
-        this.shapeY = shapeY;
-    }
 }
