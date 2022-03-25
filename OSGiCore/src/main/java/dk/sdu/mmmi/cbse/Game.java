@@ -107,8 +107,6 @@ public class Game implements ApplicationListener {
 
         // setting tile to til with the id tileId in the map tileset
         return cell.getTile().getId();
-
-                //setTile(tiledMap.getTileSets().getTile(tileId));
     }
 
     private void replaceTile(int x, int y, int tileId){
