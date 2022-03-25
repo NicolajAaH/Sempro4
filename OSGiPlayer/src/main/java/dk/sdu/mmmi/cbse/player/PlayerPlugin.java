@@ -1,8 +1,11 @@
 package dk.sdu.mmmi.cbse.player;
 
 import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -11,6 +14,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
+import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
 import java.io.File;
 import java.util.Arrays;
@@ -27,11 +31,18 @@ public class PlayerPlugin implements IGamePluginService {
     public void start(GameData gameData, World world) {
 
         // Add entities to the world
-        player = createPlayer(gameData);
-        world.addEntity(player);
+        //
+        //world.addEntity(player);
     }
 
-    private Entity createPlayer(GameData gameData) {
+    @Override
+    public void stop(GameData gameData, World world) {
+        // Remove entities
+        world.removeEntity(player);
+    }
+
+    @Override
+    public Entity create(SpriteBatch batch, GameData gameData, World world, Texture texture) {
 
         float deacceleration = 10;
         float acceleration = 200;
@@ -41,23 +52,15 @@ public class PlayerPlugin implements IGamePluginService {
         float y = gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;
 
-        File file = new File("assets/images/Sprites/player_nogun.png");
-        System.out.println(file.exists());
-        File file2 = new File("images/Sprites/player_nogun.png");
-        System.out.println(file2.exists());
-        System.out.println(new Sprite(new Texture("~/assets/images/Sprites/player_nogun.png")));
-        Entity player = new Player(new Sprite(new Texture("~/assets/images/Sprites/player_nogun.png"))); //throws exception nulpointer
+        Sprite sprite = new Sprite(texture);
+        Entity player = new Player(sprite); //throws exception nulpointer
+        System.out.println(player.toString());
         player.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1));
+        world.addEntity(player);
 
         return player;
-    }
-
-    @Override
-    public void stop(GameData gameData, World world) {
-        // Remove entities
-        world.removeEntity(player);
     }
 
 }

@@ -2,24 +2,24 @@ package dk.sdu.mmmi.cbse;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.*;
-import dk.sdu.mmmi.cbse.common.data.Entity;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
+import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -34,6 +34,9 @@ public class Game implements ApplicationListener {
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer renderer;
+    private SpriteBatch batch;
+    private Texture playerimage;
+
 
     public Game() {
         init();
@@ -55,8 +58,7 @@ public class Game implements ApplicationListener {
         tiledMap = new TmxMapLoader().load("Map.tmx");
 
         renderer = new OrthogonalTiledMapRenderer(tiledMap);
-
-        cam = new OrthographicCamera();
+        batch = new SpriteBatch();
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
 
@@ -68,6 +70,13 @@ public class Game implements ApplicationListener {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
+        playerimage = new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png"));
+
+        for (IGamePluginService iGamePluginService : gamePluginList) {
+            batch.begin();
+            iGamePluginService.create(batch, gameData, world, playerimage);
+            batch.end();
+        }
     }
 
     @Override
@@ -83,17 +92,16 @@ public class Game implements ApplicationListener {
         renderer.render();
 
         update();
-        draw();
+        draw(batch);
     }
 
     private void update() {
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
+            batch.begin();
             entityProcessorService.process(gameData, world);
-            renderer.getBatch().begin();
-
-            entityProcessorService.draw(renderer.getBatch(), world);
-            renderer.getBatch().end();
+            //entityProcessorService.draw(batch, world);
+            batch.end();
         }
 
         // Post Update
@@ -102,8 +110,11 @@ public class Game implements ApplicationListener {
         }
     }
 
-    private void draw() {
-
+    private void draw(SpriteBatch spriteBatch) {
+        for (IEntityProcessingService entityProcessorService : entityProcessorList) {
+          //  entityProcessorService.draw(spriteBatch, world);
+        }
+        //IPost
     }
 
     @Override
@@ -124,6 +135,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose() {
+
     }
 
     public void addEntityProcessingService(IEntityProcessingService eps) {

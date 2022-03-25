@@ -61,6 +61,13 @@
     </dependency>
     <dependency>
       <groupId>dk.sdu.mmmi.build</groupId>
+      <artifactId>OSGiFileHandler</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>bundle</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>dk.sdu.mmmi.build</groupId>
       <artifactId>OSGiCore</artifactId>
       <version>1.0-SNAPSHOT</version>
       <type>bundle</type>
@@ -69,6 +76,12 @@
     <dependency>
       <groupId>dk.sdu.mmmi.build</groupId>
       <artifactId>OSGiCommon</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>dk.sdu.mmmi.build</groupId>
+      <artifactId>OSGiFileHandler</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>

@@ -1,7 +1,9 @@
 package dk.sdu.mmmi.cbse.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
@@ -41,7 +43,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
     }
 
     @Override
-    public void draw(Batch batch, World world) {
+    public void draw(SpriteBatch batch, World world, Texture texture) {
         for (Entity player : world.getEntities(Player.class)) {
             player.draw(batch);
         }

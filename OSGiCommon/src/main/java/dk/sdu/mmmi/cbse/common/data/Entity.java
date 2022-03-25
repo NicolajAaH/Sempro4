@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.common.data;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
@@ -10,6 +11,10 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity extends Sprite implements Serializable {
+
+    protected Sprite sprite;
+    protected Texture texture;
+
     private final UUID ID = UUID.randomUUID();
 
     private Vector2 velocity; //movement velocity
@@ -21,7 +26,6 @@ public class Entity extends Sprite implements Serializable {
     
     public Entity(Sprite sprite) {
         super(sprite);
-        //parts = new ConcurrentHashMap<>();
     }
     
     public void add(EntityPart part) {
@@ -47,6 +51,8 @@ public class Entity extends Sprite implements Serializable {
     public String getID() {
         return ID.toString();
     }
+
+
 
 
 }

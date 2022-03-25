@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.common.services;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -9,5 +10,5 @@ public interface IEntityProcessingService {
 
     void process(GameData gameData, World world);
 
-    void draw(Batch batch, World world);
+    void draw(SpriteBatch batch, World world, Texture texture);
 }

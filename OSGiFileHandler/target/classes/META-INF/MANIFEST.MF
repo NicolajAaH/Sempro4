@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1648204753906
+Build-Jdk: 1.8.0_322
+Built-By: nicolajaalykkehansen
+Bundle-Description: Generated using Pax-Construct
+Bundle-ManifestVersion: 2
+Bundle-Name: OSGiFileHandler
+Bundle-SymbolicName: dk.sdu.mmmi.filehandler
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: dk.sdu.mmmi.cbse.filehandler;version="1.0.0.SNAPSHOT";us
+ es:="com.badlogic.gdx.files"
+Import-Package: com.badlogic.gdx.files;version="[1.0,2)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-3.5.0.201709291849

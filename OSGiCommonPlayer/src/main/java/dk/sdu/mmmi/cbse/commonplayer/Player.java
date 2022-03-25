@@ -20,5 +20,6 @@ public class Player extends Entity {
 
     public void update(float delta){
         //handle update
+
     }
 }

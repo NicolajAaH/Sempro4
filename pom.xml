@@ -59,6 +59,7 @@
     <module>OSGiCollision</module>
     <module>OSGiCommonProjectile</module>
     <module>OSGiCommonPlayer</module>
+    <module>OSGiFileHandler</module>
   </modules>
 
   <build>
