@@ -28,10 +28,9 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
 
-            /*if (gameData.getKeys().isDown(GameKeys.SPACE)) {
-                Entity bullet = Lookup.getDefault().lookup(BulletSPI.class).createBullet(player, gameData);
-                world.addEntity(bullet);
-            }*/
+            if (gameData.getKeys().isDown(GameKeys.UP)){
+                positionPart.setPosition(positionPart.getX(), positionPart.getY()+10);
+            }
 
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);

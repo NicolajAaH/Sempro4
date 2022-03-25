@@ -107,7 +107,7 @@ public class Game implements ApplicationListener {
 
     private void draw(SpriteBatch spriteBatch) {
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
-          //  entityProcessorService.draw(spriteBatch, world);
+          entityProcessorService.draw(spriteBatch, world);
         }
         //IPost
     }
