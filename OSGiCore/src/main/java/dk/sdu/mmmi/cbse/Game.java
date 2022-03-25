@@ -95,6 +95,20 @@ public class Game implements ApplicationListener {
         draw(batch);
 
         replaceTile(1,2,4);
+        //System.out.println("tile id " + getTileId(1,1));
+    }
+
+    private int getTileId(int x, int y){
+        //Get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        // Get cell at position (x, y)
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        // setting tile to til with the id tileId in the map tileset
+        return cell.getTile().getId();
+
+                //setTile(tiledMap.getTileSets().getTile(tileId));
     }
 
     private void replaceTile(int x, int y, int tileId){
