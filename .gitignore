@@ -199,3 +199,5 @@ OSGiPlayer/target/
 OSGiProjectile/target/
 
 OSGiTower/target/
+
+runner/felix/cache/
