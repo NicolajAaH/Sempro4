@@ -54,7 +54,6 @@ public class PlayerPlugin implements IGamePluginService {
 
         Sprite sprite = new Sprite(texture);
         Entity player = new Player(sprite); //throws exception nulpointer
-        System.out.println(player.toString());
         player.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1));

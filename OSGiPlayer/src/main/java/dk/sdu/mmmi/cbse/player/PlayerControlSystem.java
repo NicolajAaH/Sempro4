@@ -43,7 +43,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
     }
 
     @Override
-    public void draw(SpriteBatch batch, World world, Texture texture) {
+    public void draw(SpriteBatch batch, World world) {
         for (Entity player : world.getEntities(Player.class)) {
             player.draw(batch);
         }

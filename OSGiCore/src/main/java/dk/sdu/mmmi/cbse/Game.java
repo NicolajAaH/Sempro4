@@ -26,7 +26,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Game implements ApplicationListener {
 
     private OrthographicCamera cam;
-    private ShapeRenderer sr;
     private final GameData gameData = new GameData();
     private static World world = new World();
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
@@ -66,16 +65,12 @@ public class Game implements ApplicationListener {
         cam.translate(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2);
         cam.update();
 
-        sr = new ShapeRenderer();
-
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
         playerimage = new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png"));
 
         for (IGamePluginService iGamePluginService : gamePluginList) {
-            batch.begin();
             iGamePluginService.create(batch, gameData, world, playerimage);
-            batch.end();
         }
     }
 
@@ -100,7 +95,7 @@ public class Game implements ApplicationListener {
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
             batch.begin();
             entityProcessorService.process(gameData, world);
-            //entityProcessorService.draw(batch, world);
+            entityProcessorService.draw(batch, world);
             batch.end();
         }
 

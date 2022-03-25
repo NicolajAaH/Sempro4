@@ -10,5 +10,5 @@ public interface IEntityProcessingService {
 
     void process(GameData gameData, World world);
 
-    void draw(SpriteBatch batch, World world, Texture texture);
+    void draw(SpriteBatch batch, World world);
 }
