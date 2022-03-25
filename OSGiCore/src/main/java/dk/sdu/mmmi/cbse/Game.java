@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -74,6 +75,10 @@ public class Game implements ApplicationListener {
         }
     }
 
+
+
+
+
     @Override
     public void render() {
         // clear screen to black
@@ -88,7 +93,25 @@ public class Game implements ApplicationListener {
 
         update();
         draw(batch);
+
+        replaceTile(1,2,4);
     }
+
+    private void replaceTile(int x, int y, int tileId){
+        // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
+
+        //Get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        // Get cell at position (x, y)
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        // setting tile to til with the id tileId in the map tileset
+        cell.setTile(tiledMap.getTileSets().getTile(tileId));
+    }
+
+
+
 
     private void update() {
         // Update
