@@ -17,11 +17,20 @@ public class PositionPart implements EntityPart {
     private float x;
     private float y;
     private float radians;
+    private String lastChange;
 
     public PositionPart(float x, float y, float radians) {
         this.x = x;
         this.y = y;
         this.radians = radians;
+    }
+
+    public String getLastChange() {
+        return lastChange;
+    }
+
+    public void setLastChange(String lastChange) {
+        this.lastChange = lastChange;
     }
 
     public float getX() {

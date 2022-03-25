@@ -7,20 +7,18 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.GameKeys;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
-/**
- *
- * @author Alexander
- */
 public class MovingPart implements EntityPart {
 
     private float dx, dy;
     private float deceleration, acceleration;
     private float maxSpeed, rotationSpeed;
-    private boolean left, right, up;
+    private boolean left, right, up, down;
 
     public MovingPart(float deceleration, float acceleration, float maxSpeed, float rotationSpeed) {
         this.deceleration = deceleration;
@@ -70,6 +68,14 @@ public class MovingPart implements EntityPart {
         this.up = up;
     }
 
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
         PositionPart positionPart = entity.getPart(PositionPart.class);
@@ -78,51 +84,22 @@ public class MovingPart implements EntityPart {
         float radians = positionPart.getRadians();
         float dt = gameData.getDelta();
 
-        // turning
-        if (left) {
-            radians += rotationSpeed * dt;
+        if (up){
+            positionPart.setPosition(positionPart.getX(), positionPart.getY()+2);
+            positionPart.setLastChange("Up");
         }
-
-        if (right) {
-            radians -= rotationSpeed * dt;
+        if (left){
+            positionPart.setPosition(positionPart.getX()-2, positionPart.getY());
+            positionPart.setLastChange("Left");
         }
-
-        // accelerating            
-        if (up) {
-            dx += cos(radians) * acceleration * dt;
-            dy += sin(radians) * acceleration * dt;
+        if (right){
+            positionPart.setPosition(positionPart.getX()+2, positionPart.getY());
+            positionPart.setLastChange("Right");
         }
-
-        // deccelerating
-        float vec = (float) sqrt(dx * dx + dy * dy);
-        if (vec > 0) {
-            dx -= (dx / vec) * deceleration * dt;
-            dy -= (dy / vec) * deceleration * dt;
+        if (down){
+            positionPart.setPosition(positionPart.getX(), positionPart.getY()-2);
+            positionPart.setLastChange("Down");
         }
-        if (vec > maxSpeed) {
-            dx = (dx / vec) * maxSpeed;
-            dy = (dy / vec) * maxSpeed;
-        }
-
-        // set position
-        x += dx * dt;
-        if (x > gameData.getDisplayWidth()) {
-            x = 0;
-        }
-        else if (x < 0) {
-            x = gameData.getDisplayWidth();
-        }
-
-        y += dy * dt;
-        if (y > gameData.getDisplayHeight()) {
-            y = 0;
-        }
-        else if (y < 0) {
-            y = gameData.getDisplayHeight();
-        }
-
-        positionPart.setX(x);
-        positionPart.setY(y);
 
         positionPart.setRadians(radians);
     }

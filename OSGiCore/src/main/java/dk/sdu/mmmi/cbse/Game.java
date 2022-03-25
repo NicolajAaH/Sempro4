@@ -93,10 +93,8 @@ public class Game implements ApplicationListener {
     private void update() {
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
-            batch.begin();
             entityProcessorService.process(gameData, world);
             entityProcessorService.draw(batch, world);
-            batch.end();
         }
 
         // Post Update
