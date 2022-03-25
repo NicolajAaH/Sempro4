@@ -1,0 +1,1 @@
+Texture image = new Texture(new OSGiFileHandle("/icons/cat-logo.png"));
