@@ -1,5 +1,8 @@
 package dk.sdu.mmmi.cbse.common.data;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class World {
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
+    private TiledMap tiledMap = new TmxMapLoader().load("Map.tmx");
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -47,4 +51,11 @@ public class World {
         return entityMap.get(ID);
     }
 
+    public TiledMap getMap(){
+        return tiledMap;
+    }
+
+    public void setMap(String filename){
+        tiledMap = new TmxMapLoader().load(filename);
+    }
 }
