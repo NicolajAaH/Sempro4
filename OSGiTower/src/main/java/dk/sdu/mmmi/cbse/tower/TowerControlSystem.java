@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.tower;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -29,7 +30,14 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     @Override
     public void createTower(World world, int xTile, int yTile) {
 
-        // TODO Check if tower can be created by tile properties
+        // Check if tower can be created by tile properties
+        if (!getTileType(xTile,yTile,world).equals("Grass")) {
+            System.out.println("can not place tower here");
+            return;
+        }
+
+        System.out.println("can place tower here");
+
         // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
         int tileId = 4; // TODO: get tileID from properties of tile
 
@@ -58,5 +66,20 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new LifePart(1));
         world.addEntity(tower);
     }
+    private String getTileType(int x, int y, World world){
+
+        //get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+
+        // Get tile at position (x,y)
+        TiledMapTile tile = layer.getCell(x,y).getTile();
+
+        // getting properties of tile
+        String tileProperties = tile.getProperties().get("Tag", String.class);
+
+        return tileProperties;
+    }
+
+
 
 }

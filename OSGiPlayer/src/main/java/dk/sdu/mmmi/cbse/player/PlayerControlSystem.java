@@ -11,6 +11,8 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 
+import java.awt.*;
+
 import static dk.sdu.mmmi.cbse.common.data.GameKeys.*;
 
 public class PlayerControlSystem implements IEntityProcessingService {
@@ -28,17 +30,21 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setUp(gameData.getKeys().isDown(UP));
             movingPart.setDown(gameData.getKeys().isDown(DOWN));
 
-            // MERGES IND
             if (gameData.getKeys().isDown(SPACE)) {
-                towerSPI.createTower(world, 10, 10);
+                Point coordinates getTileCoordinates(positionPart.getX(), positionPart.getY());
+                towerSPI.createTower(world, coordinates.x, coordinates.y);
 
-                //world.addEntity(tower);
+                // towerSPI.createTower(world, 2, 1);
+
             }
 
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
             lifePart.process(gameData, player);
         }
+    }
+
+    private void getTileCoordinates(float x, float y) {
     }
 
     @Override
