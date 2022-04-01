@@ -26,7 +26,6 @@ public class Tower extends Entity {
 
     public void update(float delta){
         PositionPart positionPart = this.getPart(PositionPart.class);
-        System.out.println(positionPart.getX());
         this.setPosition(positionPart.getX(), positionPart.getY());
         /*
         if (positionPart.getLastChange() == "Up") this.setRotation(0);
