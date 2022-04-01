@@ -9,14 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- *
- * @author jcs
- */
 public class World {
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
-    private TiledMap tiledMap = new TmxMapLoader().load("Map.tmx");
+    private TiledMap tiledMap;
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -55,7 +51,7 @@ public class World {
         return tiledMap;
     }
 
-    public void setMap(String filename){
-        tiledMap = new TmxMapLoader().load(filename);
+    public void setTiledMap(TiledMap tiledMap) {
+        this.tiledMap = tiledMap;
     }
 }
