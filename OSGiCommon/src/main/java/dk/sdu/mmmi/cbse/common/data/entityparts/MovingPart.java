@@ -17,13 +17,13 @@ public class MovingPart implements EntityPart {
 
     private float dx, dy;
     private float deceleration, acceleration;
-    private float maxSpeed, rotationSpeed;
+    private float speed, rotationSpeed;
     private boolean left, right, up, down;
 
-    public MovingPart(float deceleration, float acceleration, float maxSpeed, float rotationSpeed) {
+    public MovingPart(float deceleration, float acceleration, float speed, float rotationSpeed) {
         this.deceleration = deceleration;
         this.acceleration = acceleration;
-        this.maxSpeed = maxSpeed;
+        this.speed = speed;
         this.rotationSpeed = rotationSpeed;
     }
 
@@ -44,12 +44,12 @@ public class MovingPart implements EntityPart {
     }
 
     public void setMaxSpeed(float maxSpeed) {
-        this.maxSpeed = maxSpeed;
+        this.speed = speed;
     }
     
     public void setSpeed(float speed) {
         this.acceleration = speed;
-        this.maxSpeed = speed;
+        this.speed = speed;
     }
 
     public void setRotationSpeed(float rotationSpeed) {
@@ -85,19 +85,19 @@ public class MovingPart implements EntityPart {
         float dt = gameData.getDelta();
 
         if (up){
-            positionPart.setPosition(positionPart.getX(), positionPart.getY()+2);
+            positionPart.setPosition(positionPart.getX(), positionPart.getY()+speed);
             positionPart.setLastChange("Up");
         }
         if (left){
-            positionPart.setPosition(positionPart.getX()-2, positionPart.getY());
+            positionPart.setPosition(positionPart.getX()-speed, positionPart.getY());
             positionPart.setLastChange("Left");
         }
         if (right){
-            positionPart.setPosition(positionPart.getX()+2, positionPart.getY());
+            positionPart.setPosition(positionPart.getX()+speed, positionPart.getY());
             positionPart.setLastChange("Right");
         }
         if (down){
-            positionPart.setPosition(positionPart.getX(), positionPart.getY()-2);
+            positionPart.setPosition(positionPart.getX(), positionPart.getY()-speed);
             positionPart.setLastChange("Down");
         }
 
