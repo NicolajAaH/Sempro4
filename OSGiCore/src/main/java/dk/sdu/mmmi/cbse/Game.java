@@ -8,18 +8,23 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -87,6 +92,8 @@ public class Game implements ApplicationListener {
             }
             iGamePluginService.create(batch, gameData, world, texture);
         }
+
+
     }
 
 
@@ -107,6 +114,12 @@ public class Game implements ApplicationListener {
 
         replaceTile(1,2,4);
         //System.out.println("tile id " + getTileId(1,1));
+
+//        Collection<Entity> entities = world.getEntities();
+//        for (Entity entity : entities){
+//            System.out.println(getTileType(entity));
+//
+//        }
     }
 
     private int getTileId(int x, int y){
@@ -118,6 +131,29 @@ public class Game implements ApplicationListener {
 
         // setting tile to til with the id tileId in the map tileset
         return cell.getTile().getId();
+    }
+
+    private String getTileType(Entity entity){
+
+        PositionPart pospart = entity.getPart(PositionPart.class);
+        // get entity coordinates
+        int x = (int)pospart.getX();
+        int y = (int)pospart.getY();
+
+        //get first layer of map
+       TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+
+        //get coordinates for tile entity is on
+        int entityTileX = (int)Math.floor(x/ layer.getTileHeight());
+        int entityTileY = (int)Math.floor(y/ layer.getTileWidth());
+
+        // Get cell at position (x,y)
+        TiledMapTileLayer.Cell cell = layer.getCell(entityTileX,entityTileY);
+
+        TiledMapTile tile = cell.getTile();
+
+        // print
+        return tile.getProperties().get("Tag", String.class);
     }
 
     private void replaceTile(int x, int y, int tileId){
@@ -145,6 +181,7 @@ public class Game implements ApplicationListener {
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
         }
+
     }
 
     private void draw(SpriteBatch spriteBatch) {
@@ -152,6 +189,7 @@ public class Game implements ApplicationListener {
           entityProcessorService.draw(spriteBatch, world);
         }
         //IPost
+
     }
 
     @Override
