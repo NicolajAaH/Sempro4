@@ -56,6 +56,11 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         float acceleration = 0;
         float speed = 0;
         float rotationSpeed = 5;
+
+        Point coordinate = getCoordinateTiles(World world, int xTile, int yTile);
+        float x = (float) coordinate.x;
+        float y = (float) coordinate.y;
+        //
         // TODO: get exact placement of x&y = center of tile
         float x = 50;
         float y = 50;
