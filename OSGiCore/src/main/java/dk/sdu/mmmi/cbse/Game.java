@@ -24,8 +24,6 @@ import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -132,14 +130,34 @@ public class Game implements ApplicationListener {
         return cell.getTile().getId();
     }
 
-    private Point getTileCoordinate(float x, float y){
+    /**
+     * Calculate X and Y of a tile from X and Y on the map
+     * @param x coordinate on map
+     * @param y coordiante on map
+     * @return point for tile corresponding to the given x and y
+     */
+    private Point mapCoorToTileCoor(float x, float y){
         TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
 
-        // Calculate X and Y for the tile from X and Y on the map
         int tileX = (int) Math.floor(x / layer.getTileHeight());
         int tileY = (int) Math.floor(y / layer.getTileWidth());
 
         return new Point(tileX, tileY);
+    }
+
+    /**
+     * Calculate X and Y on the map from X and Y from a tile
+     * @param x coordinate of tile
+     * @param y coordiante of tile
+     * @return point on map corresponding to the given x and y
+     */
+    private Point tileCoorToMapCoor(float x, float y) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+
+        int mapX = (int) (x * layer.getTileHeight() + (layer.getTileHeight()/2));
+        int mapY = (int) (y * layer.getTileWidth() + (layer.getTileWidth()/2));
+
+        return new Point(mapX, mapY);
     }
 
     private String getTileType(Entity entity){
@@ -153,7 +171,7 @@ public class Game implements ApplicationListener {
        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
 
         // Get coordinate of the entity's tile
-        Point tilePoint = getTileCoordinate(x, y);
+        Point tilePoint = mapCoorToTileCoor(x, y);
 
         // Get cell at position (x,y)
         TiledMapTileLayer.Cell cell = layer.getCell((int) tilePoint.getX(), (int) tilePoint.getY());
