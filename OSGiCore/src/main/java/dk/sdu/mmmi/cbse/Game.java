@@ -93,8 +93,6 @@ public class Game implements ApplicationListener {
             }
             iGamePluginService.create(batch, gameData, world, texture);
         }
-
-
     }
 
 
@@ -134,9 +132,10 @@ public class Game implements ApplicationListener {
         return cell.getTile().getId();
     }
 
-    private Point getTileCoordinate(int x, int y){
+    private Point getTileCoordinate(float x, float y){
         TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
 
+        // Calculate X and Y for the tile from X and Y on the map
         int tileX = (int) Math.floor(x / layer.getTileHeight());
         int tileY = (int) Math.floor(y / layer.getTileWidth());
 
@@ -145,20 +144,19 @@ public class Game implements ApplicationListener {
 
     private String getTileType(Entity entity){
 
-        PositionPart pospart = entity.getPart(PositionPart.class);
-        // get entity coordinates
-        int x = (int)pospart.getX();
-        int y = (int)pospart.getY();
+        PositionPart positionPart = entity.getPart(PositionPart.class);
+        // Get entity coordinates
+        float x = positionPart.getX();
+        float y = positionPart.getY();
 
-        //get first layer of map
+        // Get first layer of map
        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
 
-        //get coordinates for tile entity is on
-        int entityTileX = (int)Math.floor(x/ layer.getTileHeight());
-        int entityTileY = (int)Math.floor(y/ layer.getTileWidth());
+        // Get coordinate of the entity's tile
+        Point tilePoint = getTileCoordinate(x, y);
 
         // Get cell at position (x,y)
-        TiledMapTileLayer.Cell cell = layer.getCell(entityTileX,entityTileY);
+        TiledMapTileLayer.Cell cell = layer.getCell((int) tilePoint.getX(), (int) tilePoint.getY());
 
         TiledMapTile tile = cell.getTile();
 
