@@ -23,6 +23,7 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -131,6 +132,15 @@ public class Game implements ApplicationListener {
 
         // setting tile to til with the id tileId in the map tileset
         return cell.getTile().getId();
+    }
+
+    private Point getTileCoordinate(int x, int y){
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+
+        int tileX = (int) Math.floor(x / layer.getTileHeight());
+        int tileY = (int) Math.floor(y / layer.getTileWidth());
+
+        return new Point(tileX, tileY);
     }
 
     private String getTileType(Entity entity){
