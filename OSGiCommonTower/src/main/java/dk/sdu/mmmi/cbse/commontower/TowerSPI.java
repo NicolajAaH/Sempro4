@@ -9,6 +9,8 @@ It will require the projectile interface to generate projectiles.
  */
 
 
+import dk.sdu.mmmi.cbse.common.data.World;
+
 public interface TowerSPI {
-    void createTower(int xTile, int yTile);
+    void createTower(World world, int xTile, int yTile);
 }
