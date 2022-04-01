@@ -30,9 +30,6 @@ public class PlayerPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
 
-        // Add entities to the world
-        //
-        //world.addEntity(player);
     }
 
     @Override
@@ -43,7 +40,6 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public Entity create(SpriteBatch batch, GameData gameData, World world, Texture texture) {
-
         float deacceleration = 10;
         float acceleration = 200;
         float speed = 2;
