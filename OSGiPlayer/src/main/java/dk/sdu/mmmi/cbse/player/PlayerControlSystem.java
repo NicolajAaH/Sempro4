@@ -34,9 +34,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
             if (gameData.getKeys().isDown(SPACE)) {
                 Point coordinates = getTileCoordinates(positionPart.getX(), positionPart.getY(), world);
                 towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
-
-                // towerSPI.createTower(world, 2, 1);
-
             }
 
             movingPart.process(gameData, player);
