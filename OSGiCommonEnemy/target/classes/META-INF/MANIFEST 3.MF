@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1648805051600
+Build-Jdk: 1.8.0_322
+Built-By: nicolajaalykkehansen
+Bundle-Description: Generated using Pax-Construct
+Bundle-ManifestVersion: 2
+Bundle-Name: OSGiCommonPlayer
+Bundle-SymbolicName: dk.sdu.mmmi.commonplayer
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: dk.sdu.mmmi.cbse.commonplayer;uses:="com.badlogic.gdx.gr
+ aphics.g2d,dk.sdu.mmmi.cbse.common.data";version="1.0.0.SNAPSHOT"
+Import-Package: com.badlogic.gdx;version="[1.0,2)",com.badlogic.gdx.grap
+ hics.g2d;version="[1.0,2)",dk.sdu.mmmi.cbse.common.data;version="[1.0,2
+ )",dk.sdu.mmmi.cbse.common.data.entityparts;version="[1.0,2)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-3.5.0.201709291849

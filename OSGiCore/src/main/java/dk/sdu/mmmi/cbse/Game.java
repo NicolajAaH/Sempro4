@@ -73,19 +73,16 @@ public class Game implements ApplicationListener {
         world.setTextureHashMap(textures);
 
         for (IGamePluginService iGamePluginService : gamePluginList) {
-            Texture texture = null;
             switch (iGamePluginService.getType()){
                 case PLAYER:
-                    texture = textures.get(Types.PLAYER);
+                    Texture texturePlayer = textures.get(Types.PLAYER);
+                    iGamePluginService.create(batch, gameData, world, texturePlayer);
                     break;
                 case ENEMY:
-                    texture = textures.get(Types.ENEMY);
-                    break;
-                case TOWER:
-                    texture = textures.get(Types.TOWER);
+                    Texture textureEnemy = textures.get(Types.ENEMY);
                     break;
             }
-            iGamePluginService.create(batch, gameData, world, texture);
+
         }
     }
 

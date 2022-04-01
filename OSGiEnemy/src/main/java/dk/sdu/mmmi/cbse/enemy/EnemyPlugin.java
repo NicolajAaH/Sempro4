@@ -11,6 +11,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
+import dk.sdu.mmmi.cbse.commonenemy.Enemy;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
 
 public class EnemyPlugin implements IGamePluginService {
@@ -22,7 +23,9 @@ public class EnemyPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-        world.removeEntity("enemy");
+        for (Entity enemy : world.getEntities(Enemy.class)){
+            world.removeEntity(enemy);
+        }
     }
 
     @Override
@@ -37,13 +40,12 @@ public class EnemyPlugin implements IGamePluginService {
         float radians = 3.1415f / 2;
 
         Sprite sprite = new Sprite(texture);
-        /*Entity enemy = new Enemy(sprite); //throws exception nulpointer
+        Entity enemy = new Enemy(sprite, Types.ENEMY);
         enemy.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new LifePart(1));
-        world.addEntity(enemy);*/
-      
-        return null; //reutrn enemy
+        world.addEntity(enemy);
+        return enemy;
     }
 
     @Override
