@@ -9,10 +9,12 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
+import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 
 import static dk.sdu.mmmi.cbse.common.data.GameKeys.*;
 
 public class PlayerControlSystem implements IEntityProcessingService {
+    TowerSPI towerSPI;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -28,10 +30,9 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             // MERGES IND
             if (gameData.getKeys().isDown(SPACE)) {
+                towerSPI.createTower(world, 10, 10);
 
-                Entity tower = TowerSPI.class.createTower(world, x, y);
-
-                world.addEntity(tower);
+                //world.addEntity(tower);
             }
 
             movingPart.process(gameData, player);
@@ -47,4 +48,11 @@ public class PlayerControlSystem implements IEntityProcessingService {
         }
     }
 
+    public void setTowerSPI(TowerSPI towerSPI) {
+        this.towerSPI = towerSPI;
+    }
+
+    public void removeTowerSPI(TowerSPI towerSPI) {
+        this.towerSPI = null;
+    }
 }

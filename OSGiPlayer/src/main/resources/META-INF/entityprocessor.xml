@@ -4,5 +4,7 @@
     <service>
         <provide interface="dk.sdu.mmmi.cbse.common.services.IEntityProcessingService"/>
     </service>
-
+    <reference bind="setTowerSPI" cardinality="0..1"
+               interface="dk.sdu.mmmi.cbse.commontower.TowerSPI"
+               name="towerSPI" policy="dynamic" unbind="removeTowerSPI"/>
 </scr:component>
