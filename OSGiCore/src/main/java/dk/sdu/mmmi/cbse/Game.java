@@ -69,6 +69,7 @@ public class Game implements ApplicationListener {
 
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
+        textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
 
         world.setTextureHashMap(textures);
 
@@ -80,6 +81,7 @@ public class Game implements ApplicationListener {
                     break;
                 case ENEMY:
                     Texture textureEnemy = textures.get(Types.ENEMY);
+                    iGamePluginService.create(batch, gameData, world, textureEnemy);
                     break;
             }
 
