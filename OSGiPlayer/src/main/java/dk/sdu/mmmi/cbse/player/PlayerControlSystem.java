@@ -31,6 +31,14 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setUp(gameData.getKeys().isDown(UP));
             movingPart.setDown(gameData.getKeys().isDown(DOWN));
 
+            // MERGES IND
+            if (gameData.getKeys().isDown(SPACE)) {
+
+                Entity tower = TowerSPI.class.createTower(world, x, y);
+
+                world.addEntity(tower);
+            }
+
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
             lifePart.process(gameData, player);

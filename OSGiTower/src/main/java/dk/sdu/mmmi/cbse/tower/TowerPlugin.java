@@ -9,6 +9,8 @@ import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 
 public class TowerPlugin implements IGamePluginService {
 
+    private Entity tower;
+
     @Override
     public void start(GameData gameData, World world) {
 
@@ -16,7 +18,8 @@ public class TowerPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-
+// Remove entities
+        world.removeEntity(tower);
     }
 
     @Override
