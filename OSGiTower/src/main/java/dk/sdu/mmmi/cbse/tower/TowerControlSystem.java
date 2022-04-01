@@ -57,8 +57,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
         world.addEntity(tower);
-        //world.addEntity(tower);
-
     }
 
 }

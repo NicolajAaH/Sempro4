@@ -3,7 +3,9 @@ package dk.sdu.mmmi.cbse.common.data;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class World {
@@ -60,4 +62,5 @@ public class World {
     public HashMap<Types, Texture> getTextureHashMap() {
         return textureHashMap;
     }
+
 }
