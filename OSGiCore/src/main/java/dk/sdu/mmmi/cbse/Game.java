@@ -32,7 +32,7 @@ public class Game implements ApplicationListener {
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-    private TiledMap tiledMap;
+    // private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer renderer;
     private SpriteBatch batch;
     private Texture playerimage;
@@ -55,9 +55,9 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        tiledMap = new TmxMapLoader().load("Map.tmx");
+        world.setTiledMap(new TmxMapLoader().load("Map.tmx"));
 
-        renderer = new OrthogonalTiledMapRenderer(tiledMap);
+        renderer = new OrthogonalTiledMapRenderer(world.getMap());
         batch = new SpriteBatch();
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
@@ -74,9 +74,6 @@ public class Game implements ApplicationListener {
             iGamePluginService.create(batch, gameData, world, playerimage);
         }
     }
-
-
-
 
 
     @Override
@@ -100,7 +97,7 @@ public class Game implements ApplicationListener {
 
     private int getTileId(int x, int y){
         //Get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
 
         // Get cell at position (x, y)
         TiledMapTileLayer.Cell cell = layer.getCell(x, y);
@@ -113,16 +110,14 @@ public class Game implements ApplicationListener {
         // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
 
         //Get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
 
         // Get cell at position (x, y)
         TiledMapTileLayer.Cell cell = layer.getCell(x, y);
 
         // setting tile to til with the id tileId in the map tileset
-        cell.setTile(tiledMap.getTileSets().getTile(tileId));
+        cell.setTile(world.getMap().getTileSets().getTile(tileId));
     }
-
-
 
 
     private void update() {
