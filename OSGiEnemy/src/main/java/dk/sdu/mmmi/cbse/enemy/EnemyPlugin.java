@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
@@ -36,12 +37,17 @@ public class EnemyPlugin implements IGamePluginService {
         float radians = 3.1415f / 2;
 
         Sprite sprite = new Sprite(texture);
-        Entity enemy = new Player(sprite); //throws exception nulpointer
+        /*Entity enemy = new Enemy(sprite); //throws exception nulpointer
         enemy.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new LifePart(1));
-        world.addEntity(enemy);
+        world.addEntity(enemy);*/
       
-        return enemy;
+        return null; //reutrn enemy
+    }
+
+    @Override
+    public Types getType() {
+        return Types.ENEMY;
     }
 }
