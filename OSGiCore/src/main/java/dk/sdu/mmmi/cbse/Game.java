@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import dk.sdu.mmmi.cbse.common.data.Attack;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -55,6 +56,9 @@ public class Game implements ApplicationListener {
     @Override
     public void create() {
         world.setTiledMap(new TmxMapLoader().load("Map.tmx"));
+
+        gameData.setGameStartTime(System.currentTimeMillis());
+        gameData.addAttack(new Attack(0,10));
 
         renderer = new OrthogonalTiledMapRenderer(world.getMap());
         batch = new SpriteBatch();
@@ -193,7 +197,6 @@ public class Game implements ApplicationListener {
     public void addGamePluginService(IGamePluginService plugin) {
         this.gamePluginList.add(plugin);
         plugin.start(gameData, world);
-
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {

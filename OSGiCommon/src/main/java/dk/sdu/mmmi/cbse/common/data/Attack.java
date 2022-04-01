@@ -17,5 +17,12 @@ public class Attack {
     public int getAttackNumber(){
         return attackNumber;
     }
-    
+
+    public void setAttackNumber(int attackNumber) {
+        this.attackNumber = attackNumber;
+    }
+
+    public void setAttackTimeMs(int attackTimeMs) {
+        this.attackTimeMs = attackTimeMs;
+    }
 }

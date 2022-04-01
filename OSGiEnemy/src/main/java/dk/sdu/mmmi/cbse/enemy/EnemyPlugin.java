@@ -30,22 +30,7 @@ public class EnemyPlugin implements IGamePluginService {
 
     @Override
     public Entity create(SpriteBatch spriteBatch, GameData gameData, World world, Texture texture) {
-        System.out.println("created enemy");
-        float deacceleration = 10;
-        float acceleration = 200;
-        float speed = 1;
-        float rotationSpeed = 5;
-        float x = gameData.getDisplayWidth() / 2;
-        float y = gameData.getDisplayHeight() / 2;
-        float radians = 3.1415f / 2;
-
-        Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
-        Entity enemy = new Enemy(sprite, Types.ENEMY);
-        enemy.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
-        enemy.add(new PositionPart(x, y, radians));
-        enemy.add(new LifePart(1));
-        world.addEntity(enemy);
-        return enemy;
+        return null;
     }
 
     @Override

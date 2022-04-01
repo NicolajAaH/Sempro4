@@ -4,6 +4,7 @@ import dk.sdu.mmmi.cbse.common.events.Event;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class GameData {
 
@@ -23,8 +24,8 @@ public class GameData {
         gameStartTime = startTime;
     }
 
-    public ArrayList<Attack> getAttacks() {
-        return attacks;
+    public List<Attack> getCurrentAttacks(){
+        return attacks.stream().filter(attack -> attack.getAttackTimeMs() + gameStartTime < System.currentTimeMillis() ).collect(Collectors.toList());
     }
 
     public void addAttack(Attack a){

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1648810536963
+Bnd-LastModified: 1648813074486
 Build-Jdk: 1.8.0_322
-Built-By: nicolajaalykkehansen
+Built-By: Troel
 Bundle-Description: Generated using Pax-Construct
 Bundle-ManifestVersion: 2
 Bundle-Name: OSGiCommonEnemy

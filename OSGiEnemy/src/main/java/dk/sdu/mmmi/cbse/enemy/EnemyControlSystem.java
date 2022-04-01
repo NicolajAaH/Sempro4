@@ -1,11 +1,9 @@
 package dk.sdu.mmmi.cbse.enemy;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import dk.sdu.mmmi.cbse.common.data.Attack;
-import dk.sdu.mmmi.cbse.common.data.Entity;
-import dk.sdu.mmmi.cbse.common.data.GameData;
-import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.*;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
@@ -13,6 +11,7 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonenemy.Enemy;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class EnemyControlSystem implements IEntityProcessingService {
@@ -21,10 +20,18 @@ public class EnemyControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         //TODO: Mapp attacks to include time passed
-        ArrayList<Attack> currentAttacks = gameData.getAttacks();
+        List<Attack> currentAttacks = gameData.getCurrentAttacks();
 
         for (Attack attack : currentAttacks) {
             //TODO: add enemies corresponding to attack
+            if(attack.getAttackNumber() > 0) {
+                createEnemy(gameData, world);
+                attack.setAttackNumber(attack.getAttackNumber() - 1);
+                attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
+            }else {
+                gameData.removeAttack(attack);
+            }
+
         }
 
         //TODO: get enemies
@@ -49,6 +56,24 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 break;
             }
         }
+    }
+
+    private void createEnemy(GameData gameData, World world){
+        System.out.println("created enemy");
+        float deacceleration = 10;
+        float acceleration = 200;
+        float speed = 1;
+        float rotationSpeed = 5;
+        float x = gameData.getDisplayWidth() / 2;
+        float y = gameData.getDisplayHeight() / 2;
+        float radians = 3.1415f / 2;
+
+        Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
+        Entity enemy = new Enemy(sprite, Types.ENEMY);
+        enemy.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
+        enemy.add(new PositionPart(x, y, radians));
+        enemy.add(new LifePart(1));
+        world.addEntity(enemy);
     }
 
     @Override
