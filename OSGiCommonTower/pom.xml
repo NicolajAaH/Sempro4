@@ -8,13 +8,13 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>dk.sdu.mmmi.player</bundle.symbolicName>
+        <bundle.symbolicName>dk.sdu.mmmi.commontower</bundle.symbolicName>
         <bundle.namespace>dk.sdu.mmmi</bundle.namespace>
     </properties>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>OSGiPlayer</artifactId>
+    <artifactId>OSGiCommonTower</artifactId>
     <packaging>bundle</packaging>
-    <name>OSGiPlayer</name>
+    <name>OSGiCommonTower</name>
     <dependencies>    
         <dependency>
             <groupId>org.osgi</groupId>
@@ -29,23 +29,6 @@
         <dependency>
             <groupId>dk.sdu.mmmi.build</groupId>
             <artifactId>OSGiCommon</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>dk.sdu.mmmi.build</groupId>
-            <artifactId>OSGiCommonPlayer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>dk.sdu.mmmi.build</groupId>
-            <artifactId>OSGiFileHandler</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>dk.sdu.mmmi.build</groupId>
-            <artifactId>OSGiCommonTower</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

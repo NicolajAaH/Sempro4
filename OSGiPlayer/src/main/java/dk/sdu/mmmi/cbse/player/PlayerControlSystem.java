@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -9,10 +10,14 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
+import dk.sdu.mmmi.cbse.commontower.TowerSPI;
+
+import java.awt.*;
 
 import static dk.sdu.mmmi.cbse.common.data.GameKeys.*;
 
 public class PlayerControlSystem implements IEntityProcessingService {
+    TowerSPI towerSPI;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -25,6 +30,11 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setRight(gameData.getKeys().isDown(RIGHT));
             movingPart.setUp(gameData.getKeys().isDown(UP));
             movingPart.setDown(gameData.getKeys().isDown(DOWN));
+
+            if (gameData.getKeys().isDown(SPACE)) {
+                Point coordinates = getTileCoordinates(positionPart.getX(), positionPart.getY(), world);
+                towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
+            }
 
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
@@ -39,4 +49,20 @@ public class PlayerControlSystem implements IEntityProcessingService {
         }
     }
 
+    public void setTowerSPI(TowerSPI towerSPI) {
+        this.towerSPI = towerSPI;
+    }
+
+    public void removeTowerSPI(TowerSPI towerSPI) {
+        this.towerSPI = null;
+    }
+
+    private Point getTileCoordinates(float x, float y, World world){
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+
+        int tileX = (int) Math.floor(x / layer.getTileHeight());
+        int tileY = (int) Math.floor(y / layer.getTileWidth());
+
+        return new Point(tileX, tileY);
+    }
 }

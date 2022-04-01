@@ -60,6 +60,7 @@
     <module>OSGiCommonProjectile</module>
     <module>OSGiCommonPlayer</module>
     <module>OSGiFileHandler</module>
+    <module>OSGiCommonTower</module>
   </modules>
 
   <build>
