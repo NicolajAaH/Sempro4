@@ -201,3 +201,5 @@ OSGiProjectile/target/
 OSGiTower/target/
 
 runner/felix/cache/
+
+OSGiCommonTower/target/
