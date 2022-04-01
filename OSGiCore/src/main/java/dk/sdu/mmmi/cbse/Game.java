@@ -55,6 +55,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
+        world.setTiledMap(new TmxMapLoader().load("Map.tmx"));
 
         renderer = new OrthogonalTiledMapRenderer(world.getMap());
         batch = new SpriteBatch();
