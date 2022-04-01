@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -26,7 +27,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Game implements ApplicationListener {
 
     private OrthographicCamera cam;
-    private ShapeRenderer sr;
     private final GameData gameData = new GameData();
     private static World world = new World();
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
@@ -66,18 +66,18 @@ public class Game implements ApplicationListener {
         cam.translate(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2);
         cam.update();
 
-        sr = new ShapeRenderer();
-
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
         playerimage = new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png"));
 
         for (IGamePluginService iGamePluginService : gamePluginList) {
-            batch.begin();
             iGamePluginService.create(batch, gameData, world, playerimage);
-            batch.end();
         }
     }
+
+
+
+
 
     @Override
     public void render() {
@@ -93,15 +93,43 @@ public class Game implements ApplicationListener {
 
         update();
         draw(batch);
+
+        replaceTile(1,2,4);
+        //System.out.println("tile id " + getTileId(1,1));
     }
+
+    private int getTileId(int x, int y){
+        //Get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        // Get cell at position (x, y)
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        // setting tile to til with the id tileId in the map tileset
+        return cell.getTile().getId();
+    }
+
+    private void replaceTile(int x, int y, int tileId){
+        // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
+
+        //Get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        // Get cell at position (x, y)
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        // setting tile to til with the id tileId in the map tileset
+        cell.setTile(tiledMap.getTileSets().getTile(tileId));
+    }
+
+
+
 
     private void update() {
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
-            batch.begin();
             entityProcessorService.process(gameData, world);
-            //entityProcessorService.draw(batch, world);
-            batch.end();
+            entityProcessorService.draw(batch, world);
         }
 
         // Post Update
@@ -112,7 +140,7 @@ public class Game implements ApplicationListener {
 
     private void draw(SpriteBatch spriteBatch) {
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
-          //  entityProcessorService.draw(spriteBatch, world);
+          entityProcessorService.draw(spriteBatch, world);
         }
         //IPost
     }

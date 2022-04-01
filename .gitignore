@@ -177,3 +177,27 @@ Temporary Items
 .apdisk
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,macos
+
+OSGiCollision/target/
+
+OSGiCommon/target/
+
+OSGiCommonPlayer/target/
+
+OSGiCommonProjectile/target/
+
+OSGiCore/target/
+
+OSGiEnemy/target/
+
+OSGiFileHandler/target/
+
+OSGiLibGDX/target/
+
+OSGiPlayer/target/
+
+OSGiProjectile/target/
+
+OSGiTower/target/
+
+runner/felix/cache/

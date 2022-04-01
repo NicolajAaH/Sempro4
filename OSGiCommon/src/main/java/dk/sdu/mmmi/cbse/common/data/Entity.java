@@ -26,8 +26,13 @@ public class Entity extends Sprite implements Serializable {
     
     public Entity(Sprite sprite) {
         super(sprite);
+        parts = new ConcurrentHashMap<>();
     }
-    
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
     public void add(EntityPart part) {
         parts.put(part.getClass(), part);
     }

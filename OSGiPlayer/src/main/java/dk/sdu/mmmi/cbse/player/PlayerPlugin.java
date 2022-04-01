@@ -46,7 +46,7 @@ public class PlayerPlugin implements IGamePluginService {
 
         float deacceleration = 10;
         float acceleration = 200;
-        float maxSpeed = 300;
+        float speed = 2;
         float rotationSpeed = 5;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;
@@ -54,8 +54,7 @@ public class PlayerPlugin implements IGamePluginService {
 
         Sprite sprite = new Sprite(texture);
         Entity player = new Player(sprite); //throws exception nulpointer
-        System.out.println(player.toString());
-        player.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
+        player.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1));
         world.addEntity(player);
