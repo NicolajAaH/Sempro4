@@ -24,6 +24,13 @@ public class World {
     public void removeEntity(Entity entity) {
         entityMap.remove(entity.getID());
     }
+
+    public void removeEntityType(String stringId){
+        //TODO: implement remove by string type
+        entityMap.replaceAll((String key, Entity entity) -> {
+            return entity;
+        });
+    }
     
     public Collection<Entity> getEntities() {
         return entityMap.values();

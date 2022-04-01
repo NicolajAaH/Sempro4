@@ -10,6 +10,8 @@
     <properties>
         <bundle.symbolicName>dk.sdu.mmmi.enemy</bundle.symbolicName>
         <bundle.namespace>dk.sdu.mmmi</bundle.namespace>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>OSGiEnemy</artifactId>
@@ -25,6 +27,12 @@
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.compendium</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>dk.sdu.mmmi.build</groupId>
+            <artifactId>OSGiCommon</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

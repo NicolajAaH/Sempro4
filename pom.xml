@@ -60,6 +60,8 @@
     <module>OSGiCommonProjectile</module>
     <module>OSGiCommonPlayer</module>
     <module>OSGiFileHandler</module>
+    <module>osgi-project</module>
+    <module>dk</module>
   </modules>
 
   <build>
@@ -72,10 +74,6 @@
           <!--
                      | some example Pax-Runner settings
                     -->
-          <provision>
-            <param>--platform=felix</param>
-            <param>--vmOptions=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</param>
-          </provision>
         </configuration>
         <executions>
           <!--

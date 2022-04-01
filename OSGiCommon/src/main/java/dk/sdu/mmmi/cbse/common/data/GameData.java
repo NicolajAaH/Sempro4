@@ -11,7 +11,29 @@ public class GameData {
     private int displayWidth;
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
-    private List<Event> events = new CopyOnWriteArrayList<>();
+    final private List<Event> events = new CopyOnWriteArrayList<>();
+    final private ArrayList<Attack> attacks = new ArrayList<>();
+    private long gameStartTime;
+
+    public long getGameStartTime() {
+        return gameStartTime;
+    }
+
+    public void setGameStartTime(long startTime){
+        gameStartTime = startTime;
+    }
+
+    public ArrayList<Attack> getAttacks() {
+        return attacks;
+    }
+
+    public void addAttack(Attack a){
+        attacks.add(a);
+    }
+
+    public void removeAttack(Attack a){
+        attacks.remove(a);
+    }
 
     public void addEvent(Event e) {
         events.add(e);
