@@ -21,7 +21,20 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void start(GameData gameData, World world) {
-
+        //TODO REFACTOR
+        Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.PLAYER));
+        float deacceleration = 10;
+        float acceleration = 200;
+        float speed = 2;
+        float rotationSpeed = 5;
+        float x = gameData.getDisplayWidth() / 2;
+        float y = gameData.getDisplayHeight() / 2;
+        float radians = 3.1415f / 2;
+        Entity player = new Player(sprite, Types.PLAYER); //throws exception nulpointer
+        player.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
+        player.add(new PositionPart(x, y, radians));
+        player.add(new LifePart(1));
+        world.addEntity(player);
     }
 
     @Override
@@ -33,7 +46,7 @@ public class PlayerPlugin implements IGamePluginService {
     }
 
     @Override
-    public Entity create(SpriteBatch batch, GameData gameData, World world, Texture texture) {
+    public Entity create(SpriteBatch batch, GameData gameData, World world, Texture texture) { //TODO REFACTOR INTERFACET
         float deacceleration = 10;
         float acceleration = 200;
         float speed = 2;
