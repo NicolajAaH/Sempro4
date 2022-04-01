@@ -1,28 +1,20 @@
 package dk.sdu.mmmi.cbse.player;
 
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
-import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
-
-import java.io.File;
-import java.util.Arrays;
 
 
 public class PlayerPlugin implements IGamePluginService {
-
-    private Entity player;
 
     public PlayerPlugin() {
     }
@@ -30,20 +22,18 @@ public class PlayerPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
 
-        // Add entities to the world
-        //
-        //world.addEntity(player);
     }
 
     @Override
     public void stop(GameData gameData, World world) {
         // Remove entities
-        world.removeEntity(player);
+        for (Entity entity : world.getEntities(Player.class)) {
+            world.removeEntity(entity);
+        }
     }
 
     @Override
     public Entity create(SpriteBatch batch, GameData gameData, World world, Texture texture) {
-
         float deacceleration = 10;
         float acceleration = 200;
         float speed = 2;
@@ -53,13 +43,18 @@ public class PlayerPlugin implements IGamePluginService {
         float radians = 3.1415f / 2;
 
         Sprite sprite = new Sprite(texture);
-        Entity player = new Player(sprite); //throws exception nulpointer
+        Entity player = new Player(sprite, Types.PLAYER); //throws exception nulpointer
         player.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1));
         world.addEntity(player);
 
         return player;
+    }
+
+    @Override
+    public Types getType() {
+        return Types.PLAYER;
     }
 
 }
