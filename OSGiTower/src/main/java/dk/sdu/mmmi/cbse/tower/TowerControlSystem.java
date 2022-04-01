@@ -15,6 +15,8 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 
+import java.awt.*;
+
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     @Override
     public void process(GameData gameData, World world) {
@@ -79,6 +81,8 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
         return tileProperties;
     }
+
+
 
 
 

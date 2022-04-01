@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -31,8 +32,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(DOWN));
 
             if (gameData.getKeys().isDown(SPACE)) {
-                Point coordinates getTileCoordinates(positionPart.getX(), positionPart.getY());
-                towerSPI.createTower(world, coordinates.x, coordinates.y);
+                Point coordinates = getTileCoordinates(positionPart.getX(), positionPart.getY(), world);
+                towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
 
                 // towerSPI.createTower(world, 2, 1);
 
@@ -42,9 +43,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
             positionPart.process(gameData, player);
             lifePart.process(gameData, player);
         }
-    }
-
-    private void getTileCoordinates(float x, float y) {
     }
 
     @Override
@@ -60,5 +58,14 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
     public void removeTowerSPI(TowerSPI towerSPI) {
         this.towerSPI = null;
+    }
+
+    private Point getTileCoordinates(float x, float y, World world){
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+
+        int tileX = (int) Math.floor(x / layer.getTileHeight());
+        int tileY = (int) Math.floor(y / layer.getTileWidth());
+
+        return new Point(tileX, tileY);
     }
 }
