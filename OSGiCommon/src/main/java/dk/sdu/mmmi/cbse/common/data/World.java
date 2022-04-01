@@ -1,17 +1,16 @@
 package dk.sdu.mmmi.cbse.common.data;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class World {
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
     private TiledMap tiledMap;
+    private HashMap<Types, Texture> textureHashMap;
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -52,5 +51,13 @@ public class World {
 
     public void setTiledMap(TiledMap tiledMap) {
         this.tiledMap = tiledMap;
+    }
+
+    public void setTextureHashMap(HashMap<Types, Texture> textureHashMap) {
+        this.textureHashMap = textureHashMap;
+    }
+
+    public HashMap<Types, Texture> getTextureHashMap() {
+        return textureHashMap;
     }
 }

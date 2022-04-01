@@ -15,6 +15,8 @@ public class Entity extends Sprite implements Serializable {
     protected Sprite sprite;
     protected Texture texture;
 
+    protected Types type;
+
     private final UUID ID = UUID.randomUUID();
 
     private Vector2 velocity; //movement velocity
@@ -57,7 +59,7 @@ public class Entity extends Sprite implements Serializable {
         return ID.toString();
     }
 
-
-
-
+    public Types getType() {
+        return type;
+    }
 }

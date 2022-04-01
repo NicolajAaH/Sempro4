@@ -8,12 +8,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
@@ -21,6 +20,7 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -32,10 +32,9 @@ public class Game implements ApplicationListener {
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-    // private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer renderer;
     private SpriteBatch batch;
-    private Texture playerimage;
+    public HashMap<Types, Texture> textures = new HashMap<>();
 
 
     public Game() {
@@ -68,10 +67,25 @@ public class Game implements ApplicationListener {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
-        playerimage = new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png"));
+        textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
+        textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
+
+        world.setTextureHashMap(textures);
 
         for (IGamePluginService iGamePluginService : gamePluginList) {
-            iGamePluginService.create(batch, gameData, world, playerimage);
+            Texture texture = null;
+            switch (iGamePluginService.getType()){
+                case PLAYER:
+                    texture = textures.get(Types.PLAYER);
+                    break;
+                case ENEMY:
+                    texture = textures.get(Types.ENEMY);
+                    break;
+                case TOWER:
+                    texture = textures.get(Types.TOWER);
+                    break;
+            }
+            iGamePluginService.create(batch, gameData, world, texture);
         }
     }
 
