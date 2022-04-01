@@ -60,8 +60,6 @@
     <module>OSGiCommonProjectile</module>
     <module>OSGiCommonPlayer</module>
     <module>OSGiFileHandler</module>
-    <module>osgi-project</module>
-    <module>dk</module>
   </modules>
 
   <build>
