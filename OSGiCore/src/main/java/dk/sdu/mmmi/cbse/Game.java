@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import dk.sdu.mmmi.cbse.common.data.Attack;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
@@ -60,6 +61,9 @@ public class Game implements ApplicationListener {
     public void create() {
         world.setTiledMap(new TmxMapLoader().load("Map.tmx"));
 
+        gameData.setGameStartTime(System.currentTimeMillis());
+        gameData.addAttack(new Attack(0,10));
+
         renderer = new OrthogonalTiledMapRenderer(world.getMap());
         batch = new SpriteBatch();
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
@@ -73,6 +77,7 @@ public class Game implements ApplicationListener {
 
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
+        textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
 
         world.setTextureHashMap(textures);
 
@@ -93,6 +98,7 @@ public class Game implements ApplicationListener {
                      */
 
             }
+
         }
     }
 
@@ -261,7 +267,6 @@ public class Game implements ApplicationListener {
     public void addGamePluginService(IGamePluginService plugin) {
         this.gamePluginList.add(plugin);
         plugin.start(gameData, world);
-
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {

@@ -4,6 +4,7 @@ import dk.sdu.mmmi.cbse.common.events.Event;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class GameData {
 
@@ -11,7 +12,29 @@ public class GameData {
     private int displayWidth;
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
-    private List<Event> events = new CopyOnWriteArrayList<>();
+    final private List<Event> events = new CopyOnWriteArrayList<>();
+    final private ArrayList<Attack> attacks = new ArrayList<>();
+    private long gameStartTime;
+
+    public long getGameStartTime() {
+        return gameStartTime;
+    }
+
+    public void setGameStartTime(long startTime){
+        gameStartTime = startTime;
+    }
+
+    public List<Attack> getCurrentAttacks(){
+        return attacks.stream().filter(attack -> attack.getAttackTimeMs() + gameStartTime < System.currentTimeMillis() ).collect(Collectors.toList());
+    }
+
+    public void addAttack(Attack a){
+        attacks.add(a);
+    }
+
+    public void removeAttack(Attack a){
+        attacks.remove(a);
+    }
 
     public void addEvent(Event e) {
         events.add(e);
