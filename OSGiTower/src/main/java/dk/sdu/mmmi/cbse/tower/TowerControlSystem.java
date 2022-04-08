@@ -12,6 +12,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI;
 import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 
@@ -19,15 +20,26 @@ import java.awt.*;
 import java.util.Random;
 
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
+
+    private ProjectileSPI projectileLauncher;
+
     @Override
     public void process(GameData gameData, World world) {
 
+        System.out.println("process tower");
         for (Entity tower : world.getEntities(Tower.class)) {
             PositionPart positionPart = tower.getPart(PositionPart.class);
+
+            projectileLauncher.createProjectile(tower, gameData, world);
             // TODO: SET DIRECTION OF SHOOTING- AI!
-            tower.setRadius(100);
-            // Rotate sprite
+            // find nearest enemy
+            // point in that direction
+            // shoot
         }
+    }
+
+    private void shoot(){
+
     }
 
     @Override
@@ -36,6 +48,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
            tower.draw(batch);
        }
     }
+
     @Override
     public void createTower(World world, int xTile, int yTile) {
 
@@ -46,7 +59,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         }
 
         // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
-        int tileId = 4; // TODO: get tileID from properties of tile
+        int tileId = 4; // TODO: get tileID from properties of tile (2)
 
         //Get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
@@ -75,8 +88,11 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
+        ((Tower) tower).setRange(100);
+
         world.addEntity(tower);
     }
+
     private String getTileType(int x, int y, World world){
 
         //get first layer of map
@@ -105,4 +121,13 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
         return new Point(mapX, mapY);
     }
+
+    public void setProjectileSPI(ProjectileSPI projectileSPI) {
+        this.projectileLauncher = projectileSPI;
+    }
+
+    public void ProjectileSPI(ProjectileSPI projectileSPI) {
+        this.projectileLauncher = null;
+    }
+    
 }

@@ -11,6 +11,8 @@ import java.util.Random;
 
 public class Tower extends Entity {
 
+    private int range;
+
     public Tower(Sprite sprite, Types type) {
         super(sprite);
         this.type = type;
@@ -44,5 +46,13 @@ public class Tower extends Entity {
 
         this.setRotation(positionPart.getRadians());
 
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
+
+    public int getRange(){
+        return range;
     }
 }

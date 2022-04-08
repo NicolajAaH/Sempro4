@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.projectile;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -22,7 +23,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
     @Override
     public void process(GameData gameData, World world) {
-
+        System.out.println("process projectile");
         for (Entity projectile : world.getEntities(Projectile.class)) {
 
             PositionPart positionPart = projectile.getPart(PositionPart.class);
@@ -40,7 +41,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         }
     }
 
-    public void draw(SpriteBatch batch, World world){
+    public void draw(SpriteBatch batch, World world) {
         for (Entity projectile : world.getEntities(Projectile.class)) {
             projectile.draw(batch);
         }
@@ -48,27 +49,31 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
     @Override
     public void createProjectile(Entity shooter, GameData gameData, World world) {
+        System.out.println("create projectile in PCS");
 
         PositionPart shooterPos = shooter.getPart(PositionPart.class);
         MovingPart shooterMovingPart = shooter.getPart(MovingPart.class);
 
+        // shooter entity parameteres
         float x = shooterPos.getX();
         float y = shooterPos.getY();
         float radians = shooterPos.getRadians();
         float dt = gameData.getDelta();
-        float speed = 350;
 
-        Entity projectile = new Projectile(new Sprite (world.getTextureHashMap().get(Types.PROJECTILE)), Types.PROJECTILE);
-        projectile.setRadius(2);
+        // parameters
+        float deacceleration = 10;
+        float acceleration = 20000000;
+        float speed = 50;
+        float rotationSpeed = 5;
+        float projX = 100;
+        float projY = 100;
 
-        // getting direction of projectile
-        float bx = (float) cos(radians) * shooter.getRadius() * projectile.getRadius();
-        float by = (float) sin(radians) * shooter.getRadius() * projectile.getRadius();
-
-        projectile.add(new PositionPart(bx + x, by + y, radians));
+        Texture texture = world.getTextureHashMap().get(Types.PROJECTILE);
+        Sprite sprite = new Sprite(texture);
+        Entity projectile = new Projectile(sprite, Types.PROJECTILE);
+        projectile.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
+        projectile.add(new PositionPart(x, y, radians));
         projectile.add(new LifePart(1));
-        projectile.add(new MovingPart(0, 5000000, speed, 5));
-        projectile.add(new TimerPart(1));
-
+        world.addEntity(projectile);
     }
 }
