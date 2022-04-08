@@ -16,11 +16,18 @@ import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 
 import java.awt.*;
+import java.util.Random;
 
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     @Override
     public void process(GameData gameData, World world) {
-        // TODO: SET DIRECTION OF SHOOTING- AI!
+
+        for (Entity tower : world.getEntities(Tower.class)) {
+            PositionPart positionPart = tower.getPart(PositionPart.class);
+            // TODO: SET DIRECTION OF SHOOTING- AI!
+            tower.setRadius(100);
+            // Rotate sprite
+        }
     }
 
     @Override
@@ -55,9 +62,9 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         float speed = 0;
         float rotationSpeed = 5;
 
-        Point coordinate = world.getMap().tileCoorToMapCoor(xTile, yTile);
-        float x = (float) coordinate.x;
-        float y = (float) coordinate.y;
+        Point coordinate = tileCoorToMapCoor(xTile, yTile, world);
+        float x = (float) coordinate.x - 29;
+        float y = (float) coordinate.y - 29;
         float radians = 3.1415f / 2;
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
