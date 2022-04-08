@@ -57,14 +57,17 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         // setting tile to til with the id tileId in the map tileset
         cell.setTile(world.getMap().getTileSets().getTile(tileId));
 
+        // getting tile size
+        int tileSize = (int) layer.getTileHeight();
+
         float deacceleration = 0;
         float acceleration = 0;
         float speed = 0;
         float rotationSpeed = 5;
 
         Point coordinate = tileCoorToMapCoor(xTile, yTile, world);
-        float x = (float) coordinate.x - 29;
-        float y = (float) coordinate.y - 29;
+        float x = (float) coordinate.x - tileSize / 2;
+        float y = (float) coordinate.y - tileSize / 2;
         float radians = 3.1415f / 2;
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
