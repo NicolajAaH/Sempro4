@@ -7,6 +7,8 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
+import java.util.Random;
+
 public class Tower extends Entity {
 
     public Tower(Sprite sprite, Types type) {
@@ -27,11 +29,20 @@ public class Tower extends Entity {
     public void update(float delta){
         PositionPart positionPart = this.getPart(PositionPart.class);
         this.setPosition(positionPart.getX(), positionPart.getY());
-        /*
-        if (positionPart.getLastChange() == "Up") this.setRotation(0);
-        if (positionPart.getLastChange() == "Down") this.setRotation(180);
-        if (positionPart.getLastChange() == "Left") this.setRotation(90);
-        if (positionPart.getLastChange() == "Right") this.setRotation(270);
-         */
+
+        float radians = positionPart.getRadians();
+
+        Random r = new Random();
+
+        // should rotate
+        int shouldRotate = r.nextInt(100);
+        if (shouldRotate < 20) {
+            radians +=1;
+        }
+
+        positionPart.setRadians(radians);
+
+        this.setRotation(positionPart.getRadians());
+
     }
 }
