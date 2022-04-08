@@ -1,8 +1,9 @@
-package dk.sdu.mmmi.cbse.common.data;
+package dk.sdu.mmmi.cbse.map;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,15 +11,20 @@ import java.util.stream.Collectors;
 
 
 
-public class MapType {
+public class MapType implements IMap {
 
     private TiledMap tiledMap;
     private ArrayList<TiledMapTileLayer.Cell> cells = new ArrayList<>();
 
+    public MapType() {
+    }
+
+    @Override
     public TiledMap getTiledMap(){
         return tiledMap;
     }
 
+    @Override
     public void setTiledMap(TiledMap tiledMap) {
         this.tiledMap = tiledMap;
         collectCells();
@@ -34,6 +40,7 @@ public class MapType {
         }
     }
 
+    @Override
     public String getTileType(int x, int y){
 
         //get first layer of map
@@ -54,6 +61,7 @@ public class MapType {
      * @param y coordiante of tile
      * @return point on map corresponding to the given x and y
      */
+    @Override
     public Point tileCoorToMapCoor(float x, float y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
@@ -63,6 +71,7 @@ public class MapType {
         return new Point(mapX, mapY);
     }
 
+    @Override
     public ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property){
        return cells.stream().filter(cell -> cell.getTile().getProperties().containsKey(property)).collect(Collectors.toCollection(ArrayList::new));
     }
