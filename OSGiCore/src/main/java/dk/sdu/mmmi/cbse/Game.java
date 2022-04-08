@@ -85,17 +85,17 @@ public class Game implements ApplicationListener {
             switch (iGamePluginService.getType()){
                 case PLAYER:
                     Texture texturePlayer = textures.get(Types.PLAYER);
-                    iGamePluginService.create(batch, gameData, world, texturePlayer);
+                    iGamePluginService.create(gameData, world);
                     break;
                 case ENEMY:
                     Texture textureEnemy = textures.get(Types.ENEMY);
                     break;
-                    /*
+
                 case TOWER:
-                    texture = textures.get(Types.TOWER);
+                    Texture textureTower = textures.get(Types.TOWER);
                     break;
 
-                     */
+
 
             }
 
