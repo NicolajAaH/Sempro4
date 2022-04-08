@@ -59,7 +59,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
     }
 
     private void createEnemy(GameData gameData, World world){
-        System.out.println("created enemy");
         float deacceleration = 10;
         float acceleration = 200;
         float speed = 1;
