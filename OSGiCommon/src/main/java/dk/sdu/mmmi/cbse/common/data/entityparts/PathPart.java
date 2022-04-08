@@ -1,20 +1,23 @@
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.Enums.Direction;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
 
+
+
 public class PathPart implements EntityPart{
 
-    GameKeys direction;
+    Direction direction;
     int xGoal;
     int yGoal;
 
-    public GameKeys getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(GameKeys direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 

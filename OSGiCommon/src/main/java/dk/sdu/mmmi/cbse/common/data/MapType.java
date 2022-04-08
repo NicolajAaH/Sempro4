@@ -8,6 +8,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+
+
 public class MapType {
 
     private TiledMap tiledMap;
@@ -63,5 +65,14 @@ public class MapType {
 
     public ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property){
        return cells.stream().filter(cell -> cell.getTile().getProperties().containsKey(property)).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public Point getTileCoordinates(float x, float y){
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        int tileX = (int) Math.floor(x / layer.getTileHeight());
+        int tileY = (int) Math.floor(y / layer.getTileWidth());
+
+        return new Point(tileX, tileY);
     }
 }
