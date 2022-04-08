@@ -1,1 +1,4 @@
+Bundle-SymbolicName: OSGiCommon
+Bundle-ActivationPolicy: lazy
+Service-Component: META-INF/map.xml
 Export-Package: dk.sdu.mmmi.cbse.common.*

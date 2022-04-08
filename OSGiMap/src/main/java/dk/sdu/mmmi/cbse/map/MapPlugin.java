@@ -7,6 +7,9 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 
 public class MapPlugin implements IGamePluginService{
+    public MapPlugin() {
+    }
+
     @Override
     public void start(GameData gameData, World world) {
 

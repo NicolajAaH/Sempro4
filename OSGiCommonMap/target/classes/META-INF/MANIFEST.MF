@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1649416349112
+Build-Jdk: 1.8.0_322
+Built-By: nicolajaalykkehansen
+Bundle-Description: Generated using Pax-Construct
+Bundle-ManifestVersion: 2
+Bundle-Name: OSGiCommonMap
+Bundle-SymbolicName: dk.sdu.mmmi.commonmap
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: dk.sdu.mmmi.cbse.commonmap;version="1.0.0.SNAPSHOT";uses
+ :="com.badlogic.gdx.maps.tiled"
+Import-Package: com.badlogic.gdx.maps.tiled;version="[1.0,2)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-3.5.0.201709291849
