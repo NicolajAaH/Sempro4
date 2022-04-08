@@ -62,6 +62,8 @@
     <module>OSGiFileHandler</module>
     <module>OSGiCommonEnemy</module>
     <module>OSGiCommonTower</module>
+    <module>OSGiMap</module>
+    <module>OSGiCommonMap</module>
   </modules>
 
   <build>
