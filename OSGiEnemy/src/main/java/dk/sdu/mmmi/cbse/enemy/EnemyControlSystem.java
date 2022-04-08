@@ -3,6 +3,8 @@ package dk.sdu.mmmi.cbse.enemy;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.*;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
@@ -11,6 +13,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonenemy.Enemy;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -58,12 +61,22 @@ public class EnemyControlSystem implements IEntityProcessingService {
     }
 
     private void createEnemy(GameData gameData, World world){
+        ArrayList<TiledMapTileLayer.Cell> tiles = world.getMap().getTilesOfType("starttype");
+
+        if(tiles.isEmpty()) throw new RuntimeException("no starting tile for enemy");
+
+        TiledMapTile tile = tiles.get(0).getTile();
+
+        Point point = world.getMap().tileCoorToMapCoor(tile.getOffsetX(), tile.getOffsetY());
+
+
+
         float deacceleration = 10;
         float acceleration = 200;
         float speed = 1;
         float rotationSpeed = 5;
-        float x = gameData.getDisplayWidth() / 2;
-        float y = gameData.getDisplayHeight() / 2;
+        float x = point.x;
+        float y = point.y;
         float radians = 3.1415f / 2;
 
 
