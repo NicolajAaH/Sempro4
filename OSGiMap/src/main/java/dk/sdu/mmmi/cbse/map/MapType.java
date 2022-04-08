@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.map;
 
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -72,5 +73,10 @@ public class MapType implements IMap {
     @Override
     public ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property){
        return cells.stream().filter(cell -> cell.getTile().getProperties().containsKey(property)).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public MapLayers getLayers() {
+        return tiledMap.getLayers();
     }
 }

@@ -43,9 +43,12 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         }
     }
 
+    @Override
     public void draw(SpriteBatch batch, World world) {
         for (Entity projectile : world.getEntities(Projectile.class)) {
+            batch.begin();
             projectile.draw(batch);
+            batch.end();
         }
     }
 

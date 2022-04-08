@@ -118,7 +118,6 @@ public class Game implements ApplicationListener {
         renderer.setView(cam);
         renderer.render();
         update();
-        draw(batch);
 
         replaceTile(1,2,4);
         //System.out.println("tile id " + getTileId(1,1));
@@ -218,14 +217,6 @@ public class Game implements ApplicationListener {
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
         }
-
-    }
-
-    private void draw(SpriteBatch spriteBatch) {
-        for (IEntityProcessingService entityProcessorService : entityProcessorList) {
-          entityProcessorService.draw(spriteBatch, world);
-        }
-        //IPost
 
     }
 

@@ -73,8 +73,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         // getting tile size
         int tileSize = (int) layer.getTileHeight();
 
-        // getting tile size
-        int tileSize = (int) layer.getTileHeight();
 
         float deacceleration = 0;
         float acceleration = 0;

@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.commonmap;
 
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
@@ -17,4 +18,6 @@ public interface IMap {
     Point tileCoorToMapCoor(float x, float y);
 
     ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property);
+
+    MapLayers getLayers();
 }
