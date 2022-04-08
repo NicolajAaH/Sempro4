@@ -94,9 +94,6 @@ public class Game implements ApplicationListener {
                 case TOWER:
                     Texture textureTower = textures.get(Types.TOWER);
                     break;
-
-
-
             }
 
         }

@@ -205,3 +205,7 @@ runner/felix/cache/
 OSGiCommonTower/target/
 
 OSGiCommonEnemy/target/
+
+OSGiMap/target/
+
+OSGiCommonMap/target/

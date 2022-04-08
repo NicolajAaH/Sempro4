@@ -8,13 +8,13 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>dk.sdu.mmmi.common</bundle.symbolicName>
+        <bundle.symbolicName>dk.sdu.mmmi.map</bundle.symbolicName>
         <bundle.namespace>dk.sdu.mmmi</bundle.namespace>
     </properties>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>OSGiCommon</artifactId>
+    <artifactId>OSGiMap</artifactId>
     <packaging>bundle</packaging>
-    <name>OSGiCommon</name>
+    <name>OSGiMap</name>
     <dependencies>    
         <dependency>
             <groupId>org.osgi</groupId>
@@ -28,8 +28,9 @@
         </dependency>
         <dependency>
             <groupId>dk.sdu.mmmi.build</groupId>
-            <artifactId>OSGiLibGDX</artifactId>
+            <artifactId>OSGiCommon</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>dk.sdu.mmmi.build</groupId>
