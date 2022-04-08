@@ -14,7 +14,6 @@ public class Entity extends Sprite implements Serializable {
 
     protected Sprite sprite;
     protected Texture texture;
-
     protected Types type;
 
     private final UUID ID = UUID.randomUUID();

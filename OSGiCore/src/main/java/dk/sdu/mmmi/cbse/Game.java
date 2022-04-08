@@ -100,7 +100,7 @@ public class Game implements ApplicationListener {
 
                 case PROJECTILE:
                     Texture textureProjectile = textures.get(Types.PROJECTILE);
-
+                    break;
             }
         }
     }
@@ -117,7 +117,6 @@ public class Game implements ApplicationListener {
 
         renderer.setView(cam);
         renderer.render();
-
         update();
         draw(batch);
 
