@@ -78,6 +78,9 @@ public class Game implements ApplicationListener {
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon2.png")));
         textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
+        // TODO: change image of projectile
+        textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
+
 
         world.setTextureHashMap(textures);
 
@@ -95,10 +98,10 @@ public class Game implements ApplicationListener {
                     Texture textureTower = textures.get(Types.TOWER);
                     break;
 
-
+                case PROJECTILE:
+                    Texture textureProjectile = textures.get(Types.PROJECTILE);
 
             }
-
         }
     }
 
