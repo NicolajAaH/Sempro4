@@ -61,9 +61,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
     }
 
     private void createEnemy(GameData gameData, World world){
-        ArrayList<TiledMapTileLayer.Cell> tiles = world.getMap().getTilesOfType("starttype");
+        ArrayList<TiledMapTileLayer.Cell> tiles = world.getMap().getTilesOfType("Start");
 
-        if(tiles.isEmpty()) throw new RuntimeException("no starting tile for enemy");
+        if(tiles.isEmpty()) return;
 
         TiledMapTile tile = tiles.get(0).getTile();
 

@@ -1,0 +1,47 @@
+tiles.png
+size: 348, 58
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Barrier
+  rotate: false
+  xy: 0, 0
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+End
+  rotate: false
+  xy: 58, 0
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+Grass
+  rotate: false
+  xy: 116, 0
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+Path
+  rotate: false
+  xy: 174, 0
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+Start
+  rotate: false
+  xy: 232, 0
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
+Tower
+  rotate: false
+  xy: 290, 0
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: -1
