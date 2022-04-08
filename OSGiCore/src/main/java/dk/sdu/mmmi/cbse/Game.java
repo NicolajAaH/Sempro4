@@ -33,10 +33,10 @@ public class Game implements ApplicationListener {
 
     private OrthographicCamera cam;
     private final GameData gameData = new GameData();
-    private static World world = new World();
+    private static final World world = new World();
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
-    private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
+    private static final List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
     private OrthogonalTiledMapRenderer renderer;
     private SpriteBatch batch;
     public HashMap<Types, Texture> textures = new HashMap<>();
@@ -59,12 +59,12 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        world.setTiledMap(new TmxMapLoader().load("Map.tmx"));
+        world.getMap().setTiledMap(new TmxMapLoader().load("Map.tmx"));
 
         gameData.setGameStartTime(System.currentTimeMillis());
         gameData.addAttack(new Attack(0,10));
 
-        renderer = new OrthogonalTiledMapRenderer(world.getMap());
+        renderer = new OrthogonalTiledMapRenderer(world.getMap().getTiledMap());
         batch = new SpriteBatch();
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
@@ -130,7 +130,7 @@ public class Game implements ApplicationListener {
 
     private int getTileId(int x, int y){
         //Get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
         // Get cell at position (x, y)
         TiledMapTileLayer.Cell cell = layer.getCell(x, y);
@@ -146,7 +146,7 @@ public class Game implements ApplicationListener {
      * @return point for tile corresponding to the given x and y
      */
     private Point mapCoorToTileCoor(float x, float y){
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
         int tileX = (int) Math.floor(x / layer.getTileHeight());
         int tileY = (int) Math.floor(y / layer.getTileWidth());
@@ -161,7 +161,7 @@ public class Game implements ApplicationListener {
      * @return point on map corresponding to the given x and y
      */
     private Point tileCoorToMapCoor(float x, float y) {
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
         int mapX = (int) (x * layer.getTileHeight() + (layer.getTileHeight()/2));
         int mapY = (int) (y * layer.getTileWidth() + (layer.getTileWidth()/2));
@@ -177,7 +177,7 @@ public class Game implements ApplicationListener {
         float y = positionPart.getY();
 
         // Get first layer of map
-       TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+       TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
         // Get coordinate of the entity's tile
         Point tilePoint = mapCoorToTileCoor(x, y);
@@ -195,13 +195,13 @@ public class Game implements ApplicationListener {
         // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
 
         //Get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
         // Get cell at position (x, y)
         TiledMapTileLayer.Cell cell = layer.getCell(x, y);
 
         // setting tile to til with the id tileId in the map tileset
-        cell.setTile(world.getMap().getTileSets().getTile(tileId));
+        cell.setTile(world.getMap().getTiledMap().getTileSets().getTile(tileId));
     }
 
 

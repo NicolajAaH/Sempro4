@@ -58,7 +58,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
     }
 
     private Point getTileCoordinates(float x, float y, World world){
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
         int tileX = (int) Math.floor(x / layer.getTileHeight());
         int tileY = (int) Math.floor(y / layer.getTileWidth());

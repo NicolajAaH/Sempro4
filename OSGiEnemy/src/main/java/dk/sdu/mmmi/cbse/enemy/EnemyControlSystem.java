@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.cbse.common.data.*;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PathPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonenemy.Enemy;
@@ -19,11 +20,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        //TODO: Mapp attacks to include time passed
         List<Attack> currentAttacks = gameData.getCurrentAttacks();
 
         for (Attack attack : currentAttacks) {
-            //TODO: add enemies corresponding to attack
             if(attack.getAttackNumber() > 0) {
                 createEnemy(gameData, world);
                 attack.setAttackNumber(attack.getAttackNumber() - 1);
@@ -67,11 +66,15 @@ public class EnemyControlSystem implements IEntityProcessingService {
         float y = gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;
 
+
+
+
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         Entity enemy = new Enemy(sprite, Types.ENEMY);
         enemy.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new LifePart(1));
+        enemy.add(new PathPart());
         world.addEntity(enemy);
     }
 
