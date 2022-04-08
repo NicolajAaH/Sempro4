@@ -27,6 +27,6 @@ public class MapPlugin implements IGamePluginService{
 
     @Override
     public Types getType() {
-        return null;
+        return Types.MAP;
     }
 }

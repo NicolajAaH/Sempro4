@@ -13,7 +13,8 @@ public class World {
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
     private HashMap<Types, Texture> textureHashMap;
-    IMap IMap;
+
+    static IMap IMap;
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -67,11 +68,11 @@ public class World {
         return textureHashMap;
     }
 
-    void setIMap(IMap iMap){
+    public void setIMap(IMap iMap){
         this.IMap = iMap;
     }
 
-    void removeIMap(){
+    public void removeIMap(IMap iMap){
         this.IMap = null;
     }
 
