@@ -113,7 +113,6 @@ public class MovingPart implements EntityPart {
         if (isProjectile) {
             //System.out.println("cos(radians) "  + cos(radians));
             //radians = positionPart.getRadians();
-            System.out.println("retning af projektil i grader " + (int) Math.toDegrees(radians % (Math.PI/2)));
             dx = (float) cos(radians) * speed;
             dy = (float) sin(radians) * speed;
         }
