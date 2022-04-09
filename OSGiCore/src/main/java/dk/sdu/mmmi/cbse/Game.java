@@ -78,8 +78,7 @@ public class Game implements ApplicationListener {
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon2.png")));
         textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
-        // TODO: change image of projectile
-        textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
+        textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/projectile.png")));
 
 
         world.setTextureHashMap(textures);
@@ -119,7 +118,6 @@ public class Game implements ApplicationListener {
         renderer.render();
         update();
 
-        replaceTile(1,2,4);
         //System.out.println("tile id " + getTileId(1,1));
 
 //        Collection<Entity> entities = world.getEntities();
