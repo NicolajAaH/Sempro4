@@ -85,21 +85,39 @@ public class MovingPart implements EntityPart {
         float dt = gameData.getDelta();
 
         if (up){
-            positionPart.setPosition(positionPart.getX(), positionPart.getY()+speed);
+            dy = speed;
+            System.out.println("speed" + speed);
+            // positionPart.setPosition(positionPart.getX(), positionPart.getY()+speed);
             positionPart.setLastChange("Up");
         }
         if (left){
-            positionPart.setPosition(positionPart.getX()-speed, positionPart.getY());
+            dx = -speed;
+            //positionPart.setPosition(positionPart.getX()-speed, positionPart.getY());
             positionPart.setLastChange("Left");
         }
         if (right){
-            positionPart.setPosition(positionPart.getX()+speed, positionPart.getY());
+            dx = speed;
+            // positionPart.setPosition(positionPart.getX()+speed, positionPart.getY());
             positionPart.setLastChange("Right");
         }
         if (down){
-            positionPart.setPosition(positionPart.getX(), positionPart.getY()-speed);
+            dy = -speed;
+            // positionPart.setPosition(positionPart.getX(), positionPart.getY()-speed);
             positionPart.setLastChange("Down");
         }
+
+        if(!down && !up && !left && !right){
+            dx = 0;
+            dy = 0;
+            System.out.println("nothing pressed");
+        }
+        // set position
+        x += dx;
+        y += dy;
+
+        positionPart.setPosition(x,y);
+        //positionPart.setX(x);
+        //positionPart.setY(y);
 
         positionPart.setRadians(radians);
     }

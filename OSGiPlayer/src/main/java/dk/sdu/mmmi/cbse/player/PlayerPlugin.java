@@ -33,9 +33,9 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public Entity create(GameData gameData, World world) {
-        float deacceleration = 10;
-        float acceleration = 200;
-        float speed = 2;
+        float deacceleration = 0;
+        float acceleration = 0;
+        float speed = 3;
         float rotationSpeed = 5;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;

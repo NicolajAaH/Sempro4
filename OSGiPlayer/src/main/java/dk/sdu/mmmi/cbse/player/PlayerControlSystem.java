@@ -17,6 +17,7 @@ import java.awt.*;
 import static dk.sdu.mmmi.cbse.common.data.GameKeys.*;
 
 public class PlayerControlSystem implements IEntityProcessingService {
+
     TowerSPI towerSPI;
 
     @Override
@@ -57,6 +58,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
         this.towerSPI = null;
     }
 
+    // TODO: refactor to use method from Imap instead
     private Point getTileCoordinates(float x, float y, World world){
         TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
