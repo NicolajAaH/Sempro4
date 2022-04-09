@@ -23,7 +23,6 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
     @Override
     public void process(GameData gameData, World world) {
-        System.out.println("process projectile");
         for (Entity projectile : world.getEntities(Projectile.class)) {
 
             PositionPart positionPart = projectile.getPart(PositionPart.class);
@@ -46,15 +45,23 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
     @Override
     public void draw(SpriteBatch batch, World world) {
         for (Entity projectile : world.getEntities(Projectile.class)) {
+            update(projectile);
             batch.begin();
             projectile.draw(batch);
             batch.end();
         }
     }
 
+    public void update(Entity entity){
+        // setting position of Sprite from position part
+        PositionPart positionPart = entity.getPart(PositionPart.class);
+        entity.setPosition(positionPart.getX(), positionPart.getY());
+        entity.setRotation(positionPart.getRadians());
+    }
+
     @Override
     public void createProjectile(Entity shooter, GameData gameData, World world) {
-        System.out.println("create projectile in PCS");
+        System.out.println("create projectile in Projectile control system");
 
         PositionPart shooterPos = shooter.getPart(PositionPart.class);
         MovingPart shooterMovingPart = shooter.getPart(MovingPart.class);
@@ -65,19 +72,22 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         float radians = shooterPos.getRadians();
         float dt = gameData.getDelta();
 
-        // parameters
+        // parameters of projectile
         float deacceleration = 10;
         float acceleration = 20000000;
         float speed = 50;
         float rotationSpeed = 5;
-        float projX = 100;
-        float projY = 100;
+        float projX = x- 50;
+        float projY = y- 50;
 
+        // getting sprite for projectile
         Texture texture = world.getTextureHashMap().get(Types.PROJECTILE);
         Sprite sprite = new Sprite(texture);
+
+        // creating new projectile
         Entity projectile = new Projectile(sprite, Types.PROJECTILE);
         projectile.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
-        projectile.add(new PositionPart(x, y, radians));
+        projectile.add(new PositionPart(projX, projY, radians));
         projectile.add(new LifePart(1));
         world.addEntity(projectile);
     }

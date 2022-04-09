@@ -26,20 +26,19 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     @Override
     public void process(GameData gameData, World world) {
 
-        System.out.println("process tower");
         for (Entity tower : world.getEntities(Tower.class)) {
             PositionPart positionPart = tower.getPart(PositionPart.class);
 
+            // creating projectile
             projectileLauncher.createProjectile(tower, gameData, world);
+
+
+
             // TODO: SET DIRECTION OF SHOOTING- AI!
             // find nearest enemy
             // point in that direction
             // shoot
         }
-    }
-
-    private void shoot(){
-
     }
 
     @Override
@@ -59,8 +58,9 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         }
 
         // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
-        int tileId = 4; // TODO: get tileID from properties of tile (2)
+        int tileId = 5; // TODO: get tileID from properties of tile - WHAT happend to the tower tile!
 
+        // TODO: inject imap interface and use methods from map
         //Get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
@@ -89,6 +89,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
+        // TODO: get range properties from tower
         ((Tower) tower).setRange(100);
 
         world.addEntity(tower);
