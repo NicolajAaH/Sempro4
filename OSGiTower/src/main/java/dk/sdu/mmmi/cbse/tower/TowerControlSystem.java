@@ -29,9 +29,13 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         for (Entity tower : world.getEntities(Tower.class)) {
             PositionPart positionPart = tower.getPart(PositionPart.class);
 
-            // creating projectile
-            projectileLauncher.createProjectile(tower, gameData, world);
 
+            // should shoot
+            Random r = new Random();
+            int shouldShoot = r.nextInt(100);
+            if (shouldShoot < 1) {
+                projectileLauncher.createProjectile(tower, gameData, world);
+            }
 
 
             // TODO: SET DIRECTION OF SHOOTING- AI!

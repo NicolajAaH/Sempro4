@@ -18,7 +18,7 @@ public class MovingPart implements EntityPart {
     private float dx, dy;
     private float deceleration, acceleration;
     private float speed, rotationSpeed;
-    private boolean left, right, up, down;
+    private boolean left, right, up, down, isProjectile;
 
     public MovingPart(float deceleration, float acceleration, float speed, float rotationSpeed) {
         this.deceleration = deceleration;
@@ -41,6 +41,10 @@ public class MovingPart implements EntityPart {
 
     public void setAcceleration(float acceleration) {
         this.acceleration = acceleration;
+    }
+
+    public void setIsProjectile(boolean value){
+        this.isProjectile = value;
     }
 
     public void setMaxSpeed(float maxSpeed) {
@@ -84,33 +88,36 @@ public class MovingPart implements EntityPart {
         float radians = positionPart.getRadians();
         float dt = gameData.getDelta();
 
-        if (up){
+        if (up && !left && !down && !right){
             dy = speed;
-            System.out.println("speed" + speed);
-            // positionPart.setPosition(positionPart.getX(), positionPart.getY()+speed);
             positionPart.setLastChange("Up");
         }
-        if (left){
+        if (left && !right && !up && !down){
             dx = -speed;
-            //positionPart.setPosition(positionPart.getX()-speed, positionPart.getY());
             positionPart.setLastChange("Left");
         }
-        if (right){
+        if (right && !left && !up && !down){
             dx = speed;
-            // positionPart.setPosition(positionPart.getX()+speed, positionPart.getY());
             positionPart.setLastChange("Right");
         }
-        if (down){
+        if (down && !up && !left && !right){
             dy = -speed;
-            // positionPart.setPosition(positionPart.getX(), positionPart.getY()-speed);
             positionPart.setLastChange("Down");
         }
 
         if(!down && !up && !left && !right){
             dx = 0;
             dy = 0;
-            System.out.println("nothing pressed");
         }
+
+        if (isProjectile) {
+            //System.out.println("cos(radians) "  + cos(radians));
+            //radians = positionPart.getRadians();
+            System.out.println("retning af projektil i grader " + (int) Math.toDegrees(radians % (Math.PI/2)));
+            dx = (float) cos(radians) * speed;
+            dy = (float) sin(radians) * speed;
+        }
+
         // set position
         x += dx;
         y += dy;
@@ -119,7 +126,7 @@ public class MovingPart implements EntityPart {
         //positionPart.setX(x);
         //positionPart.setY(y);
 
-        positionPart.setRadians(radians);
+        //positionPart.setRadians(radians);
     }
 
 }

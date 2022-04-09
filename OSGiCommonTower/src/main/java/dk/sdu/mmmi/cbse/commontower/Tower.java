@@ -35,15 +35,16 @@ public class Tower extends Entity {
         float radians = positionPart.getRadians();
 
         Random r = new Random();
-
         // should rotate
         int shouldRotate = r.nextInt(100);
         if (shouldRotate < 20) {
             radians +=1;
+//            if (2*Math.PI < radians) {
+//                radians = 0;
+//            }
         }
 
         positionPart.setRadians(radians);
-
         this.setRotation(positionPart.getRadians());
 
     }

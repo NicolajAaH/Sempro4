@@ -36,7 +36,7 @@ public class PlayerPlugin implements IGamePluginService {
         float deacceleration = 0;
         float acceleration = 0;
         float speed = 3;
-        float rotationSpeed = 5;
+        float rotationSpeed = 0;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;

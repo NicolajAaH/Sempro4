@@ -16,7 +16,7 @@ public class PositionPart implements EntityPart {
 
     private float x;
     private float y;
-    private float radians;
+    private float radians; // direction of movement
     private String lastChange;
 
     public PositionPart(float x, float y, float radians) {

@@ -27,16 +27,13 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
             PositionPart positionPart = projectile.getPart(PositionPart.class);
             MovingPart movingPart = projectile.getPart(MovingPart.class);
-            //TimerPart timerPart = projectile.getPart(TimerPart.class);
+            TimerPart timerPart = projectile.getPart(TimerPart.class);
 
-            // movingPart.setUp(true);
-            /*
             if (timerPart.getExpiration() < 0) {
                 world.removeEntity(projectile);
             }
-             */
 
-            // timerPart.process(gameData, projectile);
+            timerPart.process(gameData, projectile);
             movingPart.process(gameData, projectile);
             positionPart.process(gameData, projectile);
         }
@@ -53,15 +50,15 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
     }
 
     public void update(Entity entity){
-        // setting position of Sprite from position part
         PositionPart positionPart = entity.getPart(PositionPart.class);
+        // setting posistoin of sprite
         entity.setPosition(positionPart.getX(), positionPart.getY());
+        // setting rotation of sprite
         entity.setRotation(positionPart.getRadians());
     }
 
     @Override
     public void createProjectile(Entity shooter, GameData gameData, World world) {
-        System.out.println("create projectile in Projectile control system");
 
         PositionPart shooterPos = shooter.getPart(PositionPart.class);
 
@@ -69,13 +66,14 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         float x = shooterPos.getX();
         float y = shooterPos.getY();
         float radians = shooterPos.getRadians();
+        //radians = (float) Math.PI / 2;
         float dt = gameData.getDelta();
 
         // parameters of projectile
-        float deacceleration = 10;
-        float acceleration = 20000000;
-        float speed = 20;
-        float rotationSpeed = 5;
+        float deacceleration = 0;
+        float acceleration = 0;
+        float speed = 5;
+        float rotationSpeed = 0;
 
         // calculating offset from shooter
         float bx = (float) cos(radians) * 20;
@@ -87,11 +85,15 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         Texture texture = world.getTextureHashMap().get(Types.PROJECTILE);
         Sprite sprite = new Sprite(texture);
 
+        MovingPart projMovingPart = new MovingPart(deacceleration, acceleration, speed, rotationSpeed);
+        projMovingPart.setIsProjectile(true);
+
         // creating new projectile with entity parts and add to world
         Entity projectile = new Projectile(sprite, Types.PROJECTILE);
-        projectile.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
+        projectile.add(projMovingPart);
         projectile.add(new PositionPart(projX, projY, radians));
         projectile.add(new LifePart(1));
+        projectile.add(new TimerPart(1));
         world.addEntity(projectile);
     }
 }
