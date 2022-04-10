@@ -64,7 +64,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // shooter entity parameteres
         float x = shooterPos.getX();
         float y = shooterPos.getY();
-        float radians = shooterPos.getRadians();
+        float radians = shooterPos.getRadians()+90;
         float dt = gameData.getDelta();
 
         // parameters of projectile
@@ -74,8 +74,8 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         float rotationSpeed = 0;
 
         // calculating offset from shooter (start coordinates of projectile)
-        float bx = (float) cos(toRadians(radians+90)) * shooter.getRadius();
-        float by = (float) sin(toRadians(radians+90)) * shooter.getRadius();
+        float bx = (float) cos(toRadians(radians)) * shooter.getRadius();
+        float by = (float) sin(toRadians(radians)) * shooter.getRadius();
         float tileSize = 54; // TODO: get tilesize from map interface
         float projX = (x + tileSize / 2) + bx;
         float projY = (y-4 + tileSize / 2) + by;

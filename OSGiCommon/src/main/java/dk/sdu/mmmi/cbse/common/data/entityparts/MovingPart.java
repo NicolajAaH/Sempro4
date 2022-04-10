@@ -113,7 +113,7 @@ public class MovingPart implements EntityPart {
         }
 
         if (isProjectile) {
-            float radians2 = (float) Math.toRadians(radians+90);
+            float radians2 = (float) Math.toRadians(radians);
             dx = (float) cos(radians2) * speed;
             dy = (float) sin(radians2) * speed;
         }

@@ -77,7 +77,7 @@ public class Game implements ApplicationListener {
 
         // adding spirtes to textures
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
-        textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon2.png")));
+        textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon3.png")));
         textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
         textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/projectile.png")));
         world.setTextureHashMap(textures);
