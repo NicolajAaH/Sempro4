@@ -88,6 +88,7 @@ public class MovingPart implements EntityPart {
         float radians = positionPart.getRadians();
         float dt = gameData.getDelta();
 
+        if (!isProjectile){
         if (up && !left && !down && !right){
             dy = speed;
             positionPart.setLastChange("Up");
@@ -109,12 +110,12 @@ public class MovingPart implements EntityPart {
             dx = 0;
             dy = 0;
         }
+        }
 
         if (isProjectile) {
-            //System.out.println("cos(radians) "  + cos(radians));
-            //radians = positionPart.getRadians();
-            dx = (float) cos(radians) * speed;
-            dy = (float) sin(radians) * speed;
+            float radians2 = (float) Math.toRadians(radians+90);
+            dx = (float) cos(radians2) * speed;
+            dy = (float) sin(radians2) * speed;
         }
 
         // set position
@@ -122,10 +123,6 @@ public class MovingPart implements EntityPart {
         y += dy;
 
         positionPart.setPosition(x,y);
-        //positionPart.setX(x);
-        //positionPart.setY(y);
-
-        //positionPart.setRadians(radians);
+        positionPart.setRadians(radians);
     }
-
 }

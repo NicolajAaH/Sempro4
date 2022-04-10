@@ -7,7 +7,6 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
-import java.util.Random;
 
 public class Tower extends Entity {
 
@@ -25,26 +24,13 @@ public class Tower extends Entity {
             update(Gdx.graphics.getDeltaTime());
             super.draw(batch);
             batch.end();
-
     }
 
     public void update(float delta){
         PositionPart positionPart = this.getPart(PositionPart.class);
+        // setting posistion of sprite
         this.setPosition(positionPart.getX(), positionPart.getY());
-
-        float radians = positionPart.getRadians();
-
-        Random r = new Random();
-        // should rotate
-        int shouldRotate = r.nextInt(100);
-        if (shouldRotate < 20) {
-            radians +=1;
-//            if (2*Math.PI < radians) {
-//                radians = 0;
-//            }
-        }
-
-        positionPart.setRadians(radians);
+        // setting rotation of sprite (using degrees NOT radians)
         this.setRotation(positionPart.getRadians());
 
     }

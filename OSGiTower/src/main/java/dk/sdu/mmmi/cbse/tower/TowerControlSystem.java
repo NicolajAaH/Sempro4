@@ -29,14 +29,24 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         for (Entity tower : world.getEntities(Tower.class)) {
             PositionPart positionPart = tower.getPart(PositionPart.class);
 
-
-            // should shoot
             Random r = new Random();
+
+            // random shooting
             int shouldShoot = r.nextInt(100);
             if (shouldShoot < 1) {
                 projectileLauncher.createProjectile(tower, gameData, world);
             }
 
+            // random rotation
+            int shouldRotate = r.nextInt(100);
+            if (shouldRotate < 20) {
+                float radians = positionPart.getRadians();
+                radians +=1;
+                if (360 < radians) {
+                    radians = 0;
+                }
+                positionPart.setRadians(radians);
+            }
 
             // TODO: SET DIRECTION OF SHOOTING- AI!
             // find nearest enemy
@@ -76,8 +86,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
         // getting tile size
         int tileSize = (int) layer.getTileHeight();
-
-
         float deacceleration = 0;
         float acceleration = 0;
         float speed = 0;
@@ -93,6 +101,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
+        tower.setRadius(20);
         // TODO: get range properties from tower
         ((Tower) tower).setRange(100);
 
