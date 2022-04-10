@@ -52,7 +52,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         PositionPart positionPart = entity.getPart(PositionPart.class);
         // setting position of sprite
         entity.setPosition(positionPart.getX(), positionPart.getY());
-        // setting rotation of sprite
+        // setting rotation of sprite TODO: rotate image 90' degress and delete +90
         entity.setRotation(positionPart.getRadians()+90);
     }
 

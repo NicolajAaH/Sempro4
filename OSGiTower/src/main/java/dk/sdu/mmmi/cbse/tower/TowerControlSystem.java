@@ -12,6 +12,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.cbse.commonplayer.Player;
 import dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI;
 import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
@@ -37,6 +38,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 projectileLauncher.createProjectile(tower, gameData, world);
             }
 
+
             // random rotation
             int shouldRotate = r.nextInt(100);
             if (shouldRotate < 20) {
@@ -48,11 +50,25 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 positionPart.setRadians(radians);
             }
 
+            //experiment with shooting towards an entity
+
+            // getting position of player
+            Entity player = world.getEntities(Player.class).get(0);
+            positionPart.setRadians(getAngleBetweenEntities(player, tower));
+
             // TODO: SET DIRECTION OF SHOOTING- AI!
-            // find nearest enemy
-            // point in that direction
-            // shoot
         }
+    }
+    
+    // returning angle in degrees
+    private float getAngleBetweenEntities(Entity entity1, Entity entity2) {
+        PositionPart positionPart1 = entity1.getPart(PositionPart.class);
+        PositionPart positionPart2 = entity2.getPart(PositionPart.class);
+        float deltaY = positionPart1.getY() - positionPart2.getY();
+        float deltaX = positionPart1.getX() - positionPart2.getX();
+        // calculating angle
+        float angle = (float) Math.atan2(deltaY, deltaX);
+        return (float) Math.toDegrees(angle);
     }
 
     @Override
