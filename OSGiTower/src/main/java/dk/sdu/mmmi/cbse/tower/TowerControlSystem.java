@@ -11,6 +11,7 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.WeaponPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
 import dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI;
@@ -37,7 +38,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             if (shouldShoot < 1) {
                 projectileLauncher.createProjectile(tower, gameData, world);
             }
-
 
             // random rotation
             int shouldRotate = r.nextInt(100);
@@ -87,10 +87,10 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             return;
         }
 
+        // TODO: use methods from map or refactor to map
         // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
         int tileId = 5; // TODO: get tileID from properties of tile - WHAT happend to the tower tile!
 
-        // TODO: inject imap interface and use methods from map
         //Get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
 
@@ -107,7 +107,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         float speed = 0;
         float rotationSpeed = 5;
 
-        Point coordinate = tileCoorToMapCoor(xTile, yTile, world);
+        Point coordinate = world.getMap().tileCoorToMapCoor(xTile, yTile);
         float x = (float) coordinate.x - tileSize / 2;
         float y = (float) coordinate.y - tileSize / 2;
         float radians = 3.1415f / 2;
@@ -118,39 +118,8 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
         tower.setRadius(20);
-        // TODO: get range properties from tower
-        ((Tower) tower).setRange(100);
-
+        tower.add(new WeaponPart(150, 5, 10));
         world.addEntity(tower);
-    }
-
-    private String getTileType(int x, int y, World world){
-
-        //get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
-
-        // Get tile at position (x,y)
-        TiledMapTile tile = layer.getCell(x,y).getTile();
-
-        // getting properties of tile
-        String tileProperties = tile.getProperties().get("Tag", String.class);
-
-        return tileProperties;
-    }
-
-    /**
-     * Calculate X and Y on the map from X and Y from a tile
-     * @param x coordinate of tile
-     * @param y coordiante of tile
-     * @return point on map corresponding to the given x and y
-     */
-    private Point tileCoorToMapCoor(float x, float y, World world) {
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getLayers().get(0);
-
-        int mapX = (int) (x * layer.getTileHeight() + (layer.getTileHeight()/2));
-        int mapY = (int) (y * layer.getTileWidth() + (layer.getTileWidth()/2));
-
-        return new Point(mapX, mapY);
     }
 
     public void setProjectileSPI(ProjectileSPI projectileSPI) {

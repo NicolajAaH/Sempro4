@@ -10,7 +10,6 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
 public class Tower extends Entity {
 
-    private int range;
 
     public Tower(Sprite sprite, Types type) {
         super(sprite);
@@ -33,13 +32,5 @@ public class Tower extends Entity {
         // setting rotation of sprite (using degrees NOT radians)
         this.setRotation(positionPart.getRadians());
 
-    }
-
-    public void setRange(int range) {
-        this.range = range;
-    }
-
-    public int getRange(){
-        return range;
     }
 }

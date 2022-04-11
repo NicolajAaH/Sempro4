@@ -8,6 +8,8 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
+import java.awt.*;
+
 /**
  *
  * @author Alexander
@@ -18,10 +20,13 @@ public class PositionPart implements EntityPart {
     private float y;
     private float radians; // direction of movement
     private String lastChange;
+    private float originX, originY;
 
     public PositionPart(float x, float y, float radians) {
         this.x = x;
         this.y = y;
+        this.originX = x;
+        this.originY = y;
         this.radians = radians;
     }
 
@@ -65,8 +70,8 @@ public class PositionPart implements EntityPart {
     @Override
     public void process(GameData gameData, Entity entity) {
     }
-    
-    
-    
-    
+
+    public float getDistanceFromOrigin(){
+        return (float) Math.sqrt((originX - x) * (originX - x) + (originY - y) * (originY -y));
+    }
 }
