@@ -8,10 +8,7 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
-import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.TimerPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.*;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonprojectile.Projectile;
 import dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI;
@@ -26,15 +23,15 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
             PositionPart positionPart = projectile.getPart(PositionPart.class);
             MovingPart movingPart = projectile.getPart(MovingPart.class);
-            TimerPart timerPart = projectile.getPart(TimerPart.class);
+            WeaponPart weaponPart = projectile.getPart(WeaponPart.class);
 
-            if (timerPart.getExpiration() < 0) {
-                world.removeEntity(projectile);
-            }
-
-            timerPart.process(gameData, projectile);
             movingPart.process(gameData, projectile);
             positionPart.process(gameData, projectile);
+
+            // checks if it has reached it's range
+            if (positionPart.getDistanceFromOrigin() > weaponPart.getRange()){
+                world.removeEntity(projectile);
+            }
         }
     }
 
@@ -60,6 +57,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
     public void createProjectile(Entity shooter, GameData gameData, World world) {
 
         PositionPart shooterPos = shooter.getPart(PositionPart.class);
+        WeaponPart weaponPart = shooter.getPart(WeaponPart.class);
 
         // shooter entity parameteres
         float x = shooterPos.getX();
@@ -92,6 +90,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         projectile.add(new PositionPart(projX, projY, radians));
         projectile.add(new LifePart(1));
         projectile.add(new TimerPart(1));
+        projectile.add(weaponPart);
         world.addEntity(projectile);
     }
 }

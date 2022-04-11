@@ -2,7 +2,6 @@ package dk.sdu.mmmi.cbse.tower;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -90,13 +89,10 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         // TODO: use methods from map or refactor to map
         // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
         int tileId = 5; // TODO: get tileID from properties of tile - WHAT happend to the tower tile!
-
         //Get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-
         // Get cell at position (x, y)
         TiledMapTileLayer.Cell cell = layer.getCell(xTile, yTile);
-
         // setting tile to til with the id tileId in the map tileset
         cell.setTile(world.getMap().getTiledMap().getTileSets().getTile(tileId));
 
