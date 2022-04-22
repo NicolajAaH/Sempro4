@@ -75,10 +75,11 @@ public class Game implements ApplicationListener {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
+        // adding spirtes to textures
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
-        textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
+        textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon3.png")));
         textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
-
+        textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/projectile.png")));
         world.setTextureHashMap(textures);
 
         for (IGamePluginService iGamePluginService : gamePluginList) {
@@ -94,8 +95,11 @@ public class Game implements ApplicationListener {
                 case TOWER:
                     Texture textureTower = textures.get(Types.TOWER);
                     break;
-            }
 
+                case PROJECTILE:
+                    Texture textureProjectile = textures.get(Types.PROJECTILE);
+                    break;
+            }
         }
     }
 
@@ -111,11 +115,8 @@ public class Game implements ApplicationListener {
 
         renderer.setView(cam);
         renderer.render();
-
         update();
-        draw(batch);
 
-        replaceTile(1,2,4);
         //System.out.println("tile id " + getTileId(1,1));
 
 //        Collection<Entity> entities = world.getEntities();
@@ -213,14 +214,6 @@ public class Game implements ApplicationListener {
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
         }
-
-    }
-
-    private void draw(SpriteBatch spriteBatch) {
-        for (IEntityProcessingService entityProcessorService : entityProcessorList) {
-          entityProcessorService.draw(spriteBatch, world);
-        }
-        //IPost
 
     }
 

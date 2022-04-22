@@ -15,6 +15,7 @@
     <artifactId>OSGiCommonTower</artifactId>
     <packaging>bundle</packaging>
     <name>OSGiCommonTower</name>
+
     <dependencies>    
         <dependency>
             <groupId>org.osgi</groupId>

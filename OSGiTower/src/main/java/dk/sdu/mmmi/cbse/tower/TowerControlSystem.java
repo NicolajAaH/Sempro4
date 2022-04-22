@@ -2,7 +2,6 @@ package dk.sdu.mmmi.cbse.tower;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -11,16 +10,67 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.WeaponPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.cbse.commonplayer.Player;
+import dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI;
 import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
+import dk.sdu.mmmi.cbse.commonmap.IMap;
+
 
 import java.awt.*;
+import java.util.Random;
 
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
+
+    private ProjectileSPI projectileLauncher;
+    private IMap map;
+
     @Override
     public void process(GameData gameData, World world) {
-        // TODO: SET DIRECTION OF SHOOTING- AI!
+
+        for (Entity tower : world.getEntities(Tower.class)) {
+            PositionPart positionPart = tower.getPart(PositionPart.class);
+
+            Random r = new Random();
+
+            // random shooting
+            int shouldShoot = r.nextInt(100);
+            if (shouldShoot < 1) {
+                projectileLauncher.createProjectile(tower, gameData, world);
+            }
+
+            // random rotation
+            int shouldRotate = r.nextInt(100);
+            if (shouldRotate < 20) {
+                float radians = positionPart.getRadians();
+                radians +=1;
+                if (360 < radians) {
+                    radians = 0;
+                }
+                positionPart.setRadians(radians);
+            }
+
+            //experiment with shooting towards an entity
+
+            // getting position of player
+            Entity player = world.getEntities(Player.class).get(0);
+            positionPart.setRadians(getAngleBetweenEntities(player, tower));
+
+            // TODO: SET DIRECTION OF SHOOTING- AI!
+        }
+    }
+    
+    // returning angle in degrees
+    private float getAngleBetweenEntities(Entity entity1, Entity entity2) {
+        PositionPart positionPart1 = entity1.getPart(PositionPart.class);
+        PositionPart positionPart2 = entity2.getPart(PositionPart.class);
+        float deltaY = positionPart1.getY() - positionPart2.getY();
+        float deltaX = positionPart1.getX() - positionPart2.getX();
+        // calculating angle
+        float angle = (float) Math.atan2(deltaY, deltaX);
+        return (float) Math.toDegrees(angle);
     }
 
     @Override
@@ -29,6 +79,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
            tower.draw(batch);
        }
     }
+
     @Override
     public void createTower(World world, int xTile, int yTile) {
 
@@ -38,26 +89,18 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             return;
         }
 
-        // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
-        int tileId = 4; // TODO: get tileID from properties of tile
+        // Replacing af tile on the map at pos (x,y) with tower tile.
+        map.changeTileType(xTile, yTile, "Tower");
 
-        //Get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-
-        // Get cell at position (x, y)
-        TiledMapTileLayer.Cell cell = layer.getCell(xTile, yTile);
-
-        // setting tile to til with the id tileId in the map tileset
-        cell.setTile(world.getMap().getTiledMap().getTileSets().getTile(tileId));
-
+        int tileSize = map.getTileSize();
         float deacceleration = 0;
         float acceleration = 0;
         float speed = 0;
         float rotationSpeed = 5;
 
-        Point coordinate = world.getMap().tileCoorToMapCoor(xTile, yTile);
-        float x = (float) coordinate.x;
-        float y = (float) coordinate.y;
+        Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
+        float x = (float) coordinate.x - tileSize / 2;
+        float y = (float) coordinate.y - tileSize / 2;
         float radians = 3.1415f / 2;
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
@@ -65,6 +108,24 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
+        tower.setRadius(20);
+        tower.add(new WeaponPart(300, 5, 10));
         world.addEntity(tower);
+    }
+
+    public void setProjectileSPI(ProjectileSPI projectileSPI) {
+        this.projectileLauncher = projectileSPI;
+    }
+
+    public void ProjectileSPI(ProjectileSPI projectileSPI) {
+        this.projectileLauncher = null;
+    }
+
+    public void setIMap(IMap map) {
+        this.map = map;
+    }
+
+    public void removeIMap(IMap map){
+        this.map = null;
     }
 }

@@ -18,7 +18,7 @@ public class MovingPart implements EntityPart {
     private float dx, dy;
     private float deceleration, acceleration;
     private float speed, rotationSpeed;
-    private boolean left, right, up, down;
+    private boolean left, right, up, down, isProjectile;
 
     public MovingPart(float deceleration, float acceleration, float speed, float rotationSpeed) {
         this.deceleration = deceleration;
@@ -41,6 +41,10 @@ public class MovingPart implements EntityPart {
 
     public void setAcceleration(float acceleration) {
         this.acceleration = acceleration;
+    }
+
+    public void setIsProjectile(boolean value){
+        this.isProjectile = value;
     }
 
     public void setMaxSpeed(float maxSpeed) {
@@ -84,24 +88,41 @@ public class MovingPart implements EntityPart {
         float radians = positionPart.getRadians();
         float dt = gameData.getDelta();
 
-        if (up){
-            positionPart.setPosition(positionPart.getX(), positionPart.getY()+speed);
+        if (!isProjectile){
+        if (up && !left && !down && !right){
+            dy = speed;
             positionPart.setLastChange("Up");
         }
-        if (left){
-            positionPart.setPosition(positionPart.getX()-speed, positionPart.getY());
+        if (left && !right && !up && !down){
+            dx = -speed;
             positionPart.setLastChange("Left");
         }
-        if (right){
-            positionPart.setPosition(positionPart.getX()+speed, positionPart.getY());
+        if (right && !left && !up && !down){
+            dx = speed;
             positionPart.setLastChange("Right");
         }
-        if (down){
-            positionPart.setPosition(positionPart.getX(), positionPart.getY()-speed);
+        if (down && !up && !left && !right){
+            dy = -speed;
             positionPart.setLastChange("Down");
         }
 
+        if(!down && !up && !left && !right){
+            dx = 0;
+            dy = 0;
+        }
+        }
+
+        if (isProjectile) {
+            float radians2 = (float) Math.toRadians(radians);
+            dx = (float) cos(radians2) * speed;
+            dy = (float) sin(radians2) * speed;
+        }
+
+        // set position
+        x += dx;
+        y += dy;
+
+        positionPart.setPosition(x,y);
         positionPart.setRadians(radians);
     }
-
 }

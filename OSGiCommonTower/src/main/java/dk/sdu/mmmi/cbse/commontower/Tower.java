@@ -7,7 +7,9 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
+
 public class Tower extends Entity {
+
 
     public Tower(Sprite sprite, Types type) {
         super(sprite);
@@ -21,17 +23,14 @@ public class Tower extends Entity {
             update(Gdx.graphics.getDeltaTime());
             super.draw(batch);
             batch.end();
-
     }
 
     public void update(float delta){
         PositionPart positionPart = this.getPart(PositionPart.class);
+        // setting posistion of sprite
         this.setPosition(positionPart.getX(), positionPart.getY());
-        /*
-        if (positionPart.getLastChange() == "Up") this.setRotation(0);
-        if (positionPart.getLastChange() == "Down") this.setRotation(180);
-        if (positionPart.getLastChange() == "Left") this.setRotation(90);
-        if (positionPart.getLastChange() == "Right") this.setRotation(270);
-         */
+        // setting rotation of sprite (using degrees NOT radians)
+        this.setRotation(positionPart.getRadians());
+
     }
 }
