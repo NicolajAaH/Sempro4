@@ -118,9 +118,13 @@ public class MovingPart implements EntityPart {
             dy = (float) sin(radians2) * speed;
         }
 
-        // set position
-        x += dx;
-        y += dy;
+        if ((0 <= x + dx) && (x + dx <= 600) && (0 <= y + dy) && (y + dy <= 600)){
+            // set position
+            x += dx;
+            y += dy;
+        }
+
+
 
         positionPart.setPosition(x,y);
         positionPart.setRadians(radians);
