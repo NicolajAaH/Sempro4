@@ -60,12 +60,24 @@ public class MovingPart implements EntityPart {
         this.left = left;
     }
 
+    public boolean isLeft() {
+        return left;
+    }
+
     public void setRight(boolean right) {
         this.right = right;
     }
 
+    public boolean isRight() {
+        return right;
+    }
+
     public void setUp(boolean up) {
         this.up = up;
+    }
+
+    public boolean isUp() {
+        return up;
     }
 
     public boolean isDown() {
@@ -81,27 +93,23 @@ public class MovingPart implements EntityPart {
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
-        float radians = positionPart.getRadians();
-        float dt = gameData.getDelta();
 
         if (up){
-            positionPart.setPosition(positionPart.getX(), positionPart.getY()+speed);
+            positionPart.setPosition(x, y+speed);
             positionPart.setLastChange("Up");
         }
         if (left){
-            positionPart.setPosition(positionPart.getX()-speed, positionPart.getY());
+            positionPart.setPosition(x-speed, y);
             positionPart.setLastChange("Left");
         }
         if (right){
-            positionPart.setPosition(positionPart.getX()+speed, positionPart.getY());
+            positionPart.setPosition(x+speed, y);
             positionPart.setLastChange("Right");
         }
         if (down){
-            positionPart.setPosition(positionPart.getX(), positionPart.getY()-speed);
+            positionPart.setPosition(x, y-speed);
             positionPart.setLastChange("Down");
         }
-
-        positionPart.setRadians(radians);
     }
 
 }
