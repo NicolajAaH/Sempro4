@@ -102,6 +102,8 @@ public class MapType implements IMap {
             }
         }
 
+
+
         // setting tile to til with the id tileId in the map tileset
         cell.setTile(tiledMap.getTileSets().getTile(tileId));
     }
