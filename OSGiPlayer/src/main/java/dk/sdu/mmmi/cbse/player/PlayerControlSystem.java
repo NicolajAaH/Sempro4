@@ -35,7 +35,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(DOWN));
 
             if (gameData.getKeys().isDown(SPACE)) {
-                Point coordinates = getTileCoordinates(positionPart.getX(), positionPart.getY(), world);
+                Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
                 towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
             }
 
@@ -58,21 +58,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
     public void removeTowerSPI(TowerSPI towerSPI) {
         this.towerSPI = null;
-    }
-
-    // TODO: refactor to use method from Imap instead
-    private Point getTileCoordinates(float x, float y, World world){
-
-        return map.mapCoorToTileCoor(x,y);
-        /*
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-
-        int tileX = (int) Math.floor(x / layer.getTileHeight());
-        int tileY = (int) Math.floor(y / layer.getTileWidth());
-
-        return new Point(tileX, tileY);
-
-         */
     }
 
     public void setIMap(IMap map) {

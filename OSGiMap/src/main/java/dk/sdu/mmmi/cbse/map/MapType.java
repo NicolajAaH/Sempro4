@@ -114,8 +114,6 @@ public class MapType implements IMap {
         return (int) layer.getTileHeight();
     }
 
-    // TODO: Add theese two methods to interface if needed
-
     /**
      * Calculate X and Y of a tile from X and Y on the map
      * @param x coordinate on map
@@ -131,6 +129,8 @@ public class MapType implements IMap {
 
         return new Point(tileX, tileY);
     }
+
+    // TODO: Add to interface if needed
 
     public int getTileId(int x, int y){
         //Get first layer of map

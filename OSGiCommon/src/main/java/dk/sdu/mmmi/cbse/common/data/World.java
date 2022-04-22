@@ -54,7 +54,6 @@ public class World {
         return entityMap.get(ID);
     }
 
-
     public void setTextureHashMap(HashMap<Types, Texture> textureHashMap) {
         this.textureHashMap = textureHashMap;
     }
