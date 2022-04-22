@@ -35,26 +35,20 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
                 world.removeEntity(projectile);
             }
 
-            if (positionPart.getX() >= 58*12 || positionPart.getX() <= 0) {
-                world.removeEntity(projectile);
-            }
-
-            // check if reached top or buttom edge of map
-            if (positionPart.getY() >= 58*12 || positionPart.getY() <= 0) {
-                world.removeEntity(projectile);
-            }
-
-            /*
             // check if reached left or right edge of map
-            if (positionPart.getX() >= map.getMapWidth() || positionPart.getX() <= 0) {
+            if (positionPart.getX() > map.getMapWidth()-5 || positionPart.getX()-5 < 0) {
+                System.out.println("move proj");
                 world.removeEntity(projectile);
             }
 
             // check if reached top or buttom edge of map
-            if (positionPart.getY() >= map.getMapHeight() || positionPart.getY() <= 0) {
+            if (positionPart.getY() > map.getMapHeigth()-5 || positionPart.getY()-5 < 0) {
+                System.out.println("move proj2");
                 world.removeEntity(projectile);
             }
-             */
+
+
+
         }
     }
 

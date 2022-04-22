@@ -174,14 +174,14 @@ public class MapType implements IMap {
     public int getMapHeigth(){
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
 
-        return layer.getHeight();
+        return layer.getHeight() * getTileSize();
     }
 
      @Override
      public int getMapWidth(){
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
 
-        return layer.getWidth();
+        return layer.getWidth() * getTileSize();
     }
 
 }
