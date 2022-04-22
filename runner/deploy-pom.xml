@@ -133,22 +133,9 @@
     </dependency>
     <dependency>
       <groupId>dk.sdu.mmmi.build</groupId>
-      <artifactId>OSGiCommonEnemy</artifactId>
+      <artifactId>OSGiCommonProjectile</artifactId>
       <version>1.0-SNAPSHOT</version>
       <type>bundle</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>dk.sdu.mmmi.build</groupId>
-      <artifactId>OSGiEnemy</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>bundle</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>dk.sdu.mmmi.build</groupId>
-      <artifactId>OSGiCommonEnemy</artifactId>
-      <version>1.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -156,6 +143,12 @@
       <artifactId>OSGiTower</artifactId>
       <version>1.0-SNAPSHOT</version>
       <type>bundle</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>dk.sdu.mmmi.build</groupId>
+      <artifactId>OSGiCommonProjectile</artifactId>
+      <version>1.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -174,7 +167,7 @@
     </dependency>
     <dependency>
       <groupId>dk.sdu.mmmi.build</groupId>
-      <artifactId>OSGiCommonProjectile</artifactId>
+      <artifactId>OSGiCommonEnemy</artifactId>
       <version>1.0-SNAPSHOT</version>
       <type>bundle</type>
       <scope>provided</scope>

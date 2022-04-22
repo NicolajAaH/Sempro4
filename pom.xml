@@ -53,7 +53,7 @@
     <module>OSGiCommon</module>
     <module>OSGiLibGDX</module>
     <module>OSGiPlayer</module>
-    <module>OSGiEnemy</module>
+
     <module>OSGiTower</module>
     <module>OSGiProjectile</module>
     <module>OSGiCollision</module>

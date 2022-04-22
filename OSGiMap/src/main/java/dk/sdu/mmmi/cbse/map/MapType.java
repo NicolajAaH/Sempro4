@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.map;
 
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -98,4 +99,78 @@ public class MapType implements IMap {
 
         return new Point(tileX, tileY);
     }
+
+    @Override
+    public MapLayers getLayers() {
+        return tiledMap.getLayers();
+    }
+
+    @Override
+    public void changeTileType(int x, int y, String tileType){
+
+        //Get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        // Get cell at position (x, y)
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        // Getting id of property
+        int tileSetSize = tiledMap.getTileSets().getTileSet(0).size();
+        int tileId = -1;
+
+        for (int id = 1; id <= tileSetSize; id++) {
+            String property = tiledMap.getTileSets().getTileSet(0).getTile(id).getProperties().get("Tag", String.class);
+            if (property.equals(tileType)) {
+                System.out.println(property);
+                tileId = id;
+                break;
+            }
+        }
+
+
+
+        // setting tile to til with the id tileId in the map tileset
+        cell.setTile(tiledMap.getTileSets().getTile(tileId));
+    }
+
+    @Override
+    // Tiles are squares, so only one side is needed!
+    public int getTileSize(){
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+
+        return (int) layer.getTileHeight();
+    }
+
+    /**
+     * Calculate X and Y of a tile from X and Y on the map
+     * @param x coordinate on map
+     * @param y coordiante on map
+     * @return point for tile corresponding to the given x and y
+     */
+    @Override
+    public Point mapCoorToTileCoor(float x, float y) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        int tileX = (int) Math.floor(x / layer.getTileHeight());
+        int tileY = (int) Math.floor(y / layer.getTileWidth());
+
+        return new Point(tileX, tileY);
+    }
+
+    // TODO: Add to interface if needed
+
+    public int getTileId(int x, int y){
+        //Get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        // Get cell at position (x, y)
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        // setting tile to til with the id tileId in the map tileset
+        return cell.getTile().getId();
+    }
+
+
+
 }
+

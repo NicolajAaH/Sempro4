@@ -9,6 +9,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 
@@ -17,7 +18,9 @@ import java.awt.*;
 import static dk.sdu.mmmi.cbse.common.data.GameKeys.*;
 
 public class PlayerControlSystem implements IEntityProcessingService {
+
     TowerSPI towerSPI;
+    IMap map;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -32,7 +35,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(DOWN));
 
             if (gameData.getKeys().isDown(SPACE)) {
-                Point coordinates = getTileCoordinates(positionPart.getX(), positionPart.getY(), world);
+                Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
                 towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
             }
 
@@ -57,12 +60,11 @@ public class PlayerControlSystem implements IEntityProcessingService {
         this.towerSPI = null;
     }
 
-    private Point getTileCoordinates(float x, float y, World world){
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
+    public void setIMap(IMap map) {
+        this.map = map;
+    }
 
-        int tileX = (int) Math.floor(x / layer.getTileHeight());
-        int tileY = (int) Math.floor(y / layer.getTileWidth());
-
-        return new Point(tileX, tileY);
+    public void removeIMap(IMap map){
+        this.map = null;
     }
 }

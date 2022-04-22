@@ -33,10 +33,10 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public Entity create(GameData gameData, World world) {
-        float deacceleration = 10;
-        float acceleration = 200;
-        float speed = 2;
-        float rotationSpeed = 5;
+        float deacceleration = 0;
+        float acceleration = 0;
+        float speed = 3;
+        float rotationSpeed = 0;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;
@@ -47,6 +47,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1));
+        player.setRadius(40);
         world.addEntity(player);
         return player;
     }
