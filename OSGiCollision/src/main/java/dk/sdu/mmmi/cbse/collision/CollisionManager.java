@@ -16,6 +16,7 @@ public class CollisionManager implements IPostEntityProcessingService {
 
         for (int i = 0; i < entities.size(); i++) {
             for (int o = i + 1; o < entities.size(); o++) {
+
                 // Get the entities
                 Entity iEntity = entities.get(i);
                 Entity oEntity = entities.get(o);
@@ -28,6 +29,10 @@ public class CollisionManager implements IPostEntityProcessingService {
                 double distance = Math.sqrt(Math.pow((iPosition.getX() - oPosition.getX()), 2) + Math.pow((iPosition.getY() - oPosition.getY()),2));
 
                 if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
+                    // TODO: remove print statement
+                    System.out.println("*** Collision Detected ***");
+
+
                     LifePart iLifePart = iEntity.getPart(LifePart.class);
                     LifePart oLifePart = oEntity.getPart(LifePart.class);
 
