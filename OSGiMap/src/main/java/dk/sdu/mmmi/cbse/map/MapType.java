@@ -170,7 +170,19 @@ public class MapType implements IMap {
         return cell.getTile().getId();
     }
 
+    @Override
+    public int getMapHeigth(){
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
 
+        return layer.getHeight();
+    }
+
+     @Override
+     public int getMapWidth(){
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+
+        return layer.getWidth();
+    }
 
 }
 
