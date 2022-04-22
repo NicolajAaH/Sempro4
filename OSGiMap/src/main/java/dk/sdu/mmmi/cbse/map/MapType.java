@@ -114,7 +114,7 @@ public class MapType implements IMap {
         return (int) layer.getTileHeight();
     }
 
-    // TODO: Add theese two methods to interface if needed
+    // TODO: Add these two methods to interface if needed
 
     /**
      * Calculate X and Y of a tile from X and Y on the map
@@ -143,7 +143,19 @@ public class MapType implements IMap {
         return cell.getTile().getId();
     }
 
+    @Override
+    public int getMapHeigth(){
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
 
+        return layer.getHeight();
+    }
+
+     @Override
+     public int getMapWidth(){
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+
+        return layer.getWidth();
+    }
 
 }
 

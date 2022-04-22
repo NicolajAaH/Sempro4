@@ -26,4 +26,8 @@ public interface IMap {
     int getTileSize();
 
     Point mapCoorToTileCoor(float x, float y);
+
+    int getMapHeigth();
+
+    int getMapWidth();
 }
