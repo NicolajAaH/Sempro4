@@ -61,12 +61,12 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        world.getMap().setTiledMap(new TmxMapLoader().load("Map.tmx"));
+        map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
 
         gameData.setGameStartTime(System.currentTimeMillis());
         gameData.addAttack(new Attack(0,10));
 
-        renderer = new OrthogonalTiledMapRenderer(world.getMap().getTiledMap());
+        renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
         batch = new SpriteBatch();
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
@@ -186,6 +186,4 @@ public class Game implements ApplicationListener {
     public void removeIMap(IMap map){
         this.map = null;
     }
-
-
 }
