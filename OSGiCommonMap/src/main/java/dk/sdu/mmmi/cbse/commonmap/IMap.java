@@ -20,7 +20,10 @@ public interface IMap {
     ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property);
 
     MapLayers getLayers();
+
     void changeTileType(int x, int y, String tileType);
 
     int getTileSize();
+
+    Point mapCoorToTileCoor(float x, float y);
 }

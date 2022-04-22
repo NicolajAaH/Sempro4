@@ -122,7 +122,8 @@ public class MapType implements IMap {
      * @param y coordiante on map
      * @return point for tile corresponding to the given x and y
      */
-    public Point mapCoorToTileCoor(float x, float y){
+    @Override
+    public Point mapCoorToTileCoor(float x, float y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
         int tileX = (int) Math.floor(x / layer.getTileHeight());
@@ -141,6 +142,8 @@ public class MapType implements IMap {
         // setting tile to til with the id tileId in the map tileset
         return cell.getTile().getId();
     }
+
+
 
 }
 

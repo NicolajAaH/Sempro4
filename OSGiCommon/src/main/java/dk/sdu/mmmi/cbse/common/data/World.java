@@ -1,7 +1,6 @@
 package dk.sdu.mmmi.cbse.common.data;
 
 import com.badlogic.gdx.graphics.Texture;
-import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import java.util.*;
 import java.util.List;
@@ -14,7 +13,6 @@ public class World {
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
     private HashMap<Types, Texture> textureHashMap;
 
-    static IMap IMap;
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -56,9 +54,6 @@ public class World {
         return entityMap.get(ID);
     }
 
-    public IMap getMap(){
-        return IMap;
-    }
 
     public void setTextureHashMap(HashMap<Types, Texture> textureHashMap) {
         this.textureHashMap = textureHashMap;
@@ -67,13 +62,4 @@ public class World {
     public HashMap<Types, Texture> getTextureHashMap() {
         return textureHashMap;
     }
-
-    public void setIMap(IMap iMap){
-        this.IMap = iMap;
-    }
-
-    public void removeIMap(IMap iMap){
-        this.IMap = null;
-    }
-
 }
