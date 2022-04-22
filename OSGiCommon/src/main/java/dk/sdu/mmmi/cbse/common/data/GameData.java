@@ -16,6 +16,12 @@ public class GameData {
     final private ArrayList<Attack> attacks = new ArrayList<>();
     private long gameStartTime;
 
+    // Global game variables
+    private int score; // total No of killed monsters
+    private int money; // to buy towers, goes up when monsters are killed
+    private int life; // Dereases when monsters reach end of path, 0 = gameover!
+
+
     public long getGameStartTime() {
         return gameStartTime;
     }
@@ -85,5 +91,29 @@ public class GameData {
         }
 
         return r;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
     }
 }
