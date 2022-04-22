@@ -4,5 +4,7 @@
     <service>
         <provide interface="dk.sdu.mmmi.cbse.common.services.IEntityProcessingService"/>
     </service>
-
+    <reference bind="setIMap" cardinality="0..1"
+               interface="dk.sdu.mmmi.cbse.commonmap.IMap"
+               name="Imap" policy="dynamic" unbind="removeIMap"/>
 </scr:component>

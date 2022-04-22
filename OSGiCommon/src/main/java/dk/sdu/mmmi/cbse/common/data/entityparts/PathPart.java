@@ -2,24 +2,28 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
-import dk.sdu.mmmi.cbse.common.data.GameKeys;
+
+import java.awt.*;
+import java.util.HashSet;
+
 
 public class PathPart implements EntityPart{
 
-    GameKeys direction;
-    int xGoal;
-    int yGoal;
+    private int xGoal;
+    private int yGoal;
 
-    public GameKeys getDirection() {
-        return direction;
-    }
-
-    public void setDirection(GameKeys direction) {
-        this.direction = direction;
-    }
+    private final HashSet<Point> explored = new HashSet<>();
 
     public int getxGoal() {
         return xGoal;
+    }
+
+    public void addPosition(Point position){
+        explored.add(position);
+    }
+
+    public boolean isExplored(Point position){
+        return explored.contains(position);
     }
 
     public void setxGoal(int xGoal) {

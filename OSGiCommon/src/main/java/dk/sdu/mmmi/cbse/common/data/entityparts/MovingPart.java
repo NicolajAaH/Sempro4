@@ -64,12 +64,24 @@ public class MovingPart implements EntityPart {
         this.left = left;
     }
 
+    public boolean isLeft() {
+        return left;
+    }
+
     public void setRight(boolean right) {
         this.right = right;
     }
 
+    public boolean isRight() {
+        return right;
+    }
+
     public void setUp(boolean up) {
         this.up = up;
+    }
+
+    public boolean isUp() {
+        return up;
     }
 
     public boolean isDown() {
@@ -86,7 +98,6 @@ public class MovingPart implements EntityPart {
         float x = positionPart.getX();
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
-        float dt = gameData.getDelta();
 
         if (!isProjectile){
         if (up && !left && !down && !right){
