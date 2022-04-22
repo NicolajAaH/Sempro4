@@ -11,7 +11,6 @@ public class EnemyPlugin implements IGamePluginService {
 
     @Override
     public void start(GameData gameData, World world) {
-
     }
 
     @Override

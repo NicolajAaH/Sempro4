@@ -84,8 +84,8 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     public void createTower(World world, int xTile, int yTile) {
 
         // Checking tileProperties if tower can be created
-        if (!world.getMap().getTileType(xTile, yTile).equals("Grass")) {
-            System.out.println("can not place tower here");
+        if (!map.getTileType(xTile, yTile).equals("Grass")) {
+            // System.out.println("can not place tower here");
             return;
         }
 
