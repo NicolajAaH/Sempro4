@@ -21,6 +21,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
@@ -41,6 +42,7 @@ public class Game implements ApplicationListener {
     private SpriteBatch batch;
     public HashMap<Types, Texture> textures = new HashMap<>();
 
+    private IMap map;
 
     public Game() {
         init();
@@ -116,92 +118,7 @@ public class Game implements ApplicationListener {
         renderer.setView(cam);
         renderer.render();
         update();
-
-        //System.out.println("tile id " + getTileId(1,1));
-
-//        Collection<Entity> entities = world.getEntities();
-//        for (Entity entity : entities){
-//            System.out.println(getTileType(entity));
-//
-//        }
     }
-
-    private int getTileId(int x, int y){
-        //Get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-
-        // Get cell at position (x, y)
-        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-
-        // setting tile to til with the id tileId in the map tileset
-        return cell.getTile().getId();
-    }
-
-    /**
-     * Calculate X and Y of a tile from X and Y on the map
-     * @param x coordinate on map
-     * @param y coordiante on map
-     * @return point for tile corresponding to the given x and y
-     */
-    private Point mapCoorToTileCoor(float x, float y){
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-
-        int tileX = (int) Math.floor(x / layer.getTileHeight());
-        int tileY = (int) Math.floor(y / layer.getTileWidth());
-
-        return new Point(tileX, tileY);
-    }
-
-    /**
-     * Calculate X and Y on the map from X and Y from a tile
-     * @param x coordinate of tile
-     * @param y coordiante of tile
-     * @return point on map corresponding to the given x and y
-     */
-    private Point tileCoorToMapCoor(float x, float y) {
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-
-        int mapX = (int) (x * layer.getTileHeight() + (layer.getTileHeight()/2));
-        int mapY = (int) (y * layer.getTileWidth() + (layer.getTileWidth()/2));
-
-        return new Point(mapX, mapY);
-    }
-
-    private String getTileType(Entity entity){
-
-        PositionPart positionPart = entity.getPart(PositionPart.class);
-        // Get entity coordinates
-        float x = positionPart.getX();
-        float y = positionPart.getY();
-
-        // Get first layer of map
-       TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-
-        // Get coordinate of the entity's tile
-        Point tilePoint = mapCoorToTileCoor(x, y);
-
-        // Get cell at position (x,y)
-        TiledMapTileLayer.Cell cell = layer.getCell((int) tilePoint.getX(), (int) tilePoint.getY());
-
-        TiledMapTile tile = cell.getTile();
-
-        // print
-        return tile.getProperties().get("Tag", String.class);
-    }
-
-    private void replaceTile(int x, int y, int tileId){
-        // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
-
-        //Get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-
-        // Get cell at position (x, y)
-        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-
-        // setting tile to til with the id tileId in the map tileset
-        cell.setTile(world.getMap().getTiledMap().getTileSets().getTile(tileId));
-    }
-
 
     private void update() {
         // Update
@@ -232,10 +149,8 @@ public class Game implements ApplicationListener {
     public void resume() {
     }
 
-
     @Override
     public void dispose() {
-
     }
 
     public void addEntityProcessingService(IEntityProcessingService eps) {
@@ -264,6 +179,13 @@ public class Game implements ApplicationListener {
         plugin.stop(gameData, world);
     }
 
+    public void setIMap(IMap map) {
+        this.map = map;
+    }
+
+    public void removeIMap(IMap map){
+        this.map = null;
+    }
 
 
 }

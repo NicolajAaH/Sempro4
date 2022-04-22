@@ -114,5 +114,33 @@ public class MapType implements IMap {
         return (int) layer.getTileHeight();
     }
 
+    // TODO: Add theese two methods to interface if needed
+
+    /**
+     * Calculate X and Y of a tile from X and Y on the map
+     * @param x coordinate on map
+     * @param y coordiante on map
+     * @return point for tile corresponding to the given x and y
+     */
+    public Point mapCoorToTileCoor(float x, float y){
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        int tileX = (int) Math.floor(x / layer.getTileHeight());
+        int tileY = (int) Math.floor(y / layer.getTileWidth());
+
+        return new Point(tileX, tileY);
+    }
+
+    public int getTileId(int x, int y){
+        //Get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        // Get cell at position (x, y)
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        // setting tile to til with the id tileId in the map tileset
+        return cell.getTile().getId();
+    }
 
 }
+
