@@ -89,22 +89,16 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             return;
         }
 
-        // TODO: use methods from map or refactor to map
-        // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
+        // Replacing af tile on the map at pos (x,y) with tower tile.
+        map.changeTileType(xTile, yTile, "Tower");
 
-        // tileID for tower = 6
-
-        map.changeTileType(xTile, yTile, "prut");
-
-        // getting tile size
-        //int tileSize = (int) layer.getTileHeight();
-        int tileSize = 58;
+        int tileSize = map.getTileSize();
         float deacceleration = 0;
         float acceleration = 0;
         float speed = 0;
         float rotationSpeed = 5;
 
-        Point coordinate = world.getMap().tileCoorToMapCoor(xTile, yTile);
+        Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
         float x = (float) coordinate.x - tileSize / 2;
         float y = (float) coordinate.y - tileSize / 2;
         float radians = 3.1415f / 2;

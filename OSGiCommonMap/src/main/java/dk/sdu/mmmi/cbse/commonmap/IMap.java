@@ -21,4 +21,6 @@ public interface IMap {
 
     MapLayers getLayers();
     void changeTileType(int x, int y, String tileType);
+
+    int getTileSize();
 }

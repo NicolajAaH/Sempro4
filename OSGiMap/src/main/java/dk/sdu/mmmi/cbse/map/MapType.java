@@ -89,8 +89,30 @@ public class MapType implements IMap {
         // Get cell at position (x, y)
         TiledMapTileLayer.Cell cell = layer.getCell(x, y);
 
+        // Getting id of property
+        int tileSetSize = tiledMap.getTileSets().getTileSet(0).size();
+        int tileId = -1;
+
+        for (int id = 1; id <= tileSetSize; id++) {
+            String property = tiledMap.getTileSets().getTileSet(0).getTile(id).getProperties().get("Tag", String.class);
+            if (property.equals(tileType)) {
+                System.out.println(property);
+                tileId = id;
+                break;
+            }
+        }
+
         // setting tile to til with the id tileId in the map tileset
-        cell.setTile(tiledMap.getTileSets().getTile(6));
+        cell.setTile(tiledMap.getTileSets().getTile(tileId));
     }
+
+    @Override
+    // Tiles are squares, so only one side is needed!
+    public int getTileSize(){
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+
+        return (int) layer.getTileHeight();
+    }
+
 
 }
