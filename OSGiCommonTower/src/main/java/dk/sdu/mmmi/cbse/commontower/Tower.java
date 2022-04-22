@@ -30,7 +30,7 @@ public class Tower extends Entity {
         // setting posistion of sprite
         this.setPosition(positionPart.getX(), positionPart.getY());
         // setting rotation of sprite (using degrees NOT radians)
-        this.setRotation(positionPart.getRadians());
+        this.setRotation(positionPart.getRadians() != null ? positionPart.getRadians() : 0);
 
     }
 }

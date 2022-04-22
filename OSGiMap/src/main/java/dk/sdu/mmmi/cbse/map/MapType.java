@@ -170,7 +170,5 @@ public class MapType implements IMap {
         return cell.getTile().getId();
     }
 
-
-
 }
 

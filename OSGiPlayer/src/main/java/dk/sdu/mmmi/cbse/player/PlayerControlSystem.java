@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.GameKeys;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
@@ -29,14 +30,13 @@ public class PlayerControlSystem implements IEntityProcessingService {
             MovingPart movingPart = player.getPart(MovingPart.class);
             LifePart lifePart = player.getPart(LifePart.class);
 
-            movingPart.setLeft(gameData.getKeys().isDown(LEFT));
-            movingPart.setRight(gameData.getKeys().isDown(RIGHT));
-            movingPart.setUp(gameData.getKeys().isDown(UP));
-            movingPart.setDown(gameData.getKeys().isDown(DOWN));
+
+            GameKeys keys = gameData.getKeys();
+            positionPart.setRadians(keys.isDown(LEFT) ? MovingPart.left : keys.isDown(RIGHT) ? MovingPart.right : keys.isDown(UP) ? MovingPart.up : keys.isDown(DOWN) ? MovingPart.down : null);
 
             if (gameData.getKeys().isDown(SPACE)) {
                 Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
-                towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
+                towerSPI.createTower(world, coordinates.x, coordinates.y);
             }
 
             movingPart.process(gameData, player);

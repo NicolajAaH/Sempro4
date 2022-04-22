@@ -34,81 +34,67 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
         }
 
-        //TODO: get enemies
-        //TODO: calculate new position for enemies
-
         List<Entity> enemies = world.getEntities(Enemy.class);
 
         Collections.shuffle(enemies);
 
         for (Entity enemy : enemies) {
-
-            PathPart pathPart = enemy.getPart(PathPart.class);
-            PositionPart positionPart = enemy.getPart(PositionPart.class);
             MovingPart movingPart = enemy.getPart(MovingPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);
 
-            movingPart.process(gameData,enemy);
+            movingPart.process(gameData, enemy);
 
             if (lifePart.getLife() == 0) {
                 world.removeEntity(enemy);
                 return;
             }
-            if(movingPart.isLeft() && positionPart.getX() > pathPart.getxGoal()) return;
-            if(movingPart.isRight() && positionPart.getX() < pathPart.getxGoal()) return;
-            if(movingPart.isDown() && positionPart.getY() > pathPart.getyGoal()) return;
-            if(movingPart.isUp() && positionPart.getY() < pathPart.getyGoal()) return;
+        }
 
-            setNewEnemyPath(pathPart, movingPart, lifePart);
+        for (Entity enemy : enemies) {
+
+            PathPart pathPart = enemy.getPart(PathPart.class);
+            PositionPart positionPart = enemy.getPart(PositionPart.class);
+
+
+            if(positionPart.getRadians() == MovingPart.left && positionPart.getX() > pathPart.getxGoal()) return;
+            if(positionPart.getRadians() == MovingPart.right && positionPart.getX() < pathPart.getxGoal()) return;
+            if(positionPart.getRadians() == MovingPart.down && positionPart.getY() > pathPart.getyGoal()) return;
+            if(positionPart.getRadians() == MovingPart.up && positionPart.getY() < pathPart.getyGoal()) return;
+
+            setNewEnemyPath(enemy);
 
         }
     }
 
-    private void setNewEnemyPath(PathPart pathPart, MovingPart movingPart, LifePart lifePart) {
+    private void setNewEnemyPath(Entity enemy) {
+
+        PathPart pathPart = enemy.getPart(PathPart.class);
+        PositionPart positionPart = enemy.getPart(PositionPart.class);
 
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getTiledMap().getLayers().get(0);
         int pathX = pathPart.getxGoal();
         int pathY = pathPart.getyGoal();
-        int pathXPlus = (int) (pathPart.getxGoal() + layer.getTileWidth() - 10);
-        int pathXMinus = (int) (pathPart.getxGoal() - layer.getTileWidth() + 10);
-        int pathYPlus = (int) (pathPart.getyGoal() + layer.getTileWidth());
-        int pathYMinus = (int) (pathPart.getyGoal() - layer.getTileWidth());
+        int pathXPlus = (int) (positionPart.getX() + layer.getTileWidth());
+        int pathXMinus = (int) (positionPart.getX() - layer.getTileWidth());
+        int pathYPlus = (int) (positionPart.getY() + layer.getTileWidth());
+        int pathYMinus = (int) (positionPart.getY() - layer.getTileWidth());
 
-        if(movingPart.isLeft()){
-            if(setNewGoal(pathXMinus, pathY, pathPart, movingPart,lifePart,Direction.left)) return;
-            if(setNewGoal(pathX, pathYMinus, pathPart, movingPart,lifePart,Direction.down)) return;
-            if(setNewGoal(pathX, pathYPlus, pathPart, movingPart,lifePart,Direction.up)) return;
-            if(setNewGoal(pathXPlus, pathY,pathPart, movingPart, lifePart, Direction.right)) return;
-        }
-
-        if(movingPart.isRight()){
-            if(setNewGoal(pathXPlus, pathY, pathPart, movingPart,lifePart,Direction.right)) return;
-            if(setNewGoal(pathX, pathYPlus, pathPart, movingPart,lifePart,Direction.up)) return;
-            if(setNewGoal(pathX, pathYMinus, pathPart, movingPart,lifePart,Direction.down)) return;
-            if(setNewGoal(pathXMinus, pathY,pathPart, movingPart, lifePart, Direction.left)) return;
-        }
-
-        if(movingPart.isUp()){
-            if(setNewGoal(pathX, pathYPlus, pathPart, movingPart,lifePart,Direction.up)) return;
-            if(setNewGoal(pathXMinus, pathY, pathPart, movingPart,lifePart,Direction.right)) return;
-            if(setNewGoal(pathXPlus, pathY, pathPart, movingPart,lifePart,Direction.left)) return;
-            if(setNewGoal(pathX, pathYMinus,pathPart, movingPart, lifePart, Direction.down)) return;
-        }
-
-        if(movingPart.isDown()){
-            if(setNewGoal(pathX, pathYMinus, pathPart, movingPart,lifePart,Direction.down)) return;
-            if(setNewGoal(pathXPlus, pathY, pathPart, movingPart,lifePart,Direction.right)) return;
-            if(setNewGoal(pathXMinus, pathY, pathPart, movingPart,lifePart,Direction.left)) return;
-            if(setNewGoal(pathX, pathYPlus,pathPart, movingPart, lifePart, Direction.up)) return;
-        }
+        if(setNewGoal(pathX, pathYMinus,enemy,MovingPart.down)) return;
+        if(setNewGoal(pathXPlus, pathY,enemy,MovingPart.right)) return;
+        if(setNewGoal(pathXMinus, pathY,enemy,MovingPart.left)) return;
+        if(setNewGoal(pathX, pathYPlus,enemy, MovingPart.up)) return;
     }
 
-    private boolean setNewGoal(int x, int y, PathPart pathPart, MovingPart movingPart, LifePart lifePart, Direction direction){
+    private boolean setNewGoal(int x, int y, Entity enemy, int direction){
+
+        PathPart pathPart = enemy.getPart(PathPart.class);
+        PositionPart positionPart = enemy.getPart(PositionPart.class);
+        LifePart lifePart = enemy.getPart(LifePart.class);
 
         Point point = map.getTileCoordinates(x,y);
         String tile = map.getTileType(point.x, point.y);
 
-        if(tile.equals("End")) {
+        if(tile == null || tile.equals("End")) {
             lifePart.setLife(0);
             return false;
         }
@@ -120,10 +106,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
         pathPart.setxGoal(x);
         pathPart.setyGoal(y);
 
-        movingPart.setRight(direction.equals(Direction.right));
-        movingPart.setLeft(direction.equals(Direction.left));
-        movingPart.setUp(direction.equals(Direction.up));
-        movingPart.setDown(direction.equals(Direction.down));
+        positionPart.setRadians(direction);
+
+        System.out.println("GOAL: " + x + " " + y + " " + direction + " " + tile);
         return true;
 
     }
@@ -135,23 +120,21 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getTiledMap().getLayers().get(0);
 
-        float speed = 2;
+        float speed = 1;
         float x = 600;
                 //tile.getOffsetX() + layer.getTileWidth() / 2;
         float y = 525;
                 //tile.getOffsetX() + layer.getTileHeight() / 2;
-        float radians = 3.1415f / 2;
+        Integer radians = MovingPart.left;
 
         PathPart path = new PathPart();
         path.setxGoal(500);
         path.setyGoal(525);
-
-        MovingPart movingPart = new MovingPart(0, 0, speed, 0);
-        movingPart.setLeft(true);
+        path.addPosition(map.getTileCoordinates(x,y));
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         Entity enemy = new Enemy(sprite, Types.ENEMY);
-        enemy.add(movingPart);
+        enemy.add(new MovingPart( speed, 0));
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new LifePart(1));
         enemy.add(path);

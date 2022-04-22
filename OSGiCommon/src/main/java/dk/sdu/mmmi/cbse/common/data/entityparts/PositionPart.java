@@ -18,11 +18,11 @@ public class PositionPart implements EntityPart {
 
     private float x;
     private float y;
-    private float radians; // direction of movement
+    private Integer radians; // direction of movement
     private String lastChange;
     private float originX, originY;
 
-    public PositionPart(float x, float y, float radians) {
+    public PositionPart(float x, float y, Integer radians) {
         this.x = x;
         this.y = y;
         this.originX = x;
@@ -46,7 +46,7 @@ public class PositionPart implements EntityPart {
         return y;
     }
 
-    public float getRadians() {
+    public Integer getRadians() {
         return radians;
     }
     
@@ -63,7 +63,7 @@ public class PositionPart implements EntityPart {
         this.y = newY;
     }
 
-    public void setRadians(float radians) {
+    public void setRadians(Integer radians) {
         this.radians = radians;
     }
 

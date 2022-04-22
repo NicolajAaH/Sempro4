@@ -65,12 +65,10 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // shooter entity parameteres
         float x = shooterPos.getX();
         float y = shooterPos.getY();
-        float radians = shooterPos.getRadians();
+        Integer radians = shooterPos.getRadians();
         float dt = gameData.getDelta();
 
         // parameters of projectile
-        float deacceleration = 0;
-        float acceleration = 0;
         float speed = 5;
         float rotationSpeed = 0;
 
@@ -88,8 +86,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
         // creating new projectile with entity parts and add to world
         Entity projectile = new Projectile(sprite, Types.PROJECTILE);
-        MovingPart projMovingPart = new MovingPart(deacceleration, acceleration, speed, rotationSpeed);
-        projMovingPart.setIsProjectile(true);
+        MovingPart projMovingPart = new MovingPart( speed, rotationSpeed);
         projectile.add(projMovingPart);
         projectile.add(new PositionPart(projX, projY, radians));
         projectile.add(new LifePart(1));
