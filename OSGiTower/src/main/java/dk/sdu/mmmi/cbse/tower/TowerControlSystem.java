@@ -117,7 +117,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         this.projectileLauncher = projectileSPI;
     }
 
-    public void ProjectileSPI(ProjectileSPI projectileSPI) {
+    public void removeProjectileSPI(ProjectileSPI projectileSPI) {
         this.projectileLauncher = null;
     }
 
