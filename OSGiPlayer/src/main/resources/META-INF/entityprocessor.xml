@@ -7,4 +7,7 @@
     <reference bind="setTowerSPI" cardinality="0..1"
                interface="dk.sdu.mmmi.cbse.commontower.TowerSPI"
                name="towerSPI" policy="dynamic" unbind="removeTowerSPI"/>
+    <reference bind="setIMap" cardinality="0..1"
+               interface="dk.sdu.mmmi.cbse.commonmap.IMap"
+               name="Imap" policy="dynamic" unbind="removeIMap"/>
 </scr:component>
