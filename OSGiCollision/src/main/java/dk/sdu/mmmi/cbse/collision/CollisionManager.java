@@ -24,23 +24,10 @@ public class CollisionManager implements IPostEntityProcessingService {
                 PositionPart iPosition = iEntity.getPart(PositionPart.class);
                 PositionPart oPosition = oEntity.getPart(PositionPart.class);
 
-
-                // PRINT POSITION
-                System.out.println("\ni"
-                        + "\nx: " + iPosition.getX()
-                        + "\ny: " + iPosition.getY());
-
-                System.out.println("\no"
-                        + "\nx: " + oPosition.getX()
-                        + "\ny: " + oPosition.getY());
-
-
-
                 // Calculate distance between two entities
                 double distance = Math.sqrt(Math.pow((iPosition.getX() - oPosition.getX()), 2) + Math.pow((iPosition.getY() - oPosition.getY()),2));
 
                 if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
-                    System.out.println("*** COLLISION *** ");
                     LifePart iLifePart = iEntity.getPart(LifePart.class);
                     LifePart oLifePart = oEntity.getPart(LifePart.class);
 
