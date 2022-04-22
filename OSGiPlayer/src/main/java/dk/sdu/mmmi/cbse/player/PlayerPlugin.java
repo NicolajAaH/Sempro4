@@ -47,6 +47,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1));
+        player.setRadius(40);
         world.addEntity(player);
         return player;
     }
