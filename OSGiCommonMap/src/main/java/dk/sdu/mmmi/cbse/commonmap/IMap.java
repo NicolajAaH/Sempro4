@@ -36,4 +36,6 @@ public interface IMap {
     int getMapWidth();
 
     Point getTileCoordinates(float x, float y);
+
+    int getTileId(int x, int y);
 }

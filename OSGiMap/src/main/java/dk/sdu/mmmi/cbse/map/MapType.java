@@ -157,8 +157,7 @@ public class MapType implements IMap {
         return new Point(tileX, tileY);
     }
 
-    // TODO: Add to interface if needed
-
+    @Override
     public int getTileId(int x, int y){
         //Get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);

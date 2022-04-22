@@ -46,9 +46,6 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
                 System.out.println("move proj2");
                 world.removeEntity(projectile);
             }
-
-
-
         }
     }
 
