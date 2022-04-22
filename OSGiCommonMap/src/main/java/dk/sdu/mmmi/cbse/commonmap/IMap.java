@@ -20,4 +20,5 @@ public interface IMap {
     ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property);
 
     MapLayers getLayers();
+    void changeTileType(int x, int y, String tileType);
 }

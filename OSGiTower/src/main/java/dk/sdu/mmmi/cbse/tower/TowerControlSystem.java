@@ -16,6 +16,8 @@ import dk.sdu.mmmi.cbse.commonplayer.Player;
 import dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI;
 import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
+import dk.sdu.mmmi.cbse.commonmap.IMap;
+
 
 import java.awt.*;
 import java.util.Random;
@@ -23,6 +25,7 @@ import java.util.Random;
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
     private ProjectileSPI projectileLauncher;
+    private IMap map;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -88,16 +91,14 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
         // TODO: use methods from map or refactor to map
         // Replacing af tile on the map at pos (x,y) with tile with tileIf from tileset from the map
-        int tileId = 5; // TODO: get tileID from properties of tile - WHAT happend to the tower tile!
-        //Get first layer of map
-        TiledMapTileLayer layer = (TiledMapTileLayer) world.getMap().getTiledMap().getLayers().get(0);
-        // Get cell at position (x, y)
-        TiledMapTileLayer.Cell cell = layer.getCell(xTile, yTile);
-        // setting tile to til with the id tileId in the map tileset
-        cell.setTile(world.getMap().getTiledMap().getTileSets().getTile(tileId));
+
+        // tileID for tower = 6
+
+        map.changeTileType(xTile, yTile, "prut");
 
         // getting tile size
-        int tileSize = (int) layer.getTileHeight();
+        //int tileSize = (int) layer.getTileHeight();
+        int tileSize = 58;
         float deacceleration = 0;
         float acceleration = 0;
         float speed = 0;
@@ -114,7 +115,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
         tower.setRadius(20);
-        tower.add(new WeaponPart(150, 5, 10));
+        tower.add(new WeaponPart(300, 5, 10));
         world.addEntity(tower);
     }
 
@@ -125,5 +126,12 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     public void ProjectileSPI(ProjectileSPI projectileSPI) {
         this.projectileLauncher = null;
     }
-    
+
+    public void setIMap(IMap map) {
+        this.map = map;
+    }
+
+    public void removeIMap(IMap map){
+        this.map = null;
+    }
 }

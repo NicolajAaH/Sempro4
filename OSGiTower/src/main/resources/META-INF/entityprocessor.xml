@@ -8,4 +8,7 @@
     <reference bind="setProjectileSPI" cardinality="0..1"
                interface="dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI"
                name="projectileSPI" policy="dynamic" unbind="removeProjectileSPI"/>
+    <reference bind="setIMap" cardinality="0..1"
+               interface="dk.sdu.mmmi.cbse.commonmap.IMap"
+               name="Imap" policy="dynamic" unbind="removeIMap"/>
 </scr:component>

@@ -79,4 +79,18 @@ public class MapType implements IMap {
     public MapLayers getLayers() {
         return tiledMap.getLayers();
     }
+
+    @Override
+    public void changeTileType(int x, int y, String tileType){
+
+        //Get first layer of map
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        // Get cell at position (x, y)
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        // setting tile to til with the id tileId in the map tileset
+        cell.setTile(tiledMap.getTileSets().getTile(6));
+    }
+
 }
