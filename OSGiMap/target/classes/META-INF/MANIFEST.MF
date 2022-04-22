@@ -1,0 +1,36 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1649423193679
+Build-Jdk: 1.8.0_322
+Built-By: Troel
+Bundle-ActivationPolicy: lazy
+Bundle-Description: Generated using Pax-Construct
+Bundle-ManifestVersion: 2
+Bundle-Name: OSGiMap
+Bundle-SymbolicName: OSGiMap
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: dk.sdu.mmmi.cbse.common.data;version="1.0.0.SNAPSHOT";us
+ es:="com.badlogic.gdx.graphics,com.badlogic.gdx.graphics.g2d,com.badlog
+ ic.gdx.maps.tiled,dk.sdu.mmmi.cbse.common.data.entityparts,dk.sdu.mmmi.
+ cbse.common.events,dk.sdu.mmmi.cbse.commonmap",dk.sdu.mmmi.cbse.common.
+ data.Enums;version="1.0.0.SNAPSHOT",dk.sdu.mmmi.cbse.common.data.entity
+ parts;version="1.0.0.SNAPSHOT";uses:="dk.sdu.mmmi.cbse.common.data,dk.s
+ du.mmmi.cbse.common.data.Enums",dk.sdu.mmmi.cbse.common.events;version=
+ "1.0.0.SNAPSHOT";uses:="dk.sdu.mmmi.cbse.common.data",dk.sdu.mmmi.cbse.
+ common.services;version="1.0.0.SNAPSHOT";uses:="com.badlogic.gdx.graphi
+ cs.g2d,dk.sdu.mmmi.cbse.common.data",dk.sdu.mmmi.cbse.commonmap;version
+ ="1.0.0.SNAPSHOT";uses:="com.badlogic.gdx.maps.tiled",dk.sdu.mmmi.cbse.
+ map;version="1.0.0.SNAPSHOT";uses:="com.badlogic.gdx.maps.tiled,dk.sdu.
+ mmmi.cbse.common.data,dk.sdu.mmmi.cbse.common.services,dk.sdu.mmmi.cbse
+ .commonmap"
+Import-Package: com.badlogic.gdx.graphics;version="[1.0,2)",com.badlogic
+ .gdx.graphics.g2d;version="[1.0,2)",com.badlogic.gdx.maps;version="[1.0
+ ,2)",com.badlogic.gdx.maps.tiled;version="[1.0,2)",com.badlogic.gdx.mat
+ h;version="[1.0,2)",dk.sdu.mmmi.cbse.common.data;version="[1.0,2)",dk.s
+ du.mmmi.cbse.common.data.Enums;version="[1.0,2)",dk.sdu.mmmi.cbse.commo
+ n.data.entityparts;version="[1.0,2)",dk.sdu.mmmi.cbse.common.events;ver
+ sion="[1.0,2)",dk.sdu.mmmi.cbse.common.services;version="[1.0,2)",dk.sd
+ u.mmmi.cbse.commonmap;version="[1.0,2)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Service-Component: META-INF/maptype.xml,META-INF/mapplugin.xml
+Tool: Bnd-3.5.0.201709291849
