@@ -97,8 +97,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
         // creating new projectile with entity parts and add to world
         Entity projectile = new Projectile(sprite, Types.PROJECTILE);
-        MovingPart projMovingPart = new MovingPart( speed, rotationSpeed);
-        projectile.add(projMovingPart);
+        projectile.add(new MovingPart( speed, rotationSpeed, true));
         projectile.add(new PositionPart(projX, projY, radians));
         projectile.add(new LifePart(1));
         projectile.add(new TimerPart(1));
