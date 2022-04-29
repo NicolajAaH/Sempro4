@@ -27,6 +27,8 @@ public class MovingPart implements EntityPart {
     private boolean moving = false;
     private float rotationSpeed;
 
+    IMap iMap;
+
     public MovingPart(float speed, float rotationSpeed) {
         this.speed = speed;
         this.rotationSpeed = rotationSpeed;
@@ -83,5 +85,13 @@ public class MovingPart implements EntityPart {
 
         positionPart.setPosition(x,y);
         positionPart.setRadians(radians);
+    }
+
+    public void setIMap(IMap iMap){
+        this.iMap = iMap;
+    }
+
+    public void removeIMap(IMap iMap){
+        this.iMap = null;
     }
 }

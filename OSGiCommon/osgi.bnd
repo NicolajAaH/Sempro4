@@ -1,4 +1,4 @@
 Export-Package: dk.sdu.mmmi.cbse.common.*
 Bundle-SymbolicName: OSGiCommon
 Bundle-ActivationPolicy: lazy
-Service-Component: META-INF/world.xml
+Service-Component: META-INF/world.xml, META-INF/movingpart.xml
