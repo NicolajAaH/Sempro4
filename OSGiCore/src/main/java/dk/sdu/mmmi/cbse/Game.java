@@ -64,7 +64,7 @@ public class Game implements ApplicationListener {
         map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
 
         gameData.setGameStartTime(System.currentTimeMillis());
-        gameData.addAttack(new Attack(0,10));
+        gameData.addAttack(new Attack(0,1));
 
         renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
         batch = new SpriteBatch();

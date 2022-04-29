@@ -5,6 +5,7 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.Stack;
 
 
 public class PathPart implements EntityPart{
@@ -12,18 +13,22 @@ public class PathPart implements EntityPart{
     private int xGoal;
     private int yGoal;
 
-    private final HashSet<Point> explored = new HashSet<>();
+    private final Stack<Point> explored = new Stack<>();
 
     public int getxGoal() {
         return xGoal;
     }
 
     public void addPosition(Point position){
-        explored.add(position);
+        explored.push(position);
     }
 
     public boolean isExplored(Point position){
-        return explored.contains(position);
+        return explored.stream().anyMatch(in -> in.x == position.x && in.y == position.y);
+    }
+
+    public Point getCurrentTile(){
+        return explored.peek();
     }
 
     public void setxGoal(int xGoal) {

@@ -14,6 +14,7 @@ import dk.sdu.mmmi.cbse.commonmap.IMap;
 import org.lwjgl.Sys;
 
 import java.awt.*;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
@@ -55,63 +56,71 @@ public class EnemyControlSystem implements IEntityProcessingService {
             PathPart pathPart = enemy.getPart(PathPart.class);
             PositionPart positionPart = enemy.getPart(PositionPart.class);
 
-
             if(positionPart.getRadians() == PositionPart.left && positionPart.getX() > pathPart.getxGoal()) return;
             if(positionPart.getRadians() == PositionPart.right && positionPart.getX() < pathPart.getxGoal()) return;
             if(positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getyGoal()) return;
             if(positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getyGoal()) return;
 
-            setNewEnemyPath(enemy);
+            setNewEnemyPathTemp(enemy);
 
         }
     }
 
-    private void setNewEnemyPath(Entity enemy) {
-
-        PathPart pathPart = enemy.getPart(PathPart.class);
-        PositionPart positionPart = enemy.getPart(PositionPart.class);
-
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getTiledMap().getLayers().get(0);
-        int pathX = pathPart.getxGoal();
-        int pathY = pathPart.getyGoal();
-        int pathXPlus = (int) (positionPart.getX() + layer.getTileWidth());
-        int pathXMinus = (int) (positionPart.getX() - layer.getTileWidth());
-        int pathYPlus = (int) (positionPart.getY() + layer.getTileWidth());
-        int pathYMinus = (int) (positionPart.getY() - layer.getTileWidth());
-
-        if(setNewGoal(pathX, pathYMinus,enemy,PositionPart.down)) return;
-        if(setNewGoal(pathXPlus, pathY,enemy,PositionPart.right)) return;
-        if(setNewGoal(pathXMinus, pathY,enemy,PositionPart.left)) return;
-        if(setNewGoal(pathX, pathYPlus,enemy, PositionPart.up)) return;
-    }
-
-    private boolean setNewGoal(int x, int y, Entity enemy, int direction){
-
+    private void setNewEnemyPathTemp(Entity enemy){
         PathPart pathPart = enemy.getPart(PathPart.class);
         PositionPart positionPart = enemy.getPart(PositionPart.class);
         LifePart lifePart = enemy.getPart(LifePart.class);
+        //MovingPart movingPart = enemy.getPart(MovingPart.class);
 
-        Point point = map.getTileCoordinates(x,y);
-        String tile = map.getTileType(point.x, point.y);
+        Point currentTile = pathPart.getCurrentTile();
 
-        if(tile == null || tile.equals("End")) {
+        String currentTileType = map.getTileType(currentTile.x, currentTile.y);
+
+        System.out.println("current tile: " + currentTile.x + " " + currentTile.y);
+        System.out.println("Current goal:" + pathPart.getxGoal() + " " + pathPart.getyGoal());
+        System.out.println("Current position:" + positionPart.getX() + " " + positionPart.getY());
+
+        if(currentTileType != null && currentTileType.equals("End")){
             lifePart.setLife(0);
-            return false;
+            return;
         }
 
-        if(!tile.equals("Path")) return false;
-        if(pathPart.isExplored(point)) return false;
+        if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.up)) return;
+        if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.down)) return;
+        if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.left)) return;
+        if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.right)) return;
 
-        pathPart.addPosition(point);
-        pathPart.setxGoal(x);
-        pathPart.setyGoal(y);
+    }
 
-        positionPart.setRadians(direction);
+    private boolean setNewGoal(PathPart pathPart, PositionPart positionPart, Point currentTile, int direction){
 
+        String newTileType;
+        String path = "Path";
+        Point newTile = new Point(currentTile.x, currentTile.y);
+        Point newTileCoor = map.tileCoorToMapCoor(newTile.x, newTile.y);
 
-        System.out.println("GOAL: " + x + " " + y + " " + direction + " " + tile);
-        return true;
+        if(direction == PositionPart.down) {
+            newTile.y = newTile.y - 1;
+        }else if(direction == PositionPart.up) {
+            newTile.y = newTile.y + 1;
+        } else if (direction == PositionPart.left) {
+            newTile.x = newTile.x - 1;
+        } else if (direction == PositionPart.right) {
+            newTile.x = newTile.x + 1;
+        }
 
+        newTileType = map.getTileType(newTile.x, newTile.y);
+
+        System.out.println("newTile: " +newTileType + " " + newTile.x + " " + newTile.y + " Explored: " + pathPart.isExplored(newTile));
+        if (newTileType != null && (newTileType.equals(path) || newTileType.equals("End")) && !pathPart.isExplored(newTile)) {
+            positionPart.setRadians(direction);
+            pathPart.setyGoal(newTileCoor.y);
+            pathPart.setxGoal(newTileCoor.x);
+            pathPart.addPosition(newTile);
+            return true;
+        }
+
+        return false;
     }
 
     private void createEnemy(GameData gameData, World world){

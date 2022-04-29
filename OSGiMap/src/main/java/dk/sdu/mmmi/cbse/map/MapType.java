@@ -79,8 +79,8 @@ public class MapType implements IMap {
     public Point tileCoorToMapCoor(float x, float y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
-        int mapX = (int) (x * layer.getTileHeight() + (layer.getTileHeight()/2));
-        int mapY = (int) (y * layer.getTileWidth() + (layer.getTileWidth()/2));
+        int mapX = (int) (x * layer.getTileWidth() + (layer.getTileWidth()/2));
+        int mapY = (int) (y * layer.getTileHeight() + (layer.getTileHeight()/2));
 
         return new Point(mapX, mapY);
     }
