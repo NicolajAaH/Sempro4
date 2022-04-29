@@ -27,9 +27,6 @@ public class Player extends Entity {
     public void update(float delta){
         PositionPart positionPart = this.getPart(PositionPart.class);
         this.setPosition(positionPart.getX(), positionPart.getY());
-        if (positionPart.getLastChange() == "Up") this.setRotation(0);
-        if (positionPart.getLastChange() == "Down") this.setRotation(180);
-        if (positionPart.getLastChange() == "Left") this.setRotation(90);
-        if (positionPart.getLastChange() == "Right") this.setRotation(270);
+        this.setRotation((positionPart.getRadians() + 270) % 360);
     }
 }

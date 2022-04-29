@@ -43,7 +43,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             // random rotation
             int shouldRotate = r.nextInt(100);
             if (shouldRotate < 20) {
-                float radians = positionPart.getRadians();
+                Integer radians = positionPart.getRadians();
                 radians +=1;
                 if (360 < radians) {
                     radians = 0;
@@ -55,7 +55,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
             // getting position of player
             Entity player = world.getEntities(Player.class).get(0);
-            positionPart.setRadians(getAngleBetweenEntities(player, tower));
+            positionPart.setRadians((int) (getAngleBetweenEntities(player, tower)));
 
             // TODO: SET DIRECTION OF SHOOTING- AI!
         }
@@ -92,19 +92,17 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         map.changeTileType(xTile, yTile, "Tower");
 
         int tileSize = map.getTileSize();
-        float deacceleration = 0;
-        float acceleration = 0;
         float speed = 0;
         float rotationSpeed = 5;
 
         Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
         float x = (float) coordinate.x - tileSize / 2;
         float y = (float) coordinate.y - tileSize / 2;
-        float radians = 3.1415f / 2;
+        int radians = 0;
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
         Entity tower = new Tower(sprite, Types.TOWER); //throws exception nulpointer
-        tower.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
+        tower.add(new MovingPart(speed, rotationSpeed));
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
         tower.setRadius(20);
