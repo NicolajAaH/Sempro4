@@ -77,6 +77,11 @@ public class Game implements ApplicationListener {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
+        // setting initial values of games attributes
+        gameData.setLife(100);
+        gameData.setMoney(50);
+        gameData.setScore(0);
+        
         // adding spirtes to textures
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon3.png")));
@@ -84,6 +89,7 @@ public class Game implements ApplicationListener {
         textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/projectile.png")));
         world.setTextureHashMap(textures);
 
+        // starting plug in services
         for (IGamePluginService iGamePluginService : gamePluginList) {
             switch (iGamePluginService.getType()){
                 case PLAYER:
