@@ -40,7 +40,6 @@ public class LifePart implements EntityPart {
     public boolean isDead() {
         return dead;
     }
-
     
     
     @Override

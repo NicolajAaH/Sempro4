@@ -26,9 +26,16 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
             PositionPart positionPart = projectile.getPart(PositionPart.class);
             MovingPart movingPart = projectile.getPart(MovingPart.class);
             WeaponPart weaponPart = projectile.getPart(WeaponPart.class);
+            LifePart lifePart = projectile.getPart(LifePart.class);
 
             movingPart.process(gameData, projectile);
             positionPart.process(gameData, projectile);
+            lifePart.process(gameData, projectile);
+
+            if(lifePart.isDead()){
+                world.removeEntity(projectile);
+                break;
+            }
 
             // checks if it has reached it's range
             if (positionPart.getDistanceFromOrigin() > weaponPart.getRange()){
@@ -76,12 +83,10 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // shooter entity parameteres
         float x = shooterPos.getX();
         float y = shooterPos.getY();
-        float radians = shooterPos.getRadians();
+        int radians = shooterPos.getRadians();
         float dt = gameData.getDelta();
 
         // parameters of projectile
-        float deacceleration = 0;
-        float acceleration = 0;
         float speed = 5;
         float rotationSpeed = 0;
 
@@ -99,9 +104,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
         // creating new projectile with entity parts and add to world
         Entity projectile = new Projectile(sprite, Types.PROJECTILE);
-        MovingPart projMovingPart = new MovingPart(deacceleration, acceleration, speed, rotationSpeed);
-        projMovingPart.setIsProjectile(true);
-        projectile.add(projMovingPart);
+        projectile.add(new MovingPart( speed, rotationSpeed, true));
         projectile.add(new PositionPart(projX, projY, radians));
         projectile.add(new LifePart(1));
         projectile.add(new TimerPart(1));

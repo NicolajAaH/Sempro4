@@ -43,7 +43,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             // random rotation
             int shouldRotate = r.nextInt(100);
             if (shouldRotate < 20) {
-                float radians = positionPart.getRadians();
+                int radians = positionPart.getRadians();
                 radians +=1;
                 if (360 < radians) {
                     radians = 0;
@@ -52,6 +52,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             }
 
             //experiment with shooting towards an entity
+
             // getting position of player
             Entity player = world.getEntities(Player.class).get(0);
             positionPart.setRadians(getAngleBetweenEntities(player, tower));

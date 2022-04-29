@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.collision;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
@@ -20,6 +21,12 @@ public class CollisionManager implements IPostEntityProcessingService {
                 // Get the entities
                 Entity iEntity = entities.get(i);
                 Entity oEntity = entities.get(o);
+
+                if (iEntity.getType() == oEntity.getType()) //Should not collide when equal type
+                    return;
+
+                if ((iEntity.getType() == Types.PLAYER || oEntity.getType() == Types.PLAYER) && (iEntity.getType() == Types.PROJECTILE || oEntity.getType() == Types.PROJECTILE))
+                    return; //Player and projectile should not collide
 
                 // Get the position part for the entities
                 PositionPart iPosition = iEntity.getPart(PositionPart.class);
