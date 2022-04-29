@@ -67,9 +67,9 @@ public class PlayerControlSystem implements IEntityProcessingService {
         }
     }
 
-    private void handleInput(PositionPart positionPart, MovingPart movingPart, GameKeys keys){
+    private void handleInput(PositionPart positionPart, MovingPart movingPart, GameKeys keys) {
 
-        if(keys.isDown(LEFT)){
+        if (keys.isDown(LEFT)) {
             positionPart.setRadians(PositionPart.left);
             movingPart.setMoving(true);
         } else if (keys.isDown(RIGHT)) {
@@ -81,9 +81,10 @@ public class PlayerControlSystem implements IEntityProcessingService {
         } else if (keys.isDown(DOWN)) {
             positionPart.setRadians(PositionPart.down);
             movingPart.setMoving(true);
-        }else {
+        } else {
             movingPart.setMoving(false);
         }
+
     }
 
     @Override
@@ -105,7 +106,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
         this.map = map;
     }
 
-    public void removeIMap(IMap map){
+    public void removeIMap(IMap map) {
         this.map = null;
     }
 }

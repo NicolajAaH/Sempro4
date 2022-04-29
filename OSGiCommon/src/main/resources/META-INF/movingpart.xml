@@ -4,5 +4,5 @@
 
     <reference bind="setIMap" cardinality="0..1"
                interface="dk.sdu.mmmi.cbse.commonmap.IMap"
-               name="IMap" policy="dynamic" unbind="removeIMap"/>
+               name="Imap" policy="dynamic" unbind="removeIMap"/>
 </scr:component>

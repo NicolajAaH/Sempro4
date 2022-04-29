@@ -41,7 +41,6 @@ public class PlayerPlugin implements IGamePluginService {
 
         Texture texture = world.getTextureHashMap().get(Types.PLAYER);
         Sprite sprite = new Sprite(texture);
-        sprite.setCenter((sprite.getWidth()/2), (sprite.getHeight()/2));
         Entity player = new Player(sprite, Types.PLAYER);
         player.add(new MovingPart(speed, rotationSpeed));
         player.add(new PositionPart(x, y, radians));

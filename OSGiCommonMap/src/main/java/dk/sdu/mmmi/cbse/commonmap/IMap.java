@@ -38,4 +38,6 @@ public interface IMap {
     Point getTileCoordinates(float x, float y);
 
     int getTileId(int x, int y);
+
+    boolean isInsideMap(float x, float y);
 }

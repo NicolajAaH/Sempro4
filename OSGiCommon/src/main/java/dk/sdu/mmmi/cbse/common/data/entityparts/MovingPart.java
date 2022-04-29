@@ -5,17 +5,12 @@
  */
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
-import com.badlogic.gdx.maps.Map;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
-import dk.sdu.mmmi.cbse.common.data.GameKeys;
-import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
 
 public class MovingPart implements EntityPart {
 
@@ -28,7 +23,7 @@ public class MovingPart implements EntityPart {
     private boolean moving = false;
     private float rotationSpeed;
 
-    IMap iMap;
+   static IMap map;
 
     public MovingPart(float speed, float rotationSpeed) {
         this.speed = speed;
@@ -78,7 +73,7 @@ public class MovingPart implements EntityPart {
         dx = (float) cos(radians2) * speed;
         dy = (float) sin(radians2) * speed;
 
-        if ((0 <= x + dx) && (x + dx <= 12*58) && (0 <= y + dy) && (y + dy <= 12*58)){
+        if (map.isInsideMap(x + dx, y + dy) == true){
             // set position
             x += dx;
             y += dy;
@@ -92,7 +87,7 @@ public class MovingPart implements EntityPart {
         this.iMap = iMap;
     }
 
-    public void removeIMap(IMap iMap){
-        this.iMap = null;
+    public void removeIMap(IMap map){
+        this.map = null;
     }
 }

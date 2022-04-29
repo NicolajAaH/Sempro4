@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import java.awt.*;
@@ -183,5 +184,13 @@ public class MapType implements IMap {
         return layer.getWidth() * getTileSize();
     }
 
+    @Override
+    public boolean isInsideMap(float x, float y){
+
+        if ((0 < x) && (x < (getMapWidth())) && (0 < y) && (y < (getMapHeigth()))){
+            return true;
+        }
+        else return false;
+    }
 }
 
