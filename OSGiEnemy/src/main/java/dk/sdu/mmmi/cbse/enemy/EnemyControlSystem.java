@@ -30,6 +30,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 createEnemy(gameData, world);
                 attack.setAttackNumber(attack.getAttackNumber() - 1);
                 attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
+                gameData.addMoney(1);
             }else {
                 gameData.removeAttack(attack);
             }
@@ -78,9 +79,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         String currentTileType = map.getTileType(currentTile.x, currentTile.y);
 
-        System.out.println("current tile: " + currentTile.x + " " + currentTile.y);
-        System.out.println("Current goal:" + pathPart.getxGoal() + " " + pathPart.getyGoal());
-        System.out.println("Current position:" + positionPart.getX() + " " + positionPart.getY());
 
         if(currentTileType != null && currentTileType.equals("End")){
             lifePart.setLife(0);
@@ -115,7 +113,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         newTileType = map.getTileType(newTile.x, newTile.y);
 
-        System.out.println("newTile: " +newTileType + " " + newTile.x + " " + newTile.y + " Explored: " + pathPart.isExplored(newTile));
         if (newTileType != null && (newTileType.equals(path) || newTileType.equals("End")) && !pathPart.isExplored(newTile)) {
             positionPart.setRadians(direction);
             pathPart.setyGoal(newTileCoor.y);
@@ -149,9 +146,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         sprite.setCenter(sprite.getHeight()/2, sprite.getWidth()/2);
         Entity enemy = new Enemy(sprite, Types.ENEMY);
+        enemy.setRadius(27);
         enemy.add(new MovingPart( speed, 0, true));
         enemy.add(new PositionPart(x, y, radians));
-        enemy.add(new LifePart(5));
+        enemy.add(new LifePart(20));
         enemy.add(path);
         world.addEntity(enemy);
     }

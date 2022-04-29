@@ -15,21 +15,23 @@ public class CollisionManager implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         ArrayList<Entity> entities = new ArrayList<>(world.getEntities());
 
+
         for (int i = 0; i < entities.size(); i++) {
             for (int o = i + 1; o < entities.size(); o++) {
+
 
                 // Get the entities
                 Entity iEntity = entities.get(i);
                 Entity oEntity = entities.get(o);
 
                 if (iEntity.getType() == Types.TOWER || oEntity.getType() == Types.TOWER)
-                    return;
+                    continue;
 
                 if (iEntity.getType() == oEntity.getType()) //Should not collide when equal type
-                    return;
+                    continue;
 
                 if ((iEntity.getType() == Types.PLAYER || oEntity.getType() == Types.PLAYER) && (iEntity.getType() == Types.PROJECTILE || oEntity.getType() == Types.PROJECTILE))
-                    return; //Player and projectile should not collide
+                    continue; //Player and projectile should not collide
 
                 // Get the position part for the entities
                 PositionPart iPosition = iEntity.getPart(PositionPart.class);
@@ -40,11 +42,12 @@ public class CollisionManager implements IPostEntityProcessingService {
 
                 if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
                     // TODO: remove print statement
-                    System.out.println("*** Collision Detected ***");
 
 
                     LifePart iLifePart = iEntity.getPart(LifePart.class);
                     LifePart oLifePart = oEntity.getPart(LifePart.class);
+
+                    if(iEntity.getType() == Types.PROJECTILE) world.removeEntity(iEntity);
 
                     iLifePart.setIsHit(true);
                     oLifePart.setIsHit(true);

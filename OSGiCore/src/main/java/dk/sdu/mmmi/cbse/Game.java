@@ -64,7 +64,14 @@ public class Game implements ApplicationListener {
         map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
 
         gameData.setGameStartTime(System.currentTimeMillis());
-        gameData.addAttack(new Attack(0,1));
+
+        gameData.addAttack(new Attack(0,5));
+        gameData.addAttack(new Attack(10000,10));
+        gameData.addAttack(new Attack(20000,20));
+        gameData.addAttack(new Attack(30000,40));
+        gameData.addAttack(new Attack(40000,80));
+        gameData.addAttack(new Attack(50000,160));
+        gameData.addAttack(new Attack(60000,320));
 
         renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
         batch = new SpriteBatch();
@@ -77,13 +84,19 @@ public class Game implements ApplicationListener {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
-        // adding spirtes to textures
+        // setting initial values of games attributes
+        gameData.setLife(100);
+        gameData.setMoney(200);
+        gameData.setScore(0);
+
+        // adding sprites to textures
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon3.png")));
         textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
         textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/projectile.png")));
         world.setTextureHashMap(textures);
 
+        // starting plug in services
         for (IGamePluginService iGamePluginService : gamePluginList) {
             switch (iGamePluginService.getType()){
                 case PLAYER:

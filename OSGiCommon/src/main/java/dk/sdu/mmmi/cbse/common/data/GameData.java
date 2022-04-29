@@ -109,11 +109,20 @@ public class GameData {
         this.money = money;
     }
 
+    public void addMoney(int money){
+        this.money += money;
+    }
+
     public int getLife() {
         return life;
     }
 
     public void setLife(int life) {
         this.life = life;
+    }
+
+    @Override
+    public String toString(){
+        return "Score = " + score + "/nLife " + life + "/nMoney " + money;
     }
 }
