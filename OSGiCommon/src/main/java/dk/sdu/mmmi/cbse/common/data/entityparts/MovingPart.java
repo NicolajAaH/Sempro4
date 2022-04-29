@@ -19,7 +19,8 @@ import static java.lang.Math.sqrt;
 
 public class MovingPart implements EntityPart {
 
-
+    public MovingPart() {
+    }
 
     private float dx, dy;
     private float speed;
@@ -88,6 +89,7 @@ public class MovingPart implements EntityPart {
     }
 
     public void setIMap(IMap iMap){
+        System.out.println(iMap);
         this.iMap = iMap;
     }
 
