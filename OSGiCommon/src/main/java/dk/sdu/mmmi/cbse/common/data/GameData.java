@@ -109,6 +109,10 @@ public class GameData {
         this.money = money;
     }
 
+    public void addMoney(int money){
+        this.money += money;
+    }
+
     public int getLife() {
         return life;
     }

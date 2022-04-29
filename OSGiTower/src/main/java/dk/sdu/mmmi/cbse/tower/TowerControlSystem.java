@@ -2,7 +2,6 @@ package dk.sdu.mmmi.cbse.tower;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
@@ -12,14 +11,16 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.WeaponPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
-import dk.sdu.mmmi.cbse.commonplayer.Player;
+import dk.sdu.mmmi.cbse.commonenemy.Enemy;
 import dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI;
 import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.List;
 
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
@@ -35,27 +36,45 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             Random r = new Random();
 
             // random shooting
-            int shouldShoot = r.nextInt(100);
-            if (shouldShoot < 1) {
-                projectileLauncher.createProjectile(tower, gameData, world);
-            }
 
             // random rotation
-            int shouldRotate = r.nextInt(100);
-            if (shouldRotate < 20) {
-                int radians = positionPart.getRadians();
-                radians +=1;
-                if (360 < radians) {
-                    radians = 0;
-                }
-                positionPart.setRadians(radians);
-            }
 
             //experiment with shooting towards an entity
+
             // getting position of player
-            Entity player = world.getEntities(Player.class).get(0);
-            positionPart.setRadians(getAngleBetweenEntities(player, tower));
+
             WeaponPart weaponPart = tower.getPart(WeaponPart.class);
+
+            List<Entity> enemies = world.getEntities(Enemy.class);
+
+            Entity currentEnemy = null;
+            Integer currentDistance = null;
+            
+            for(Entity enemy : enemies) {
+                int distance = getDistanceBetweenEntities(enemy, tower);
+                if (distance < weaponPart.getRange() && (currentDistance == null || distance < currentDistance)){
+                    currentEnemy = enemy;
+                    currentDistance = distance;
+                }
+            }
+
+            if(currentEnemy != null){
+                positionPart.setRadians((getAngleBetweenEntities(tower, currentEnemy) + 180) % 360);
+                int shouldShoot = r.nextInt(100);
+                if (shouldShoot < 1) {
+                    projectileLauncher.createProjectile(tower, gameData, world);
+                }
+            }else {
+                int shouldRotate = r.nextInt(100);
+                if (shouldRotate < 20) {
+                    int radians = positionPart.getRadians();
+                    radians +=1;
+                    if (360 < radians) {
+                        radians = 0;
+                    }
+                    positionPart.setRadians(radians);
+                }
+            }
 
             //if (getDistanceBetweenEntities(player, tower) )
 
@@ -68,12 +87,12 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     // TODO: evt refactor til Entity? getAngleToPoint
 
     // Getting distance between entities
-    private float getDistanceBetweenEntities(Entity entity1, Entity entity2){
+    private int getDistanceBetweenEntities(Entity entity1, Entity entity2){
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
         PositionPart positionPart2 = entity2.getPart(PositionPart.class);
         float deltaY = positionPart1.getY() - positionPart2.getY();
         float deltaX = positionPart1.getX() - positionPart2.getX();
-        return (float) Math.sqrt( (double) ((deltaX * deltaX) + (deltaY * deltaY)));
+        return (int) Math.sqrt( ((deltaX * deltaX) + (deltaY * deltaY)));
     }
 
     // returning angle in degrees

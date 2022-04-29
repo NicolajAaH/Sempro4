@@ -15,8 +15,10 @@ public class CollisionManager implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         ArrayList<Entity> entities = new ArrayList<>(world.getEntities());
 
+
         for (int i = 0; i < entities.size(); i++) {
             for (int o = i + 1; o < entities.size(); o++) {
+
 
                 // Get the entities
                 Entity iEntity = entities.get(i);
@@ -40,14 +42,14 @@ public class CollisionManager implements IPostEntityProcessingService {
 
                 if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
                     // TODO: remove print statement
-                    //System.out.println("*** Collision Detected ***");
-
+                    System.out.println("*** Collision Detected ***");
 
                     LifePart iLifePart = iEntity.getPart(LifePart.class);
                     LifePart oLifePart = oEntity.getPart(LifePart.class);
 
                     iLifePart.setIsHit(true);
                     oLifePart.setIsHit(true);
+
                 }
 
             }
