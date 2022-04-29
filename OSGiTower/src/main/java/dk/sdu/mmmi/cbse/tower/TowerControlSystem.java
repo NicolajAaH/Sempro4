@@ -52,15 +52,30 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             }
 
             //experiment with shooting towards an entity
-
             // getting position of player
             Entity player = world.getEntities(Player.class).get(0);
-            positionPart.setRadians((int) (getAngleBetweenEntities(player, tower)));
+            positionPart.setRadians(getAngleBetweenEntities(player, tower));
+            WeaponPart weaponPart = tower.getPart(WeaponPart.class);
+
+            //if (getDistanceBetweenEntities(player, tower) )
+
+            // get array of enemies within range of tower
 
             // TODO: SET DIRECTION OF SHOOTING- AI!
         }
     }
-    
+
+    // TODO: evt refactor til Entity? getAngleToPoint
+
+    // Getting distance between entities
+    private float getDistanceBetweenEntities(Entity entity1, Entity entity2){
+        PositionPart positionPart1 = entity1.getPart(PositionPart.class);
+        PositionPart positionPart2 = entity2.getPart(PositionPart.class);
+        float deltaY = positionPart1.getY() - positionPart2.getY();
+        float deltaX = positionPart1.getX() - positionPart2.getX();
+        return (float) Math.sqrt( (double) ((deltaX * deltaX) + (deltaY * deltaY)));
+    }
+
     // returning angle in degrees
     private float getAngleBetweenEntities(Entity entity1, Entity entity2) {
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
