@@ -15,7 +15,7 @@ public class Tower extends Entity {
     public Tower(Sprite sprite, Types type) {
         super(sprite);
         this.type = type;
-        this.buildCost = 10;
+        this.buildCost = 50;
     }
 
     @Override
