@@ -83,8 +83,8 @@ public class MovingPart implements EntityPart {
         positionPart.setRadians(radians);
     }
 
-    public void setIMap(IMap iMap){
-        this.iMap = iMap;
+    public void setIMap(IMap map){
+        this.map = map;
     }
 
     public void removeIMap(IMap map){
