@@ -80,34 +80,38 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     }
 
     @Override
-    public void createTower(World world, int xTile, int yTile) {
+    public Entity createTower(World world, int xTile, int yTile) {
 
         // Checking tileProperties if tower can be created
         if (!map.getTileType(xTile, yTile).equals("Grass")) {
             // System.out.println("can not place tower here");
-            return;
+            return null;
         }
+
+        // creating a tower entity
+        Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
+        Entity tower = new Tower(sprite, Types.TOWER); //throws exception nulpointer
 
         // Replacing af tile on the map at pos (x,y) with tower tile.
         map.changeTileType(xTile, yTile, "Tower");
 
-        int tileSize = map.getTileSize();
+        // setting variables
+        float deacceleration = 0;
+        float acceleration = 0;
         float speed = 0;
         float rotationSpeed = 5;
 
         Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
-        float x = (float) coordinate.x - tileSize / 2;
-        float y = (float) coordinate.y - tileSize / 2;
-        int radians = 0;
+        float x = (float) coordinate.x - map.getTileSize() / 2;
+        float y = (float) coordinate.y - map.getTileSize() / 2;
+        float radians = 3.1415f / 2;
 
-        Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
-        Entity tower = new Tower(sprite, Types.TOWER); //throws exception nulpointer
-        tower.add(new MovingPart(speed, rotationSpeed));
+        tower.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
         tower.add(new PositionPart(x, y, radians));
         tower.add(new LifePart(1));
         tower.setRadius(20);
         tower.add(new WeaponPart(300, 5, 10));
-        world.addEntity(tower);
+        return tower;
     }
 
     public void setProjectileSPI(ProjectileSPI projectileSPI) {
