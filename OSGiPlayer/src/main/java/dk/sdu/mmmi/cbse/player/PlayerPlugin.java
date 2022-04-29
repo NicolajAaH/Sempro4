@@ -37,7 +37,7 @@ public class PlayerPlugin implements IGamePluginService {
         float rotationSpeed = 0;
         float x = gameData.getDisplayWidth() / 2;
         float y = gameData.getDisplayHeight() / 2;
-        Integer radians = null;
+        int radians = 0;
 
         Texture texture = world.getTextureHashMap().get(Types.PLAYER);
         Sprite sprite = new Sprite(texture);

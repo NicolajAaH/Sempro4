@@ -56,10 +56,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
             PositionPart positionPart = enemy.getPart(PositionPart.class);
 
 
-            if(positionPart.getRadians() == MovingPart.left && positionPart.getX() > pathPart.getxGoal()) return;
-            if(positionPart.getRadians() == MovingPart.right && positionPart.getX() < pathPart.getxGoal()) return;
-            if(positionPart.getRadians() == MovingPart.down && positionPart.getY() > pathPart.getyGoal()) return;
-            if(positionPart.getRadians() == MovingPart.up && positionPart.getY() < pathPart.getyGoal()) return;
+            if(positionPart.getRadians() == PositionPart.left && positionPart.getX() > pathPart.getxGoal()) return;
+            if(positionPart.getRadians() == PositionPart.right && positionPart.getX() < pathPart.getxGoal()) return;
+            if(positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getyGoal()) return;
+            if(positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getyGoal()) return;
 
             setNewEnemyPath(enemy);
 
@@ -79,10 +79,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
         int pathYPlus = (int) (positionPart.getY() + layer.getTileWidth());
         int pathYMinus = (int) (positionPart.getY() - layer.getTileWidth());
 
-        if(setNewGoal(pathX, pathYMinus,enemy,MovingPart.down)) return;
-        if(setNewGoal(pathXPlus, pathY,enemy,MovingPart.right)) return;
-        if(setNewGoal(pathXMinus, pathY,enemy,MovingPart.left)) return;
-        if(setNewGoal(pathX, pathYPlus,enemy, MovingPart.up)) return;
+        if(setNewGoal(pathX, pathYMinus,enemy,PositionPart.down)) return;
+        if(setNewGoal(pathXPlus, pathY,enemy,PositionPart.right)) return;
+        if(setNewGoal(pathXMinus, pathY,enemy,PositionPart.left)) return;
+        if(setNewGoal(pathX, pathYPlus,enemy, PositionPart.up)) return;
     }
 
     private boolean setNewGoal(int x, int y, Entity enemy, int direction){
@@ -108,6 +108,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         positionPart.setRadians(direction);
 
+
         System.out.println("GOAL: " + x + " " + y + " " + direction + " " + tile);
         return true;
 
@@ -125,7 +126,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 //tile.getOffsetX() + layer.getTileWidth() / 2;
         float y = 525;
                 //tile.getOffsetX() + layer.getTileHeight() / 2;
-        Integer radians = MovingPart.left;
+        int radians = PositionPart.left;
 
         PathPart path = new PathPart();
         path.setxGoal(500);
@@ -134,7 +135,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         Entity enemy = new Enemy(sprite, Types.ENEMY);
-        enemy.add(new MovingPart( speed, 0));
+        enemy.add(new MovingPart( speed, 0, true));
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new LifePart(1));
         enemy.add(path);

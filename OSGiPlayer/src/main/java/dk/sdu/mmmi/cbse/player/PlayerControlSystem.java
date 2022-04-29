@@ -32,7 +32,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
 
             GameKeys keys = gameData.getKeys();
-            positionPart.setRadians(keys.isDown(LEFT) ? MovingPart.left : keys.isDown(RIGHT) ? MovingPart.right : keys.isDown(UP) ? MovingPart.up : keys.isDown(DOWN) ? MovingPart.down : null);
+
+            handleInput(positionPart, movingPart, keys);
 
             if (gameData.getKeys().isDown(SPACE)) {
                 Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
@@ -42,6 +43,25 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
             lifePart.process(gameData, player);
+        }
+    }
+
+    private void handleInput(PositionPart positionPart, MovingPart movingPart, GameKeys keys){
+
+        if(keys.isDown(LEFT)){
+            positionPart.setRadians(PositionPart.left);
+            movingPart.setMoving(true);
+        } else if (keys.isDown(RIGHT)) {
+            positionPart.setRadians(PositionPart.right);
+            movingPart.setMoving(true);
+        } else if (keys.isDown(UP)) {
+            positionPart.setRadians(PositionPart.up);
+            movingPart.setMoving(true);
+        } else if (keys.isDown(DOWN)) {
+            positionPart.setRadians(PositionPart.down);
+            movingPart.setMoving(true);
+        }else {
+            movingPart.setMoving(false);
         }
     }
 

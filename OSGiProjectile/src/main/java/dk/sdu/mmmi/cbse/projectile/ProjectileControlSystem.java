@@ -76,7 +76,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // shooter entity parameteres
         float x = shooterPos.getX();
         float y = shooterPos.getY();
-        Integer radians = shooterPos.getRadians();
+        int radians = shooterPos.getRadians();
         float dt = gameData.getDelta();
 
         // parameters of projectile

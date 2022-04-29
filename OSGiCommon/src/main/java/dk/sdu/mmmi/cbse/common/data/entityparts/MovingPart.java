@@ -19,19 +19,24 @@ import static java.lang.Math.sqrt;
 
 public class MovingPart implements EntityPart {
 
-    public static final Integer right = 0;
-    public static final Integer up = 90;
-    public static final Integer left = 180;
-    public static final Integer down = 270;
+
 
     private float dx, dy;
     private float speed;
+
+    private boolean moving;
     private float rotationSpeed;
     private IMap map;
 
     public MovingPart(float speed, float rotationSpeed) {
         this.speed = speed;
         this.rotationSpeed = rotationSpeed;
+    }
+
+    public MovingPart(float speed, float rotationSpeed, boolean moving) {
+        this.speed = speed;
+        this.rotationSpeed = rotationSpeed;
+        this.moving = moving;
     }
 
     public float getDx() {
@@ -50,19 +55,26 @@ public class MovingPart implements EntityPart {
         this.rotationSpeed = rotationSpeed;
     }
 
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
+        if(!moving) return;
+
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
-        Integer radians = positionPart.getRadians();
-
-        if(radians == null) return;
+        int radians = positionPart.getRadians();
 
         float radians2 = (float) Math.toRadians(radians);
         dx = (float) cos(radians2) * speed;
         dy = (float) sin(radians2) * speed;
-
 
         if ((0 <= x + dx) && (x + dx <= 600) && (0 <= y + dy) && (y + dy <= 600)){
             // set position

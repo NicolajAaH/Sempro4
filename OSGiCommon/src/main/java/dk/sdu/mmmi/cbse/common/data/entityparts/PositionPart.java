@@ -16,13 +16,17 @@ import java.awt.*;
  */
 public class PositionPart implements EntityPart {
 
+    public static final int right = 0;
+    public static final int up = 90;
+    public static final int left = 180;
+    public static final int down = 270;
     private float x;
     private float y;
-    private Integer radians; // direction of movement
+    private int radians = 0; // direction of movement
     private String lastChange;
     private float originX, originY;
 
-    public PositionPart(float x, float y, Integer radians) {
+    public PositionPart(float x, float y, int radians) {
         this.x = x;
         this.y = y;
         this.originX = x;

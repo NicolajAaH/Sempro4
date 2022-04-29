@@ -98,7 +98,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
         float x = (float) coordinate.x - tileSize / 2;
         float y = (float) coordinate.y - tileSize / 2;
-        Integer radians = 0;
+        int radians = 0;
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
         Entity tower = new Tower(sprite, Types.TOWER); //throws exception nulpointer
