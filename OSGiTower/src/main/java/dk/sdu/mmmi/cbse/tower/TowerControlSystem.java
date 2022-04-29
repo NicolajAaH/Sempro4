@@ -77,14 +77,14 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     }
 
     // returning angle in degrees
-    private float getAngleBetweenEntities(Entity entity1, Entity entity2) {
+    private int getAngleBetweenEntities(Entity entity1, Entity entity2) {
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
         PositionPart positionPart2 = entity2.getPart(PositionPart.class);
         float deltaY = positionPart1.getY() - positionPart2.getY();
         float deltaX = positionPart1.getX() - positionPart2.getX();
         // calculating angle
         float angle = (float) Math.atan2(deltaY, deltaX);
-        return (float) Math.toDegrees(angle);
+        return (int) Math.toDegrees(angle);
     }
 
     @Override
@@ -111,18 +111,16 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         map.changeTileType(xTile, yTile, "Tower");
 
         // setting variables
-        float deacceleration = 0;
-        float acceleration = 0;
         float speed = 0;
         float rotationSpeed = 5;
 
         Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
         float x = (float) coordinate.x - map.getTileSize() / 2;
         float y = (float) coordinate.y - map.getTileSize() / 2;
-        float radians = 3.1415f / 2;
 
-        tower.add(new MovingPart(deacceleration, acceleration, speed, rotationSpeed));
-        tower.add(new PositionPart(x, y, radians));
+
+        tower.add(new MovingPart(speed, rotationSpeed));
+        tower.add(new PositionPart(x, y, 0));
         tower.add(new LifePart(1));
         tower.setRadius(20);
         tower.add(new WeaponPart(300, 5, 10));
