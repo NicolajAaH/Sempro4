@@ -78,7 +78,7 @@ public class MovingPart implements EntityPart {
         dx = (float) cos(radians2) * speed;
         dy = (float) sin(radians2) * speed;
 
-        if ((0 <= x + dx) && (x + dx <= 700) && (0 <= y + dy) && (y + dy <= 700)){
+        if ((0 <= x + dx) && (x + dx <= 12*58) && (0 <= y + dy) && (y + dy <= 12*58)){
             // set position
             x += dx;
             y += dy;

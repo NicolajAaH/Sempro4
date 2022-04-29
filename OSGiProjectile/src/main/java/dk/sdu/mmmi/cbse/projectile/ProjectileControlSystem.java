@@ -101,6 +101,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // getting sprite for projectile
         Texture texture = world.getTextureHashMap().get(Types.PROJECTILE);
         Sprite sprite = new Sprite(texture);
+        sprite.setCenter(sprite.getHeight()/2, sprite.getWidth()/2);
 
         // creating new projectile with entity parts and add to world
         Entity projectile = new Projectile(sprite, Types.PROJECTILE);

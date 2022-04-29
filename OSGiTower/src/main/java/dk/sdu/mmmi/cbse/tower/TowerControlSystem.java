@@ -43,7 +43,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             // random rotation
             int shouldRotate = r.nextInt(100);
             if (shouldRotate < 20) {
-                Integer radians = positionPart.getRadians();
+                int radians = positionPart.getRadians();
                 radians +=1;
                 if (360 < radians) {
                     radians = 0;
