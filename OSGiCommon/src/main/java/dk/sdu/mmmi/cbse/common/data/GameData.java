@@ -116,4 +116,9 @@ public class GameData {
     public void setLife(int life) {
         this.life = life;
     }
+
+    @Override
+    public String toString(){
+        return "Score = " + score + "/nLife " + life + "/nMoney " + money;
+    }
 }

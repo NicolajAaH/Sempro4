@@ -10,10 +10,12 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
 public class Tower extends Entity {
 
+    private int buildCost;
 
     public Tower(Sprite sprite, Types type) {
         super(sprite);
         this.type = type;
+        this.buildCost = 10;
     }
 
     @Override
@@ -30,7 +32,14 @@ public class Tower extends Entity {
         // setting posistion of sprite
         this.setPosition(positionPart.getX(), positionPart.getY());
         // setting rotation of sprite (using degrees NOT radians)
-        this.setRotation(positionPart.getRadians() != null ? positionPart.getRadians() : 0);
+        this.setRotation(positionPart.getRadians());
+    }
 
+    public int getBuildCost() {
+        return buildCost;
+    }
+
+    public void setBuildCost(int buildCost) {
+        this.buildCost = buildCost;
     }
 }
