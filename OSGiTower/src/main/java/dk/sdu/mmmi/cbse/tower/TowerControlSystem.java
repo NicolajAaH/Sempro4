@@ -18,7 +18,6 @@ import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 
-
 import java.awt.*;
 import java.util.Random;
 

@@ -31,5 +31,11 @@ public interface IMap {
 
     Point mapCoorToTileCoor(float x, float y);
 
+    int getMapHeigth();
+
+    int getMapWidth();
+
     Point getTileCoordinates(float x, float y);
+
+    int getTileId(int x, int y);
 }

@@ -157,8 +157,7 @@ public class MapType implements IMap {
         return new Point(tileX, tileY);
     }
 
-    // TODO: Add to interface if needed
-
+    @Override
     public int getTileId(int x, int y){
         //Get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
@@ -168,6 +167,20 @@ public class MapType implements IMap {
 
         // setting tile to til with the id tileId in the map tileset
         return cell.getTile().getId();
+    }
+
+    @Override
+    public int getMapHeigth(){
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+
+        return layer.getHeight() * getTileSize();
+    }
+
+     @Override
+     public int getMapWidth(){
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+
+        return layer.getWidth() * getTileSize();
     }
 
 }

@@ -3,7 +3,6 @@ package dk.sdu.mmmi.cbse.projectile;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
@@ -33,6 +32,18 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
             // checks if it has reached it's range
             if (positionPart.getDistanceFromOrigin() > weaponPart.getRange()){
+                world.removeEntity(projectile);
+            }
+
+            // check if reached left or right edge of map
+            if (positionPart.getX() > map.getMapWidth()-5 || positionPart.getX()-5 < 0) {
+                System.out.println("move proj");
+                world.removeEntity(projectile);
+            }
+
+            // check if reached top or buttom edge of map
+            if (positionPart.getY() > map.getMapHeigth()-5 || positionPart.getY()-5 < 0) {
+                System.out.println("move proj2");
                 world.removeEntity(projectile);
             }
         }
