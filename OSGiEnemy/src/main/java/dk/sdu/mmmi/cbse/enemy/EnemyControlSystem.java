@@ -44,8 +44,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
 
             movingPart.process(gameData, enemy);
+            lifePart.process(gameData, enemy);
 
-            if (lifePart.getLife() == 0) {
+            if (lifePart.isDead()) {
                 world.removeEntity(enemy);
                 return;
             }
@@ -64,6 +65,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             setNewEnemyPathTemp(enemy, gameData);
 
         }
+
     }
 
     private void setNewEnemyPathTemp(Entity enemy, GameData gameData){
@@ -148,7 +150,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         Entity enemy = new Enemy(sprite, Types.ENEMY);
         enemy.add(new MovingPart( speed, 0, true));
         enemy.add(new PositionPart(x, y, radians));
-        enemy.add(new LifePart(1));
+        enemy.add(new LifePart(5));
         enemy.add(path);
         world.addEntity(enemy);
     }
