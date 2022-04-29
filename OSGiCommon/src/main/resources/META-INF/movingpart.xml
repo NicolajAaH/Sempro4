@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart">
+    <implementation class="dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart"/>
+
+    <reference bind="setIMap" cardinality="0..1"
+               interface="dk.sdu.mmmi.cbse.commonmap.IMap"
+               name="IMap" policy="dynamic" unbind="removeIMap"/>
+</scr:component>

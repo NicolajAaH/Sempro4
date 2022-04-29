@@ -19,13 +19,16 @@ import static java.lang.Math.sqrt;
 
 public class MovingPart implements EntityPart {
 
-
+    public MovingPart() {
+    }
 
     private float dx, dy;
     private float speed;
 
     private boolean moving = false;
     private float rotationSpeed;
+
+    IMap iMap;
 
     public MovingPart(float speed, float rotationSpeed) {
         this.speed = speed;
@@ -75,7 +78,7 @@ public class MovingPart implements EntityPart {
         dx = (float) cos(radians2) * speed;
         dy = (float) sin(radians2) * speed;
 
-        if ((0 <= x + dx) && (x + dx <= 700) && (0 <= y + dy) && (y + dy <= 700)){
+        if ((0 <= x + dx) && (x + dx <= 12*58) && (0 <= y + dy) && (y + dy <= 12*58)){
             // set position
             x += dx;
             y += dy;
@@ -83,5 +86,14 @@ public class MovingPart implements EntityPart {
 
         positionPart.setPosition(x,y);
         positionPart.setRadians(radians);
+    }
+
+    public void setIMap(IMap iMap){
+        System.out.println(iMap);
+        this.iMap = iMap;
+    }
+
+    public void removeIMap(IMap iMap){
+        this.iMap = null;
     }
 }

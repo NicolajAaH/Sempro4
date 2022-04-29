@@ -147,6 +147,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         path.addPosition(map.getTileCoordinates(x,y));
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
+        sprite.setCenter(sprite.getHeight()/2, sprite.getWidth()/2);
         Entity enemy = new Enemy(sprite, Types.ENEMY);
         enemy.add(new MovingPart( speed, 0, true));
         enemy.add(new PositionPart(x, y, radians));
