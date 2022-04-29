@@ -62,13 +62,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
             if(positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getyGoal()) return;
             if(positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getyGoal()) return;
 
-            setNewEnemyPathTemp(enemy);
+            setNewEnemyPathTemp(enemy, gameData);
 
         }
 
     }
 
-    private void setNewEnemyPathTemp(Entity enemy){
+    private void setNewEnemyPathTemp(Entity enemy, GameData gameData){
         PathPart pathPart = enemy.getPart(PathPart.class);
         PositionPart positionPart = enemy.getPart(PositionPart.class);
         LifePart lifePart = enemy.getPart(LifePart.class);
@@ -84,6 +84,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         if(currentTileType != null && currentTileType.equals("End")){
             lifePart.setLife(0);
+            gameData.setLife(gameData.getLife()-1);
             return;
         }
 
@@ -99,7 +100,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
         String newTileType;
         String path = "Path";
         Point newTile = new Point(currentTile.x, currentTile.y);
-        Point newTileCoor = map.tileCoorToMapCoor(newTile.x, newTile.y);
 
         if(direction == PositionPart.down) {
             newTile.y = newTile.y - 1;
@@ -110,6 +110,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
         } else if (direction == PositionPart.right) {
             newTile.x = newTile.x + 1;
         }
+
+        Point newTileCoor = map.tileCoorToMapCoor(newTile.x, newTile.y);
 
         newTileType = map.getTileType(newTile.x, newTile.y);
 
@@ -132,7 +134,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getTiledMap().getLayers().get(0);
 
-        float speed = 1;
+        float speed = 2;
         float x = 600;
                 //tile.getOffsetX() + layer.getTileWidth() / 2;
         float y = 525;
