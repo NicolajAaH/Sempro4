@@ -22,6 +22,9 @@ public class CollisionManager implements IPostEntityProcessingService {
                 Entity iEntity = entities.get(i);
                 Entity oEntity = entities.get(o);
 
+                if (iEntity.getType() == Types.TOWER || oEntity.getType() == Types.TOWER)
+                    return;
+
                 if (iEntity.getType() == oEntity.getType()) //Should not collide when equal type
                     return;
 
