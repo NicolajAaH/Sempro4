@@ -26,9 +26,16 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
             PositionPart positionPart = projectile.getPart(PositionPart.class);
             MovingPart movingPart = projectile.getPart(MovingPart.class);
             WeaponPart weaponPart = projectile.getPart(WeaponPart.class);
+            LifePart lifePart = projectile.getPart(LifePart.class);
 
             movingPart.process(gameData, projectile);
             positionPart.process(gameData, projectile);
+            lifePart.process(gameData, projectile);
+
+            if(lifePart.isDead()){
+                world.removeEntity(projectile);
+                break;
+            }
 
             // checks if it has reached it's range
             if (positionPart.getDistanceFromOrigin() > weaponPart.getRange()){
