@@ -81,8 +81,8 @@ public class Game implements ApplicationListener {
         gameData.setLife(100);
         gameData.setMoney(50);
         gameData.setScore(0);
-        
-        // adding spirtes to textures
+
+        // adding sprites to textures
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon3.png")));
         textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));

@@ -11,6 +11,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
+import dk.sdu.mmmi.cbse.commontower.Tower;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 
 import java.awt.*;
@@ -35,8 +36,22 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(DOWN));
 
             if (gameData.getKeys().isDown(SPACE)) {
+                System.out.println(gameData);
+                Tower tower;
+
                 Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
-                towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
+                tower = (Tower) towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
+
+                if (tower !=null && tower.getBuildCost() > gameData.getMoney()) {
+                    tower = null;
+                    map.changeTileType((int) coordinates.x, (int) coordinates.y, "Grass");
+                    System.out.println("not enough money to build tower");
+                }
+
+                if (tower != null) {
+                    world.addEntity(tower);
+                    gameData.setMoney(gameData.getMoney()- tower.getBuildCost());
+                }
             }
 
             movingPart.process(gameData, player);

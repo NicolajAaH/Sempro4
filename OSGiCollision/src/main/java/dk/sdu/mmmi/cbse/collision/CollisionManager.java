@@ -30,7 +30,7 @@ public class CollisionManager implements IPostEntityProcessingService {
 
                 if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
                     // TODO: remove print statement
-                    System.out.println("*** Collision Detected ***");
+                    //System.out.println("*** Collision Detected ***");
 
 
                     LifePart iLifePart = iEntity.getPart(LifePart.class);
