@@ -89,7 +89,6 @@ public class MovingPart implements EntityPart {
     }
 
     public void setIMap(IMap iMap){
-        System.out.println(iMap);
         this.iMap = iMap;
     }
 
