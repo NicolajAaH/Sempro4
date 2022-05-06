@@ -30,19 +30,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Game implements ApplicationListener {
+public class Game extends com.badlogic.gdx.Game implements ApplicationListener {
 
-    private OrthographicCamera cam;
     private final GameData gameData = new GameData();
     private static final World world = new World();
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static final List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-    private OrthogonalTiledMapRenderer renderer;
     private SpriteBatch batch;
     public HashMap<Types, Texture> textures = new HashMap<>();
 
     private IMap map;
+
+    public IMap getMap() {
+        return map;
+    }
+
+    public GameData getGameData() {
+        return gameData;
+    }
+
+    public static World getWorld() {
+        return world;
+    }
+
+
 
     public Game() {
         init();
@@ -61,7 +73,9 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
+
+        // Set the screens
+        this.setScreen(new MapScreen(this));
 
         gameData.setGameStartTime(System.currentTimeMillis());
 
@@ -73,14 +87,11 @@ public class Game implements ApplicationListener {
         gameData.addAttack(new Attack(50000,160));
         gameData.addAttack(new Attack(60000,320));
 
-        renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
+
         batch = new SpriteBatch();
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
 
-        cam = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        cam.translate(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2);
-        cam.update();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
@@ -116,22 +127,18 @@ public class Game implements ApplicationListener {
                     break;
             }
         }
+
+
     }
 
 
     @Override
     public void render() {
-        // clear screen to black
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        super.render();
 
-        gameData.setDelta(Gdx.graphics.getDeltaTime());
-        gameData.getKeys().update();
-
-        renderer.setView(cam);
-        renderer.render();
         update();
     }
+
 
     private void update() {
         // Update
@@ -149,9 +156,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        cam.viewportHeight = height;
-        cam.viewportWidth = width;
-        cam.update();
+
     }
 
     @Override
@@ -167,11 +172,11 @@ public class Game implements ApplicationListener {
     }
 
     public void addEntityProcessingService(IEntityProcessingService eps) {
-        this.entityProcessorList.add(eps);
+        entityProcessorList.add(eps);
     }
 
     public void removeEntityProcessingService(IEntityProcessingService eps) {
-        this.entityProcessorList.remove(eps);
+        entityProcessorList.remove(eps);
     }
 
     public void addPostEntityProcessingService(IPostEntityProcessingService eps) {
@@ -183,14 +188,15 @@ public class Game implements ApplicationListener {
     }
 
     public void addGamePluginService(IGamePluginService plugin) {
-        this.gamePluginList.add(plugin);
+        gamePluginList.add(plugin);
         plugin.start(gameData, world);
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {
-        this.gamePluginList.remove(plugin);
+        gamePluginList.remove(plugin);
         plugin.stop(gameData, world);
     }
+
 
     public void setIMap(IMap map) {
         this.map = map;
@@ -199,4 +205,6 @@ public class Game implements ApplicationListener {
     public void removeIMap(IMap map){
         this.map = null;
     }
+
+
 }
