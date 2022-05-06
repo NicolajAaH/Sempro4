@@ -30,6 +30,7 @@ public class MapType implements IMap {
     public void setTiledMap(TiledMap tiledMap) {
         this.tiledMap = tiledMap;
         collectCells();
+
     }
 
     private void collectCells(){

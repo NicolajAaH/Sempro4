@@ -46,6 +46,8 @@ public class Game implements ApplicationListener {
 
     public Game() {
         init();
+
+
     }
 
     public void init() {
@@ -62,6 +64,9 @@ public class Game implements ApplicationListener {
     @Override
     public void create() {
         map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
+
+        PathFinder pathFinder = new PathFinder(map);
+        System.out.println("path: " + pathFinder.calculatePath());
 
         gameData.setGameStartTime(System.currentTimeMillis());
 
