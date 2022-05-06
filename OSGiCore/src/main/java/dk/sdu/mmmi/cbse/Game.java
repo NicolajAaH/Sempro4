@@ -65,13 +65,9 @@ public class Game implements ApplicationListener {
 
         gameData.setGameStartTime(System.currentTimeMillis());
 
-        gameData.addAttack(new Attack(0,5));
-        gameData.addAttack(new Attack(10000,10));
-        gameData.addAttack(new Attack(20000,20));
-        gameData.addAttack(new Attack(30000,40));
-        gameData.addAttack(new Attack(40000,80));
-        gameData.addAttack(new Attack(50000,160));
-        gameData.addAttack(new Attack(60000,320));
+        for(int x = 0 ; x < 100 ; x++){
+            gameData.addAttack(new Attack(x*10000,x*2));
+        }
 
         renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
         batch = new SpriteBatch();

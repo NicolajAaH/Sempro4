@@ -17,26 +17,33 @@ import java.awt.*;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class EnemyControlSystem implements IEntityProcessingService {
 
+    ThreadPoolExecutor executor =
+            (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
     private IMap map;
     @Override
     public void process(GameData gameData, World world) {
         List<Attack> currentAttacks = gameData.getCurrentAttacks();
 
-        for (Attack attack : currentAttacks) {
-            if(attack.getAttackNumber() > 0) {
-                createEnemy(gameData, world);
-                attack.setAttackNumber(attack.getAttackNumber() - 1);
-                attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
-                gameData.addMoney(1);
-            }else {
-                gameData.removeAttack(attack);
-            }
-        }
-
         List<Entity> enemies = world.getEntities(Enemy.class);
+
+            for (Attack attack : currentAttacks) {
+                if (attack.getAttackNumber() > 0) {
+                    createEnemy(gameData, world);
+                    attack.setAttackNumber(attack.getAttackNumber() - 1);
+                    attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
+                    gameData.addMoney(1);
+                } else {
+                    gameData.removeAttack(attack);
+                }
+            }
+
+
+        enemies = world.getEntities(Enemy.class);
 
         Collections.shuffle(enemies);
 
@@ -53,18 +60,19 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
         }
 
+
         for (Entity enemy : enemies) {
+            executor.submit(() -> {
+                PathPart pathPart = enemy.getPart(PathPart.class);
+                PositionPart positionPart = enemy.getPart(PositionPart.class);
 
-            PathPart pathPart = enemy.getPart(PathPart.class);
-            PositionPart positionPart = enemy.getPart(PositionPart.class);
+                if(positionPart.getRadians() == PositionPart.left && positionPart.getX() > pathPart.getxGoal()) return;
+                if(positionPart.getRadians() == PositionPart.right && positionPart.getX() < pathPart.getxGoal()) return;
+                if(positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getyGoal()) return;
+                if(positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getyGoal()) return;
 
-            if(positionPart.getRadians() == PositionPart.left && positionPart.getX() > pathPart.getxGoal()) return;
-            if(positionPart.getRadians() == PositionPart.right && positionPart.getX() < pathPart.getxGoal()) return;
-            if(positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getyGoal()) return;
-            if(positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getyGoal()) return;
-
-            setNewEnemyPathTemp(enemy, gameData);
-
+                setNewEnemyPathTemp(enemy, gameData);
+            });
         }
 
     }
@@ -79,7 +87,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         String currentTileType = map.getTileType(currentTile.x, currentTile.y);
 
-
         if(currentTileType != null && currentTileType.equals("End")){
             lifePart.setLife(0);
             gameData.setLife(gameData.getLife()-1);
@@ -90,6 +97,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.down)) return;
         if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.left)) return;
         if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.right)) return;
+
 
     }
 
@@ -127,11 +135,11 @@ public class EnemyControlSystem implements IEntityProcessingService {
     private void createEnemy(GameData gameData, World world){
         ArrayList<TiledMapTileLayer.Cell> tiles = map.getTilesOfType("Start");
 
-        TiledMapTile tile = tiles.get(0).getTile();
+        //TiledMapTile tile = tiles.get(0).getTile();
 
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getTiledMap().getLayers().get(0);
+        //TiledMapTileLayer layer = (TiledMapTileLayer) map.getTiledMap().getLayers().get(0);
 
-        float speed = 2;
+        float speed = 1;
         float x = 600;
                 //tile.getOffsetX() + layer.getTileWidth() / 2;
         float y = 525;
@@ -146,10 +154,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         sprite.setCenter(sprite.getHeight()/2, sprite.getWidth()/2);
         Entity enemy = new Enemy(sprite, Types.ENEMY);
-        enemy.setRadius(27);
+        enemy.setRadius(40);
         enemy.add(new MovingPart( speed, 0, true));
         enemy.add(new PositionPart(x, y, radians));
-        enemy.add(new LifePart(20));
+        enemy.add(new LifePart(10000));
         enemy.add(path);
         world.addEntity(enemy);
     }
