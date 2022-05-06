@@ -64,7 +64,7 @@ public class Game extends com.badlogic.gdx.Game implements ApplicationListener {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "TowerDefense";
         cfg.width = 1200;
-        cfg.height = 800;
+        cfg.height = 696; //Height of map
         cfg.useGL30 = false;
         cfg.resizable = false;
 
