@@ -41,6 +41,9 @@ public class CollisionManager implements IPostEntityProcessingService {
                     if (iEntity.getType() == Types.PROJECTILE)
                         world.removeEntity(iEntity);
                     iLifePart.setLife(iLifePart.getLife() - 1);
+                    if (iLifePart.getLife() <= 0){
+                        world.removeEntity(iEntity);
+                    }
                 }
 
             }
