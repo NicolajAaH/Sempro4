@@ -24,10 +24,15 @@ import java.util.Random;
 import java.util.List;
 
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
-
     private ProjectileSPI projectileLauncher;
     private IMap map;
     private Random r = new Random();
+
+    // weight of heuristics
+    int weightDistanceToEnd = 5;
+    int weightLife = 10;
+    int weightDistanceToStart = -1;
+    int weightDistanceToTower = -1;
     @Override
     public void process(GameData gameData, World world) {
 
@@ -64,12 +69,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 // SELECT ENEMY TO TARGET
                 Entity selectedEnemy = null;
                 float minHuristics = 10000000;
-
-                // weight of heuristics
-                int weightDistanceToEnd = 5;
-                int weightLife = 10;
-                int weightDistanceToStart = -1;
-                int weightDistanceToTower = -1;
 
                 for (Entity enemy : reachableEnemies) {
                     LifePart enemyLifePart = enemy.getPart(LifePart.class);
