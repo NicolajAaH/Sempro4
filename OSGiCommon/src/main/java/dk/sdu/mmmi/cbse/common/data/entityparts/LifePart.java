@@ -47,7 +47,6 @@ public class LifePart implements EntityPart {
         if (isHit) {
             life =- 1;
             isHit = false;
-
         }
         if (life <= 0) {
             dead = true;

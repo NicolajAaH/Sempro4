@@ -44,20 +44,13 @@ public class CollisionManager implements IPostEntityProcessingService {
                     PositionPart iPosition = iEntity.getPart(PositionPart.class);
                     PositionPart oPosition = oEntity.getPart(PositionPart.class);
 
-                    // Calculate distance between two entities
-                    double distance = Math.sqrt(Math.pow((iPosition.getX() - oPosition.getX()), 2) + Math.pow((iPosition.getY() - oPosition.getY()),2));
+                if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
 
-                    if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
-                        // TODO: remove print statement
+                    LifePart iLifePart = iEntity.getPart(LifePart.class);
 
-                        LifePart iLifePart = iEntity.getPart(LifePart.class);
-                        LifePart oLifePart = oEntity.getPart(LifePart.class);
+                    if(iEntity.getType() == Types.PROJECTILE) world.removeEntity(iEntity);
 
-                        iLifePart.setLife(iLifePart.getLife() -1);
-                        oLifePart.setLife(iLifePart.getLife() -1);
-                        iLifePart.setIsHit(true);
-                        //oLifePart.setIsHit(true);
-                    }
+                    iLifePart.setLife(iLifePart.getLife()-1);
                 }
 
 

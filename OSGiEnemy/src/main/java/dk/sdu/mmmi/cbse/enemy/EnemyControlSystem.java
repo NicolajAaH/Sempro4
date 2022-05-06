@@ -52,12 +52,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
 
             movingPart.process(gameData, enemy);
-            lifePart.process(gameData, enemy);
-
-            if (lifePart.isDead()) {
-                world.removeEntity(enemy);
-                return;
-            }
         }
 
 
