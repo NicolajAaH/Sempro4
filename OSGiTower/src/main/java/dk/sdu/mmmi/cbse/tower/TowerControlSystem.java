@@ -60,7 +60,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
             if(currentEnemy != null){
                 positionPart.setRadians((getAngleBetweenEntities(tower, currentEnemy) + 180) % 360);
-                int shouldShoot = r.nextInt(100);
+                int shouldShoot = r.nextInt(50);
                 if (shouldShoot < 1) {
                     projectileLauncher.createProjectile(tower, gameData, world);
                 }
