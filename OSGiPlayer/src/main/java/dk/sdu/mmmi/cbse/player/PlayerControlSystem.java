@@ -44,17 +44,17 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 Tower tower;
 
                 Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
-                tower = (Tower) towerSPI.createTower(world, (int) coordinates.x, (int) coordinates.y);
+                tower = (Tower) towerSPI.createTower(world, coordinates.x, coordinates.y);
 
                 if (tower !=null && tower.getBuildCost() > gameData.getMoney()) {
                     tower = null;
-                    map.changeTileType((int) coordinates.x, (int) coordinates.y, "Grass");
+                    map.changeTileType(coordinates.x, coordinates.y, "Grass");
                     System.out.println("not enough money to build tower");
                 }
 
                 if (tower != null) {
                     world.addEntity(tower);
-                    gameData.setMoney(gameData.getMoney()- tower.getBuildCost());
+                    gameData.setMoney(gameData.getMoney() - tower.getBuildCost());
                 }
             }
 

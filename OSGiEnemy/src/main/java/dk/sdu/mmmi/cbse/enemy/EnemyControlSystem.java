@@ -2,21 +2,20 @@ package dk.sdu.mmmi.cbse.enemy;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import dk.sdu.mmmi.cbse.common.data.*;
-import dk.sdu.mmmi.cbse.common.data.Enums.Direction;
-import dk.sdu.mmmi.cbse.common.data.entityparts.*;
+import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PathPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonenemy.Enemy;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
-import org.lwjgl.Sys;
 
 import java.awt.*;
-import java.nio.file.Path;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -29,21 +28,20 @@ public class EnemyControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         List<Attack> currentAttacks = gameData.getCurrentAttacks();
 
-        List<Entity> enemies = world.getEntities(Enemy.class);
 
-            for (Attack attack : currentAttacks) {
-                if (attack.getAttackNumber() > 0) {
-                    createEnemy(gameData, world);
-                    attack.setAttackNumber(attack.getAttackNumber() - 1);
-                    attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
-                    gameData.addMoney(1);
-                } else {
-                    gameData.removeAttack(attack);
-                }
+        for (Attack attack : currentAttacks) {
+            if (attack.getAttackNumber() > 0) {
+                createEnemy(gameData, world);
+                attack.setAttackNumber(attack.getAttackNumber() - 1);
+                attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
+                gameData.addMoney(1);
+            } else {
+                gameData.removeAttack(attack);
             }
+        }
 
 
-        enemies = world.getEntities(Enemy.class);
+        List<Entity> enemies = world.getEntities(Enemy.class);
 
         Collections.shuffle(enemies);
 
@@ -52,6 +50,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
 
             movingPart.process(gameData, enemy);
+
         }
 
 
@@ -68,7 +67,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 setNewEnemyPathTemp(enemy, gameData);
             });
         }
-
     }
 
     private void setNewEnemyPathTemp(Entity enemy, GameData gameData){
@@ -127,17 +125,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
     }
 
     private void createEnemy(GameData gameData, World world){
-        ArrayList<TiledMapTileLayer.Cell> tiles = map.getTilesOfType("Start");
-
-        //TiledMapTile tile = tiles.get(0).getTile();
-
-        //TiledMapTileLayer layer = (TiledMapTileLayer) map.getTiledMap().getLayers().get(0);
+        Point start = map.getStartTileCoor();
 
         float speed = 1;
-        float x = 600;
-                //tile.getOffsetX() + layer.getTileWidth() / 2;
-        float y = 525;
-                //tile.getOffsetX() + layer.getTileHeight() / 2;
+        Point point = map.tileCoorToMapCoor(start.x, start.y);
+        float x = point.x;
+        float y = point.y;
         int radians = PositionPart.left;
 
         PathPart path = new PathPart();
@@ -148,7 +141,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         sprite.setCenter(sprite.getHeight()/2, sprite.getWidth()/2);
         Entity enemy = new Enemy(sprite, Types.ENEMY);
-        enemy.setRadius(40);
+        enemy.setRadius(27);
         enemy.add(new MovingPart( speed, 0, true));
         enemy.add(new PositionPart(x, y, radians));
         enemy.add(new LifePart(50));

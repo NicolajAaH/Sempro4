@@ -4,7 +4,6 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
 import java.awt.*;
-import java.util.HashSet;
 import java.util.Stack;
 
 
