@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.tower;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
@@ -26,45 +27,32 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
     private ProjectileSPI projectileLauncher;
     private IMap map;
+    private Random r = new Random();
+
 
     @Override
     public void process(GameData gameData, World world) {
 
+        // iterating through all towers
         for (Entity tower : world.getEntities(Tower.class)) {
             PositionPart positionPart = tower.getPart(PositionPart.class);
-
-            Random r = new Random();
-
-            // random shooting
-
-            // random rotation
-
-            //experiment with shooting towards an entity
-
-            // getting position of player
-
             WeaponPart weaponPart = tower.getPart(WeaponPart.class);
 
+            // creating list of enemies within range of tower
+            List<Entity> reachableEnemies = new ArrayList<>();
             List<Entity> enemies = world.getEntities(Enemy.class);
 
-            Entity currentEnemy = null;
-            Integer currentDistance = null;
-            
-            for(Entity enemy : enemies) {
-                int distance = getDistanceBetweenEntities(enemy, tower);
-                if (distance < weaponPart.getRange() && (currentDistance == null || distance < currentDistance)){
-                    currentEnemy = enemy;
-                    currentDistance = distance;
+            if (enemies != null) {
+                for (Entity enemy : enemies) {
+                   int distance = getDistanceBetweenEntities(enemy, tower);
+                   if (distance < weaponPart.getRange()){
+                      reachableEnemies.add(enemy);
+                  }
                 }
             }
 
-            if(currentEnemy != null){
-                positionPart.setRadians((getAngleBetweenEntities(tower, currentEnemy) + 180) % 360);
-                int shouldShoot = r.nextInt(50);
-                if (shouldShoot < 1) {
-                    projectileLauncher.createProjectile(tower, gameData, world);
-                }
-            }else {
+            // if no enemies is within range - rotate tower
+            if (reachableEnemies.size() == 0) {
                 int shouldRotate = r.nextInt(100);
                 if (shouldRotate < 20) {
                     int radians = positionPart.getRadians();
@@ -74,19 +62,37 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                     }
                     positionPart.setRadians(radians);
                 }
+            } else {
+
+                Entity selectedEnemy = null;
+
+                // iterating reachable enemies
+                for (Entity enemy : reachableEnemies) {
+
+                    // selecting the closest enemy
+                    int min_distance = 1000000;
+                    int distance = getDistanceBetweenEntities(enemy, tower);
+                    if (distance < min_distance) {
+                        selectedEnemy = enemy;
+                    }
+                }
+
+                // shoot
+                // check if projectile launceher is null!
+                positionPart.setRadians((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
+                int shouldShoot = r.nextInt(50);
+                if (shouldShoot < 1) {
+                    projectileLauncher.createProjectile(tower, gameData, world);
+                }
             }
-
-            //if (getDistanceBetweenEntities(player, tower) )
-
-            // get array of enemies within range of tower
 
             // TODO: SET DIRECTION OF SHOOTING- AI!
         }
     }
 
-    // TODO: evt refactor til Entity? getAngleToPoint
 
-    // Getting distance between entities
+
+    // TODO: evt refactor til Entity? getAngleToPoint
     private int getDistanceBetweenEntities(Entity entity1, Entity entity2){
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
         PositionPart positionPart2 = entity2.getPart(PositionPart.class);
