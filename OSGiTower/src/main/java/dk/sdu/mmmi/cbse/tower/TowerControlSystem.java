@@ -74,7 +74,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                     LifePart enemyLifePart = enemy.getPart(LifePart.class);
 
                     float enemyHeuristic = weightDistanceToEnd * getDistanceToEnd(enemy) + weightDistanceToStart * getDistanceToStart(enemy) +
-                            weightDistanceToTower * getDistanceBetweenEntities(enemy, tower) * weightLife * enemyLifePart.getLife();
+                            weightDistanceToTower * getDistanceBetweenEntities(enemy, tower) + weightLife * enemyLifePart.getLife();
 
                     if (enemyHeuristic < minHuristics){
                         minHuristics = enemyHeuristic;
@@ -82,7 +82,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                     }
                 }
 
-                System.out.println("Heuristcs total " + minHuristics);
+                System.out.println("Heuristcs total: " + minHuristics);
                 System.out.println("distance to end " + weightDistanceToEnd * getDistanceToEnd(selectedEnemy));
                 System.out.println("distance to start" + weightDistanceToStart * getDistanceToStart(selectedEnemy));
                 LifePart enemyLifePart = selectedEnemy.getPart(LifePart.class);
@@ -103,10 +103,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             }
         }
     }
-
-
-
-    // TODO: evt refactor til Entity? getAngleToPoint
 
     private float getDistanceToEnd(Entity enemy) {
         Point endTileCoordinat = map.getEndTileCoor();

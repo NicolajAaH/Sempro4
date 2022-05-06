@@ -151,7 +151,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         enemy.setRadius(40);
         enemy.add(new MovingPart( speed, 0, true));
         enemy.add(new PositionPart(x, y, radians));
-        enemy.add(new LifePart(10000));
+        enemy.add(new LifePart(50));
         enemy.add(path);
         world.addEntity(enemy);
     }
