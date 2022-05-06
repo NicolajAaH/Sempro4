@@ -86,7 +86,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         int radians = shooterPos.getRadians();
 
         // parameters of projectile
-        float speed = 5;
+        float speed = 6;
         float rotationSpeed = 0;
 
 
