@@ -67,40 +67,47 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
                 // weight of heuristics
                 int weightDistanceToEnd = 5;
-                int weightLife = 1000;
+                int weightLife = 10;
                 int weightDistanceToStart = -1;
                 int weightDistanceToTower = -1;
 
                 for (Entity enemy : reachableEnemies) {
                     LifePart enemyLifePart = enemy.getPart(LifePart.class);
+
                     float enemyHeuristic = weightDistanceToEnd * getDistanceToEnd(enemy) + weightDistanceToStart * getDistanceToStart(enemy) +
                             weightDistanceToTower * getDistanceBetweenEntities(enemy, tower) * weightLife * enemyLifePart.getLife();
+
                     if (enemyHeuristic < minHuristics){
                         minHuristics = enemyHeuristic;
                         selectedEnemy = enemy;
                     }
                 }
 
+                System.out.println("Heuristcs total " + minHuristics);
+                System.out.println("distance to end " + weightDistanceToEnd * getDistanceToEnd(selectedEnemy));
+                System.out.println("distance to start" + weightDistanceToStart * getDistanceToStart(selectedEnemy));
+                LifePart enemyLifePart = selectedEnemy.getPart(LifePart.class);
+                System.out.println("life " + weightLife * enemyLifePart.getLife());
+                System.out.println("distance to tower " + weightDistanceToTower * getDistanceBetweenEntities(selectedEnemy, tower));
+                System.out.println();
 
-                // shoot
-                if
-                // check if projectile launceher is null!
-                positionPart.setRadians((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
-                int shouldShoot = r.nextInt(50);
-                if (shouldShoot < 1) {
-                    projectileLauncher.createProjectile(tower, gameData, world);
+
+                // create projectile
+                if (projectileLauncher != null) {
+                    // set angle so tower points towards target
+                    positionPart.setRadians((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
+                    int shouldShoot = r.nextInt(50);
+                    if (shouldShoot < 1) {
+                        projectileLauncher.createProjectile(tower, gameData, world);
+                    }
                 }
             }
-
-            // TODO: SET DIRECTION OF SHOOTING- AI!
         }
     }
 
 
 
     // TODO: evt refactor til Entity? getAngleToPoint
-
-
 
     private float getDistanceToEnd(Entity enemy) {
         Point endTileCoordinat = map.getEndTileCoor();
