@@ -32,7 +32,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
     @Override
     public void process(GameData gameData, World world) {
-
+        
         // iterating through all towers
         for (Entity tower : world.getEntities(Tower.class)) {
             PositionPart positionPart = tower.getPart(PositionPart.class);

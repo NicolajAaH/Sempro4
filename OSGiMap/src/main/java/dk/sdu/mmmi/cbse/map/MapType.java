@@ -88,7 +88,42 @@ public class MapType implements IMap {
 
     @Override
     public ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property){
+
        return cells.stream().filter(cell -> cell.getTile().getProperties().get("Tag").equals(property)).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public Point getStartTileCoor(){
+        TiledMapTileLayer.Cell startCell = getTilesOfType("Start").get(0);
+
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+        for(int y = 0 ; y < layer.getHeight() ; y++){
+            for(int x = 0 ; x < layer.getHeight() ; x++){
+                if (layer.getCell(x,y).equals(startCell)){
+                    return new Point(x,y);
+                    //System.out.println("start x" + x);
+                    //System.out.println("start y" + y);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Point getEndTileCoor(){
+        TiledMapTileLayer.Cell startCell = getTilesOfType("End").get(0);
+
+        TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+        for(int y = 0 ; y < layer.getHeight() ; y++){
+            for(int x = 0 ; x < layer.getHeight() ; x++){
+                if (layer.getCell(x,y).equals(startCell)){
+                    return new Point(x,y);
+                    //System.out.println("start x" + x);
+                    //System.out.println("start y" + y);
+                }
+            }
+        }
+        return null;
     }
 
     @Override

@@ -18,9 +18,11 @@ public interface IMap {
 
     String getTileTypeByCoor(int x, int y);
 
-
     Point tileCoorToMapCoor(float x, float y);
 
+    Point getStartTileCoor();
+
+    Point getEndTileCoor();
     ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property);
 
     MapLayers getLayers();
