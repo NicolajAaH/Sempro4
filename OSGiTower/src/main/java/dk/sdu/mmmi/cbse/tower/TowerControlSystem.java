@@ -63,28 +63,32 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             } else {
                 // SELECT ENEMY TO TARGET
                 Entity selectedEnemy = null;
+                float minHuristics = 10000000;
 
-                // iterating reachable enemies
+                // weight of heuristics
+                int weightDistanceToEnd = 5;
+                int weightLife = 1000;
+                int weightDistanceToStart = -1;
+                int weightDistanceToTower = -1;
+
                 for (Entity enemy : reachableEnemies) {
-                    //System.out.println("distance to end enemy 1" + getDistanceToEnd(reachableEnemies.get(0)));
-
-                    // selecting the closest enemy
-                    int min_distance = 1000000;
-                    int distance = getDistanceBetweenEntities(enemy, tower);
-                    if (distance < min_distance) {
+                    LifePart enemyLifePart = enemy.getPart(LifePart.class);
+                    float enemyHeuristic = weightDistanceToEnd * getDistanceToEnd(enemy) + weightDistanceToStart * getDistanceToStart(enemy) +
+                            weightDistanceToTower * getDistanceBetweenEntities(enemy, tower) * weightLife * enemyLifePart.getLife();
+                    if (enemyHeuristic < minHuristics){
+                        minHuristics = enemyHeuristic;
                         selectedEnemy = enemy;
                     }
                 }
 
 
-                // mindste life, (tættest på mål, længst væk fra start), tættest på tårn.
-
                 // shoot
+                if
                 // check if projectile launceher is null!
                 positionPart.setRadians((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
                 int shouldShoot = r.nextInt(50);
                 if (shouldShoot < 1) {
-                    //projectileLauncher.createProjectile(tower, gameData, world);
+                    projectileLauncher.createProjectile(tower, gameData, world);
                 }
             }
 
@@ -96,9 +100,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
     // TODO: evt refactor til Entity? getAngleToPoint
 
-    private float closestToGoalHeuristic(){
-        return 0;
-    }
+
 
     private float getDistanceToEnd(Entity enemy) {
         Point endTileCoordinat = map.getEndTileCoor();
