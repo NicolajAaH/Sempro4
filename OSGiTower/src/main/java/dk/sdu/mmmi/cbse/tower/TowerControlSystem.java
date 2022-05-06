@@ -28,11 +28,9 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     private ProjectileSPI projectileLauncher;
     private IMap map;
     private Random r = new Random();
-
-
     @Override
     public void process(GameData gameData, World world) {
-        
+
         // iterating through all towers
         for (Entity tower : world.getEntities(Tower.class)) {
             PositionPart positionPart = tower.getPart(PositionPart.class);
@@ -63,11 +61,12 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                     positionPart.setRadians(radians);
                 }
             } else {
-
+                // SELECT ENEMY TO TARGET
                 Entity selectedEnemy = null;
 
                 // iterating reachable enemies
                 for (Entity enemy : reachableEnemies) {
+                    //System.out.println("distance to end enemy 1" + getDistanceToEnd(reachableEnemies.get(0)));
 
                     // selecting the closest enemy
                     int min_distance = 1000000;
@@ -77,12 +76,15 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                     }
                 }
 
+
+                // mindste life, (tættest på mål, længst væk fra start), tættest på tårn.
+
                 // shoot
                 // check if projectile launceher is null!
                 positionPart.setRadians((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
                 int shouldShoot = r.nextInt(50);
                 if (shouldShoot < 1) {
-                    projectileLauncher.createProjectile(tower, gameData, world);
+                    //projectileLauncher.createProjectile(tower, gameData, world);
                 }
             }
 
@@ -93,6 +95,28 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
 
     // TODO: evt refactor til Entity? getAngleToPoint
+
+    private float closestToGoalHeuristic(){
+        return 0;
+    }
+
+    private float getDistanceToEnd(Entity enemy) {
+        Point endTileCoordinat = map.getEndTileCoor();
+        Point endMapCoordinates = map.tileCoorToMapCoor((float) endTileCoordinat.x, (float) endTileCoordinat.y);
+        PositionPart positionPart = enemy.getPart(PositionPart.class);
+        float deltaY = positionPart.getY() - (float) endMapCoordinates.getY();
+        float deltaX = positionPart.getX() - (float) endMapCoordinates.getX();
+        return (float) Math.sqrt( ((deltaX * deltaX) + (deltaY * deltaY)));
+    }
+
+    private float getDistanceToStart(Entity enemy) {
+        Point startTileCoordinat = map.getStartTileCoor();
+        Point endMapCoordinates = map.tileCoorToMapCoor((float) startTileCoordinat.x, (float) startTileCoordinat.y);
+        PositionPart positionPart = enemy.getPart(PositionPart.class);
+        float deltaY = positionPart.getY() - (float) endMapCoordinates.getY();
+        float deltaX = positionPart.getX() - (float) endMapCoordinates.getX();
+        return (float) Math.sqrt( ((deltaX * deltaX) + (deltaY * deltaY)));
+    }
     private int getDistanceBetweenEntities(Entity entity1, Entity entity2){
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
         PositionPart positionPart2 = entity2.getPart(PositionPart.class);

@@ -101,8 +101,6 @@ public class MapType implements IMap {
             for(int x = 0 ; x < layer.getHeight() ; x++){
                 if (layer.getCell(x,y).equals(startCell)){
                     return new Point(x,y);
-                    //System.out.println("start x" + x);
-                    //System.out.println("start y" + y);
                 }
             }
         }
@@ -111,15 +109,13 @@ public class MapType implements IMap {
 
     @Override
     public Point getEndTileCoor(){
-        TiledMapTileLayer.Cell startCell = getTilesOfType("End").get(0);
+        TiledMapTileLayer.Cell endCell = getTilesOfType("End").get(0);
 
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
         for(int y = 0 ; y < layer.getHeight() ; y++){
             for(int x = 0 ; x < layer.getHeight() ; x++){
-                if (layer.getCell(x,y).equals(startCell)){
+                if (layer.getCell(x,y).equals(endCell)){
                     return new Point(x,y);
-                    //System.out.println("start x" + x);
-                    //System.out.println("start y" + y);
                 }
             }
         }
