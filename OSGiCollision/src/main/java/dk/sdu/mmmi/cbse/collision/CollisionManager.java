@@ -41,16 +41,12 @@ public class CollisionManager implements IPostEntityProcessingService {
                 double distance = Math.sqrt(Math.pow((iPosition.getX() - oPosition.getX()), 2) + Math.pow((iPosition.getY() - oPosition.getY()),2));
 
                 if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
-                    // TODO: remove print statement
-
 
                     LifePart iLifePart = iEntity.getPart(LifePart.class);
-                    LifePart oLifePart = oEntity.getPart(LifePart.class);
 
                     if(iEntity.getType() == Types.PROJECTILE) world.removeEntity(iEntity);
 
-                    iLifePart.setIsHit(true);
-                    oLifePart.setIsHit(true);
+                    iLifePart.setLife(iLifePart.getLife()-1);
                 }
 
             }
