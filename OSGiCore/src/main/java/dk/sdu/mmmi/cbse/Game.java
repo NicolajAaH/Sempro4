@@ -28,18 +28,15 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class Game implements ApplicationListener {
+public class Game extends com.badlogic.gdx.Game implements ApplicationListener {
 
-    private OrthographicCamera cam;
-    private final GameData gameData = new GameData(); // GameData object containing all the global variables of the game
+    private final GameData gameData = new GameData();
     private static final World world = new World();
 
     //Lists of services
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static final List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-
-
     private OrthogonalTiledMapRenderer renderer;
     private SpriteBatch batch;
     public HashMap<Types, Texture> textures = new HashMap<>();
@@ -79,15 +76,10 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        // setting initial values of games attributes
-        gameData.setLife(100);
-        gameData.setMoney(500);
-        gameData.setScore(0); //TODO: This is not changed anywhere (either fix it or remove it from the screen)
-        // Set the screen width and height (global variables) //TODO: Maybe these should be set in GameData.java and be final. these could also be used in init()
-        gameData.setDisplayWidth(Gdx.graphics.getWidth());
-        gameData.setDisplayHeight(Gdx.graphics.getHeight());
 
-        // Set the start time of the game to the current time
+        // Set the screens
+        this.setScreen(new MapScreen(this));
+
         gameData.setGameStartTime(System.currentTimeMillis());
 
         // Create the map
@@ -106,9 +98,6 @@ public class Game implements ApplicationListener {
         //Fonts
         createFonts();
 
-        cam = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        cam.translate(gameData.getDisplayWidth() / 2f, gameData.getDisplayHeight() / 2f);
-        cam.update();
 
         // Input processor
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
@@ -140,6 +129,8 @@ public class Game implements ApplicationListener {
                     break;
             }
         }
+
+
     }
     private void createFonts() {
         float fontSize = 0.1f;
@@ -217,9 +208,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
-        // clear screen to black
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        super.render();
 
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
@@ -234,6 +223,7 @@ public class Game implements ApplicationListener {
 
         update();
     }
+
 
     private void update() {
         if(gameData.getLife() <=0){
@@ -254,9 +244,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        cam.viewportHeight = height;
-        cam.viewportWidth = width;
-        cam.update();
+
     }
 
     @Override
@@ -299,7 +287,7 @@ public class Game implements ApplicationListener {
         plugin.stop(gameData, world);
     }
 
-    //TODO: Why are these here?
+
     public void setIMap(IMap map) {
         this.map = map;
     }
@@ -307,4 +295,6 @@ public class Game implements ApplicationListener {
     public void removeIMap(IMap map){
         this.map = null;
     }
+
+
 }
