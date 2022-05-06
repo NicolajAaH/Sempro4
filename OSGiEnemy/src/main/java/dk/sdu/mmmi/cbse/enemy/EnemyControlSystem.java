@@ -50,7 +50,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
 
             movingPart.process(gameData, enemy);
-
+            if (lifePart.getLife() <= 0){
+                world.removeEntity(enemy);
+            }
         }
 
 
@@ -140,11 +142,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         sprite.setCenter(sprite.getHeight()/2, sprite.getWidth()/2);
+        //TODO set sprite +28
         Entity enemy = new Enemy(sprite, Types.ENEMY);
         enemy.setRadius(27);
         enemy.add(new MovingPart( speed, 0, true));
         enemy.add(new PositionPart(x, y, radians));
-        enemy.add(new LifePart(50));
+        enemy.add(new LifePart(10));
         enemy.add(path);
         world.addEntity(enemy);
     }

@@ -135,6 +135,9 @@ public class Game implements ApplicationListener {
     }
 
     private void update() {
+        if(gameData.getLife() <=0){
+            //TODO stop the game
+        }
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
             entityProcessorService.process(gameData, world);
