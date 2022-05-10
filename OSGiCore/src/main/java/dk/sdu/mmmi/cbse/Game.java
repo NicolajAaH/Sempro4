@@ -55,40 +55,9 @@ public class Game implements ApplicationListener {
     private BitmapFont scoreFont;
     private BitmapFont moneyFont;
     private BitmapFont lifeFont;
+    private BitmapFont messagesFont;
 
 
-    private void createFonts() {
-        float fontSize = 0.1f;
-
-        //HighScore
-        scoreFont = new BitmapFont(); //create
-        scoreFont.setColor(Color.CYAN); //color
-        scoreFont.scale(fontSize); //resize
-
-        //Money
-        moneyFont = new BitmapFont();
-        moneyFont.setColor(Color.MAGENTA);
-        moneyFont.scale(fontSize);
-
-        //Life
-        lifeFont = new BitmapFont();
-        lifeFont.setColor(Color.GREEN);
-        lifeFont.scale(fontSize);
-    }
-
-
-    private void drawFonts() {
-        //Font positions
-        int fontSpacing = 25;
-        int fontX = SCREEN_WIDTH - 190;
-        int scoreY = SCREEN_HEIGHT - fontSpacing;
-        int lifeY = SCREEN_HEIGHT - 2 * fontSpacing;
-        int moneyY = SCREEN_HEIGHT - 3 * fontSpacing;
-
-        scoreFont.draw(batch, ("Score: " + gameData.getScore()), fontX, scoreY);
-        lifeFont.draw(batch, ("Life: " + gameData.getLife()), fontX, lifeY);
-        moneyFont.draw(batch, ("Money: " + gameData.getMoney()), fontX, moneyY);
-    }
 
 
     public Game() {
@@ -169,6 +138,53 @@ public class Game implements ApplicationListener {
                     textures.get(Types.PROJECTILE);
                     break;
             }
+        }
+    }
+    private void createFonts() {
+        float fontSize = 0.1f;
+
+        //HighScore
+        scoreFont = new BitmapFont(); //create
+        scoreFont.setColor(Color.CYAN); //color
+        scoreFont.scale(fontSize); //resize
+
+        //Money
+        moneyFont = new BitmapFont();
+        moneyFont.setColor(Color.MAGENTA);
+        moneyFont.scale(fontSize);
+
+        //Life
+        lifeFont = new BitmapFont();
+        lifeFont.setColor(Color.GREEN);
+        lifeFont.scale(fontSize);
+
+        //Messages
+        messagesFont = new BitmapFont();
+        messagesFont.setColor(Color.RED);
+        messagesFont.scale(fontSize);
+
+    }
+
+
+    private void drawFonts() {
+        //Font positions
+        int fontSpacing = 25;
+        int fontX = SCREEN_WIDTH - 190;
+        int scoreY = SCREEN_HEIGHT - fontSpacing;
+        int lifeY = SCREEN_HEIGHT - 2 * fontSpacing;
+        int moneyY = SCREEN_HEIGHT - 3 * fontSpacing;
+
+        scoreFont.draw(batch, ("Score: " + gameData.getScore()), fontX, scoreY);
+        lifeFont.draw(batch, ("Life: " + gameData.getLife()), fontX, lifeY);
+        moneyFont.draw(batch, ("Money: " + gameData.getMoney()), fontX, moneyY);
+
+        // Message when player is dead from collision
+        if (gameData.isPlayerDead) {
+            String message = "The Player is dead! " +
+                    "\n\nYou can no longer place " +
+                    "\nnew Towers";
+            messagesFont.drawMultiLine(batch, message, fontX, SCREEN_HEIGHT - 5 * fontSpacing);
+
         }
     }
 

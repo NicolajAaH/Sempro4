@@ -16,6 +16,8 @@ public class GameData {
     final private ArrayList<Attack> attacks = new ArrayList<>();
     private long gameStartTime;
 
+    public boolean isPlayerDead = false;
+
     // Global game variables
     private int score; // total No of killed monsters
     private int money; // to buy towers, goes up when monsters are killed
