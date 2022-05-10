@@ -19,7 +19,7 @@ public class GameData {
     // Global game variables
     private int score; // total No of killed monsters
     private int money; // to buy towers, goes up when monsters are killed
-    private int life; // Dereases when monsters reach end of path, 0 = gameover!
+    private int life; // Decreases when monsters reach end of path, 0 = gameover!
 
 
     public long getGameStartTime() {
