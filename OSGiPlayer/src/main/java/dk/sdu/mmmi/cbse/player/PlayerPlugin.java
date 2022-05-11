@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.player;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.Entity;
@@ -12,6 +14,9 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.commonplayer.Player;
 
+import java.io.File;
+import java.util.HashMap;
+
 
 public class PlayerPlugin implements IGamePluginService {
 
@@ -19,8 +24,20 @@ public class PlayerPlugin implements IGamePluginService {
     }
 
     @Override
-    public void start(GameData gameData, World world) {
-
+    public void start(GameData gameData, World world, HashMap<Types, Texture> textures) {
+        float speed = 3;
+        float rotationSpeed = 0;
+        float x = gameData.getDisplayWidth() / 2f-50;
+        float y = gameData.getDisplayHeight() / 2f;
+        int radians = 0;
+        Texture texture = textures.get(Types.PLAYER);
+        Sprite sprite = new Sprite(texture);
+        Entity player = new Player(sprite, Types.PLAYER);
+        player.add(new MovingPart(speed, rotationSpeed));
+        player.add(new PositionPart(x, y, radians));
+        player.add(new LifePart(1));
+        player.setRadius(20);
+        world.addEntity(player);
     }
 
     @Override
@@ -31,24 +48,6 @@ public class PlayerPlugin implements IGamePluginService {
         }
     }
 
-    @Override
-    public Entity create(GameData gameData, World world) {
-        float speed = 3;
-        float rotationSpeed = 0;
-        float x = gameData.getDisplayWidth() / 2f-50;
-        float y = gameData.getDisplayHeight() / 2f;
-        int radians = 0;
-
-        Texture texture = world.getTextureHashMap().get(Types.PLAYER);
-        Sprite sprite = new Sprite(texture);
-        Entity player = new Player(sprite, Types.PLAYER);
-        player.add(new MovingPart(speed, rotationSpeed));
-        player.add(new PositionPart(x, y, radians));
-        player.add(new LifePart(1));
-        player.setRadius(20);
-        world.addEntity(player);
-        return player;
-    }
 
     @Override
     public Types getType() {

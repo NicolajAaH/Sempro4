@@ -42,8 +42,7 @@ public class Game implements ApplicationListener {
 
     private OrthogonalTiledMapRenderer renderer;
     private SpriteBatch batch;
-    public HashMap<Types, Texture> textures = new HashMap<>();
-
+    private static HashMap<Types, Texture> textures = new HashMap<>();
     private IMap map;
 
     // Screen size
@@ -57,8 +56,6 @@ public class Game implements ApplicationListener {
     private BitmapFont moneyFont;
     private BitmapFont lifeFont;
     private BitmapFont messagesFont;
-
-
 
 
     public Game() {
@@ -114,32 +111,12 @@ public class Game implements ApplicationListener {
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
         // adding sprites to textures
+        System.out.println(1);
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon3.png")));
         textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
         textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/projectile.png")));
         world.setTextureHashMap(textures);
-
-        // starting plugin services
-        for (IGamePluginService iGamePluginService : gamePluginList) {
-            switch (iGamePluginService.getType()){
-                case PLAYER:
-                    textures.get(Types.PLAYER);
-                    iGamePluginService.create(gameData, world);
-                    break;
-                case ENEMY:
-                    textures.get(Types.ENEMY);
-                    break;
-
-                case TOWER:
-                    textures.get(Types.TOWER);
-                    break;
-
-                case PROJECTILE:
-                    textures.get(Types.PROJECTILE);
-                    break;
-            }
-        }
     }
     private void createFonts() {
         float fontSize = 0.1f;
@@ -290,8 +267,14 @@ public class Game implements ApplicationListener {
     }
 
     public void addGamePluginService(IGamePluginService plugin) {
-        gamePluginList.add(plugin);
-        plugin.start(gameData, world);
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                gamePluginList.add(plugin);
+                plugin.start(gameData, world, Game.textures);
+            }
+        });
+
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {
