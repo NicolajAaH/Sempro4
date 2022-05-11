@@ -58,6 +58,20 @@ public class Game extends com.badlogic.gdx.Game implements ApplicationListener {
 
 
 
+    public IMap getMap() {
+        return map;
+    }
+
+    public GameData getGameData() {
+        return gameData;
+    }
+
+    public static World getWorld() {
+        return world;
+    }
+
+
+
     public Game() {
         init();
     }
