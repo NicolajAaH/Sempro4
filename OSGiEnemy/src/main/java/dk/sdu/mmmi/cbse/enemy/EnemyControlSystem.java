@@ -91,8 +91,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
         if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.down)) return;
         if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.left)) return;
         if(setNewGoal(pathPart, positionPart, currentTile, PositionPart.right)) return;
-
-
     }
 
     private boolean setNewGoal(PathPart pathPart, PositionPart positionPart, Point currentTile, int direction){
@@ -117,8 +115,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         if (newTileType != null && (newTileType.equals(path) || newTileType.equals("End")) && !pathPart.isExplored(newTile)) {
             positionPart.setRadians(direction);
-            pathPart.setyGoal(newTileCoor.y);
-            pathPart.setxGoal(newTileCoor.x);
+            pathPart.setyGoal(newTileCoor.y - map.getTileSize() / 2);
+            pathPart.setxGoal(newTileCoor.x - map.getTileSize() / 2);
             pathPart.addPosition(newTile);
             return true;
         }
@@ -142,23 +140,20 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         sprite.setCenter(sprite.getHeight()/2, sprite.getWidth()/2);
-        //TODO set sprite +28
         Entity enemy = new Enemy(sprite, Types.ENEMY);
         enemy.setRadius(27);
         enemy.add(new MovingPart( speed, 0, true));
-        enemy.add(new PositionPart(x, y, radians));
+        enemy.add(new PositionPart(x- map.getTileSize() / 2, y- map.getTileSize() / 2, radians));
         enemy.add(new LifePart(10));
         enemy.add(path);
         world.addEntity(enemy);
     }
-
     @Override
     public void draw(SpriteBatch spriteBatch, World world) {
         for (Entity enemy : world.getEntities(Enemy.class)) {
             enemy.draw(spriteBatch);
         }
     }
-
     public void setIMap(IMap map) {
         this.map = map;
     }
