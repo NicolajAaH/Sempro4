@@ -30,10 +30,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         for (Attack attack : currentAttacks) {
             if (attack.getAttackNumber() > 0) {
-                createEnemy(world);
+                createEnemy(world, gameData);
                 attack.setAttackNumber(attack.getAttackNumber() - 1);
                 attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
-                gameData.addMoney(1);
+                gameData.addMoney(2);
             } else {
                 gameData.removeAttack(attack);
             }
@@ -51,7 +51,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
         }
 
-
         for (Entity enemy : enemies) {
             executor.submit(() -> {
                 PathPart pathPart = enemy.getPart(PathPart.class);
@@ -62,19 +61,24 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 if(positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getGoal().y) return;
                 if(positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getGoal().y) return;
 
-                setNewEnemyPath(enemy);
+                setNewEnemyPath(enemy, gameData);
             });
         }
     }
 
-    private void setNewEnemyPath(Entity enemy){
+    private void setNewEnemyPath(Entity enemy, GameData gameData){
         PathPart pathPart = enemy.getPart(PathPart.class);
+        LifePart lifePart = enemy.getPart(LifePart.class);
         PositionPart positionPart = enemy.getPart(PositionPart.class);
+
         PathDirection newTile = pathPart.getPath().pop();
         pathPart.setGoal(newTile.getGoal());
         positionPart.setRadians(newTile.getDirection());
 
-        System.out.println(newTile);
+        if(pathPart.getPath().isEmpty()){
+            gameData.setLife(gameData.getLife()-1);
+            lifePart.setLife(0);
+        }
 
     }
 
@@ -87,7 +91,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
             Point newTile = path.get(x-1);
             PathDirection direction = new PathDirection(getDirection(currentTile,newTile), map.getTileCenter(newTile));
 
-            System.out.println("TILE: " + newTile + "DIRECTION: " + direction);
             pathDirections.add(direction);
         }
 
@@ -102,7 +105,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
     }
 
 
-    private void createEnemy(World world){
+    private void createEnemy(World world, GameData gameData){
         Point start = map.getStartTileCoor();
 
         float speed = 1;
@@ -121,7 +124,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         enemy.add(new PositionPart(x- map.getTileSize() / 2, y- map.getTileSize() / 2, radians));
         enemy.add(new LifePart(10));
         enemy.add(path);
-        setNewEnemyPath(enemy);
+        setNewEnemyPath(enemy, gameData);
         world.addEntity(enemy);
     }
     @Override

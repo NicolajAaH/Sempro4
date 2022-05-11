@@ -97,10 +97,8 @@ public class Game implements ApplicationListener {
 
         gameData.setGameStartTime(System.currentTimeMillis());
 
-        gameData.addAttack(new Attack(0,1));
-
         for(int x = 0 ; x < 100 ; x++){
-            //gameData.addAttack(new Attack(x*10000,x*2));
+            gameData.addAttack(new Attack(x*7000,x));
         }
 
         renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());

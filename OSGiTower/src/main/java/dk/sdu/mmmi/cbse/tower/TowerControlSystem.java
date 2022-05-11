@@ -74,11 +74,17 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 // use print for adjusting weights
                 printHeuristics(selectedEnemy, selectedTower);
 
+                    if (enemyHeuristic < minHuristics) {
+                        minHuristics = enemyHeuristic;
+                        selectedEnemy = enemy;
+                    }
+                }
+
                 // create projectile
                 if (projectileLauncher != null) {
                     // set angle so tower points towards target
                     positionPart.setRadians((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
-                    int shouldShoot = r.nextInt(50);
+                    int shouldShoot = r.nextInt(20);
                     if (shouldShoot < 1) {
                         projectileLauncher.createProjectile(tower, gameData, world);
                     }
