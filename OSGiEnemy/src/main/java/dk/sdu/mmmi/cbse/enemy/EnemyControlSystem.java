@@ -21,7 +21,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
     private IMap map;
-
     @Override
     public void process(GameData gameData, World world) {
         List<Attack> currentAttacks = gameData.getCurrentAttacks();
@@ -115,11 +114,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     private Entity createEnemy(Sprite sprite, IMap map) {
         Point start = map.getStartTileCoor();
+
         float speed = 1;
         Point point = map.tileCoorToMapCoor(start.x, start.y);
         float x = point.x;
         float y = point.y;
         int radians = PositionPart.left;
+
         PathPart path = new PathPart(getPathDirectionStack(map.getPath()));
         sprite.setCenter(sprite.getHeight() / 2, sprite.getWidth() / 2);
         Entity enemy = new Enemy(sprite, Types.ENEMY);
