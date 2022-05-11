@@ -19,17 +19,17 @@ import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 import java.util.List;
-
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     private ProjectileSPI projectileLauncher;
     private IMap map;
     private Random r = new Random();
 
+    private Tower selectedTower;
+
     // weight of heuristics
-    int weightDistanceToEnd = 5;
+    int weightDistanceToEnd = 6;
     int weightLife = 10;
     int weightDistanceToStart = -1;
     int weightDistanceToTower = -1;
@@ -38,18 +38,19 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
         // iterating through all towers
         for (Entity tower : world.getEntities(Tower.class)) {
+            selectedTower = (Tower) tower;
             PositionPart positionPart = tower.getPart(PositionPart.class);
             WeaponPart weaponPart = tower.getPart(WeaponPart.class);
-
-            // creating list of enemies within range of tower
-            List<Entity> reachableEnemies = new ArrayList<>();
             List<Entity> enemies = world.getEntities(Enemy.class);
+
+            // checking if there is reachable enemies and placing them in queue (minHeap)
+            PriorityQueue<Enemy> reachableEnemies = new PriorityQueue<>(10, new enemyComparator());
 
             if (enemies != null) {
                 for (Entity enemy : enemies) {
                    int distance = getDistanceBetweenEntities(enemy, tower);
                    if (distance < weaponPart.getRange()){
-                      reachableEnemies.add(enemy);
+                      reachableEnemies.add((Enemy) enemy);
                   }
                 }
             }
@@ -65,31 +66,14 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                     }
                     positionPart.setRadians(radians);
                 }
-            } else {
-                // SELECT ENEMY TO TARGET
-                Entity selectedEnemy = null;
-                float minHuristics = 10000000;
+            }
 
-                for (Entity enemy : reachableEnemies) {
-                    LifePart enemyLifePart = enemy.getPart(LifePart.class);
+            if (reachableEnemies.size() > 0) {
+                // Target the enemy with lowest heuristics (top of queue)
+                Enemy selectedEnemy = reachableEnemies.poll();
 
-                    float enemyHeuristic = weightDistanceToEnd * getDistanceToEnd(enemy) + weightDistanceToStart * getDistanceToStart(enemy) +
-                            weightDistanceToTower * getDistanceBetweenEntities(enemy, tower) + weightLife * enemyLifePart.getLife();
-
-                    if (enemyHeuristic < minHuristics){
-                        minHuristics = enemyHeuristic;
-                        selectedEnemy = enemy;
-                    }
-                }
-
-                System.out.println("Heuristcs total: " + minHuristics);
-                System.out.println("distance to end " + weightDistanceToEnd * getDistanceToEnd(selectedEnemy));
-                System.out.println("distance to start" + weightDistanceToStart * getDistanceToStart(selectedEnemy));
-                LifePart enemyLifePart = selectedEnemy.getPart(LifePart.class);
-                System.out.println("life " + weightLife * enemyLifePart.getLife());
-                System.out.println("distance to tower " + weightDistanceToTower * getDistanceBetweenEntities(selectedEnemy, tower));
-                System.out.println();
-
+                // use print for adjusting weights
+                printHeuristics(selectedEnemy, selectedTower);
 
                 // create projectile
                 if (projectileLauncher != null) {
@@ -104,6 +88,45 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         }
     }
 
+    private void printHeuristics(Enemy selectedEnemy, Tower tower){
+        System.out.println("Heuristcs total: " + getHeuristic(selectedEnemy, tower));
+        System.out.println(" -- composed of -- ");
+        System.out.println("distance to end " + weightDistanceToEnd * getDistanceToEnd(selectedEnemy));
+        System.out.println("distance to start" + weightDistanceToStart * getDistanceToStart(selectedEnemy));
+        LifePart enemyLifePart = selectedEnemy.getPart(LifePart.class);
+        System.out.println("life of enemy" + weightLife * enemyLifePart.getLife());
+        System.out.println("distance to tower " + weightDistanceToTower * getDistanceBetweenEntities(selectedEnemy, tower));
+        System.out.println();
+    }
+
+    class enemyComparator implements Comparator<Enemy> {
+        /**
+         * Compares two enemies by their heuristics
+         *
+         * @param enemy1 the first object to be compared.
+         * @param enemy2 the second object to be compared.
+         * @return negative if enemy1 has lowest heurisitcs, positive if enemy2 has lowest
+         */
+        @Override
+        public int compare(Enemy enemy1, Enemy enemy2) {
+            float heuristicEnemy1 = getHeuristic(enemy1, (Tower) selectedTower);
+            float heuristicEnemy2 = getHeuristic(enemy2, (Tower) selectedTower);
+            return (int) (heuristicEnemy1 - heuristicEnemy2);
+        }
+    }
+
+    private float getHeuristic(Enemy enemy, Tower tower){
+        // calculate heuristics of an enemy
+        LifePart enemyLifePart = enemy.getPart(LifePart.class);
+        float enemyHeuristic = 0;
+        enemyHeuristic += weightDistanceToEnd * getDistanceToEnd(enemy);
+        enemyHeuristic += weightDistanceToStart * getDistanceToStart(enemy);
+        enemyHeuristic += weightDistanceToTower * getDistanceBetweenEntities(enemy, tower);
+        enemyHeuristic += weightLife * enemyLifePart.getLife();
+        return enemyHeuristic;
+    }
+
+    // HELPER METHODS FOR HEURISTICS
     private float getDistanceToEnd(Entity enemy) {
         Point endTileCoordinat = map.getEndTileCoor();
         Point endMapCoordinates = map.tileCoorToMapCoor((float) endTileCoordinat.x, (float) endTileCoordinat.y);
@@ -112,7 +135,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         float deltaX = positionPart.getX() - (float) endMapCoordinates.getX();
         return (float) Math.sqrt( ((deltaX * deltaX) + (deltaY * deltaY)));
     }
-
     private float getDistanceToStart(Entity enemy) {
         Point startTileCoordinat = map.getStartTileCoor();
         Point endMapCoordinates = map.tileCoorToMapCoor((float) startTileCoordinat.x, (float) startTileCoordinat.y);
@@ -128,9 +150,8 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         float deltaX = positionPart1.getX() - positionPart2.getX();
         return (int) Math.sqrt( ((deltaX * deltaX) + (deltaY * deltaY)));
     }
-
-    // returning angle in degrees
     private int getAngleBetweenEntities(Entity entity1, Entity entity2) {
+        // returning angle in degrees
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
         PositionPart positionPart2 = entity2.getPart(PositionPart.class);
         float deltaY = positionPart1.getY() - positionPart2.getY();
@@ -170,7 +191,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
         float x = (float) coordinate.x - map.getTileSize() / 2;
         float y = (float) coordinate.y - map.getTileSize() / 2;
-
 
         tower.add(new MovingPart(speed, rotationSpeed));
         tower.add(new PositionPart(x, y, 0));
