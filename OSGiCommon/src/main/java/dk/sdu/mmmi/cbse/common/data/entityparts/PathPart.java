@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.PathDirection;
 
 import java.awt.*;
 import java.util.Stack;
@@ -9,37 +10,23 @@ import java.util.Stack;
 
 public class PathPart implements EntityPart{
 
-    private int xGoal;
-    private int yGoal;
+    private Point goal;
+    private Stack<PathDirection> path;
 
-    private final Stack<Point> explored = new Stack<>();
-
-    public int getxGoal() {
-        return xGoal;
+    public PathPart(Stack<PathDirection> path){
+        this.path = path;
     }
 
-    public void addPosition(Point position){
-        explored.push(position);
+    public Point getGoal() {
+        return goal;
     }
 
-    public boolean isExplored(Point position){
-        return explored.stream().anyMatch(in -> in.x == position.x && in.y == position.y);
+    public Stack<PathDirection> getPath() {
+        return path;
     }
 
-    public Point getCurrentTile(){
-        return explored.peek();
-    }
-
-    public void setxGoal(int xGoal) {
-        this.xGoal = xGoal;
-    }
-
-    public int getyGoal() {
-        return yGoal;
-    }
-
-    public void setyGoal(int yGoal) {
-        this.yGoal = yGoal;
+    public void setGoal(Point goal) {
+        this.goal = goal;
     }
 
     @Override

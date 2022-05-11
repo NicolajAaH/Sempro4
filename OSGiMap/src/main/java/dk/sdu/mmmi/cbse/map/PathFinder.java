@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse;
+package dk.sdu.mmmi.cbse.map;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
@@ -29,16 +29,12 @@ public class PathFinder {
 
         while (open.size() != 0){
             CalcPoint lowest = null;
-            System.out.println("while start");
             for(CalcPoint calcPoint : open){
                 if(lowest == null || calcPoint.dist < lowest.dist) lowest = calcPoint;
             }
-            System.out.println("lowest set: " + open.size());
 
             open.remove(lowest);
             closed.add(lowest);
-
-            System.out.println("lowest removed: " + open.size());
 
             if(lowest.type.equals("End")) {
                 goal = lowest;
@@ -46,32 +42,19 @@ public class PathFinder {
             }
             if(!lowest.type.equals("Path") && !lowest.type.equals("Start")) continue;
 
-            System.out.println("breaks done");
-
             addSurroundingToFringe(lowest, lowest.pathDist + 1);
-
-            System.out.println("open: " + open.size());
         }
-
-        System.out.println("search over");
 
         if(goal == null) return null;
 
         ArrayList<Point> path = new ArrayList<>();
 
-        System.out.println("do while start");
 
         do {
             path.add(goal.point);
             goal = goal.parent;
         }
         while(goal.parent != null);
-
-        System.out.println("do while over");
-
-        Collections.reverse(path);
-
-        System.out.println("collection over");
 
         return path;
     }
@@ -87,7 +70,6 @@ public class PathFinder {
         if(open.stream().anyMatch((calcPoint -> calcPoint.point.x == point.x && calcPoint.point.y == point.y))) return;
         if(closed.stream().anyMatch((calcPoint -> calcPoint.point.x == point.x && calcPoint.point.y == point.y))) return;
 
-        System.out.println("addToFringe: " + point.x + " " + point.y);
         open.add(
                 new CalcPoint(
                         calculateEuclideanDistance(point,goal),
@@ -97,7 +79,6 @@ public class PathFinder {
                         parent
                 )
         );
-        System.out.println("addToFringe closed");
     }
 
     private void addSurroundingToFringe(CalcPoint calcPoint, int pathDist){

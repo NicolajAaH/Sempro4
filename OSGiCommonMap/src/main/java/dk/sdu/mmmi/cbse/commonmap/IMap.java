@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Stack;
 
 public interface IMap {
 
@@ -27,6 +28,8 @@ public interface IMap {
 
     MapLayers getLayers();
 
+    ArrayList<Point> getPath();
+
     void changeTileType(int x, int y, String tileType);
 
     int getTileSize();
@@ -36,6 +39,8 @@ public interface IMap {
     int getMapHeigth();
 
     int getMapWidth();
+
+    Point getTileCenter(Point point);
 
     Point getTileCoordinates(float x, float y);
 
