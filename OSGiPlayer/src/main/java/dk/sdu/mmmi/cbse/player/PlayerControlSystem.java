@@ -1,7 +1,6 @@
 package dk.sdu.mmmi.cbse.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
@@ -39,22 +38,26 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             handleInput(positionPart, movingPart, keys);
 
-            if (gameData.getKeys().isDown(SPACE)) {
+            if (gameData.getKeys().isDown(SPACE)) { //TODO: Should only be called once per SPACE press, even when space is held down
+
                 System.out.println(gameData);
                 Tower tower;
 
                 Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
-                tower = (Tower) towerSPI.createTower(world, coordinates.x, coordinates.y);
+                tower = (Tower) towerSPI.createTower(gameData, world, coordinates.x, coordinates.y);
 
                 if (tower !=null && tower.getBuildCost() > gameData.getMoney()) {
+                    int buildCost = tower.getBuildCost();
                     tower = null;
                     map.changeTileType(coordinates.x, coordinates.y, "Grass");
-                    System.out.println("not enough money to build tower");
+                    gameData.setScreenMessage("You don't have enough \nmoney to buy a Tower \n\nTower cost: " + buildCost);
+                    //System.out.println("not enough money to build tower");
                 }
 
                 if (tower != null) {
                     world.addEntity(tower);
                     gameData.setMoney(gameData.getMoney() - tower.getBuildCost());
+                    gameData.setScore(gameData.getScore() + 10); //TODO: Score should not (only) be set here
                 }
             }
 

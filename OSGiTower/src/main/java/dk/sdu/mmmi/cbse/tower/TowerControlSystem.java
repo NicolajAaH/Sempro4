@@ -2,7 +2,6 @@ package dk.sdu.mmmi.cbse.tower;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Interpolation;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
@@ -148,11 +147,13 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     }
 
     @Override
-    public Entity createTower(World world, int xTile, int yTile) {
+    public Entity createTower(GameData gameData, World world, int xTile, int yTile) {
 
         // Checking tileProperties if tower can be created
         if (!map.getTileType(xTile, yTile).equals("Grass")) {
+            gameData.setScreenMessage("You can only place \nTowers on grass");
             // System.out.println("can not place tower here");
+
             return null;
         }
 

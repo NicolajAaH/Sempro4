@@ -26,6 +26,7 @@ import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class Game implements ApplicationListener {
 
@@ -179,13 +180,33 @@ public class Game implements ApplicationListener {
         moneyFont.draw(batch, ("Money: " + gameData.getMoney()), fontX, moneyY);
 
         // Message when player is dead from collision
-        if (gameData.isPlayerDead) {
+        if (gameData.isPlayerDead()) {
             String message = "The Player is dead! " +
                     "\n\nYou can no longer place " +
                     "\nnew Towers";
             messagesFont.drawMultiLine(batch, message, fontX, SCREEN_HEIGHT - 5 * fontSpacing);
 
         }
+
+        if (!gameData.getScreenMessage().isEmpty()) {
+            messagesFont.drawMultiLine(batch, gameData.getScreenMessage(), fontX, SCREEN_HEIGHT - 9 * fontSpacing);
+        }
+
+/*
+        while (gameData.getScreenMessage().isEmpty()) {
+
+            lifeFont.draw(batch, "Testing", fontX, SCREEN_HEIGHT - 7 * fontSpacing);
+
+            long now = System.currentTimeMillis();
+            long later = now + TimeUnit.SECONDS.toMillis(5);
+
+            if (now == later) {
+                gameData.setScreenMessage("hej");
+            }
+
+        }
+
+ */
     }
 
     public void createAttacks() {

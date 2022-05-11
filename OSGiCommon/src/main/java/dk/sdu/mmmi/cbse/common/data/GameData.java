@@ -16,7 +16,11 @@ public class GameData {
     final private ArrayList<Attack> attacks = new ArrayList<>();
     private long gameStartTime;
 
-    public boolean isPlayerDead = false;
+    private boolean isPlayerDead = false;
+
+    private String screenMessage = "";
+
+
 
     // Global game variables
     private int score; // total No of killed monsters
@@ -126,5 +130,21 @@ public class GameData {
     @Override
     public String toString(){
         return "Score = " + score + "/nLife " + life + "/nMoney " + money;
+    }
+
+    public boolean isPlayerDead() {
+        return isPlayerDead;
+    }
+
+    public void setPlayerDead(boolean playerDead) {
+        isPlayerDead = playerDead;
+    }
+
+    public String getScreenMessage() {
+        return screenMessage;
+    }
+
+    public void setScreenMessage(String screenMessage) {
+        this.screenMessage = screenMessage;
     }
 }
