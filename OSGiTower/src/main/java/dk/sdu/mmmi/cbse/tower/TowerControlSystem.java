@@ -69,7 +69,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
             if (reachableEnemies.size() > 0) {
                 // Target the enemy with lowest heuristics (top of queue)
-                Enemy selectedEnemy = reachableEnemies.poll();
+                Enemy selectedEnemy = reachableEnemies.peek();
 
                 // use print for adjusting weights
                 printHeuristics(selectedEnemy, selectedTower);
