@@ -35,8 +35,8 @@ public class PlayerPlugin implements IGamePluginService {
     public Entity create(GameData gameData, World world) {
         float speed = 3;
         float rotationSpeed = 0;
-        float x = gameData.getDisplayWidth() / 2;
-        float y = gameData.getDisplayHeight() / 2;
+        float x = gameData.getDisplayWidth() / 2f-50;
+        float y = gameData.getDisplayHeight() / 2f;
         int radians = 0;
 
         Texture texture = world.getTextureHashMap().get(Types.PLAYER);
@@ -45,7 +45,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new MovingPart(speed, rotationSpeed));
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1));
-        player.setRadius(40);
+        player.setRadius(20);
         world.addEntity(player);
         return player;
     }
