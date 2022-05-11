@@ -111,7 +111,6 @@ public class Game implements ApplicationListener {
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
         // adding sprites to textures
-        System.out.println(1);
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
         textures.put(Types.TOWER, new Texture(new OSGiFileHandle("/images/Sprites/cannon3.png")));
         textures.put(Types.ENEMY, new Texture(new OSGiFileHandle("/images/Sprites/monster.png")));
@@ -215,6 +214,7 @@ public class Game implements ApplicationListener {
     private void update() {
         if(gameData.getLife() <=0){
             //TODO stop the game
+            //access bundlecontext and unload all modules
         }
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
@@ -282,7 +282,6 @@ public class Game implements ApplicationListener {
         plugin.stop(gameData, world);
     }
 
-    //TODO: Why are these here?
     public void setIMap(IMap map) {
         this.map = map;
     }
