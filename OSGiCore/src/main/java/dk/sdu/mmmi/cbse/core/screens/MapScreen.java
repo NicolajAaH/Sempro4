@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse;
+package dk.sdu.mmmi.cbse.core.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,16 +6,26 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import dk.sdu.mmmi.cbse.Game;
 
 
 public class MapScreen implements Screen {
+
+    Stage stage;
+    Table table;
+    Skin skin;
+
 
     private OrthographicCamera cam;
     private OrthogonalTiledMapRenderer renderer;
 
     // Reference to game to access its variables
-    Game game;
+    private Game game;
 
 
 
@@ -36,9 +46,7 @@ public class MapScreen implements Screen {
     // Called for every frame rendering
     @Override
     public void render(float delta) {
-
         game.getMap().setTiledMap(new TmxMapLoader().load("Map.tmx"));
-
 
         renderer = new OrthogonalTiledMapRenderer(game.getMap().getTiledMap());
 

@@ -21,6 +21,7 @@ import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
+import dk.sdu.mmmi.cbse.core.screens.MapScreen;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
 import java.util.HashMap;
@@ -37,8 +38,7 @@ public class Game extends com.badlogic.gdx.Game implements ApplicationListener {
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static final List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-    private OrthogonalTiledMapRenderer renderer;
-    private SpriteBatch batch;
+    public SpriteBatch batch;
     public HashMap<Types, Texture> textures = new HashMap<>();
 
     private IMap map;
