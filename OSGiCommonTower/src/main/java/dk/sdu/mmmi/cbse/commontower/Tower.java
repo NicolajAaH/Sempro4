@@ -10,12 +10,12 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
 public class Tower extends Entity {
 
-    private int buildCost;
+    private int buildCost = 100;
 
     public Tower(Sprite sprite, Types type) {
         super(sprite);
         this.type = type;
-        this.buildCost = 100;
+        //this.buildCost;
     }
 
     @Override

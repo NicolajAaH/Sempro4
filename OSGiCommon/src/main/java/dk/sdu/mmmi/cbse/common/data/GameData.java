@@ -16,10 +16,16 @@ public class GameData {
     final private ArrayList<Attack> attacks = new ArrayList<>();
     private long gameStartTime;
 
+    private boolean isPlayerDead = false;
+
+    private String screenMessage = "";
+
+
+
     // Global game variables
     private int score; // total No of killed monsters
     private int money; // to buy towers, goes up when monsters are killed
-    private int life; // Dereases when monsters reach end of path, 0 = gameover!
+    private int life; // Decreases when monsters reach end of path, 0 = gameover!
 
 
     public long getGameStartTime() {
@@ -124,5 +130,21 @@ public class GameData {
     @Override
     public String toString(){
         return "Score = " + score + "/nLife " + life + "/nMoney " + money;
+    }
+
+    public boolean isPlayerDead() {
+        return isPlayerDead;
+    }
+
+    public void setPlayerDead(boolean playerDead) {
+        isPlayerDead = playerDead;
+    }
+
+    public String getScreenMessage() {
+        return screenMessage;
+    }
+
+    public void setScreenMessage(String screenMessage) {
+        this.screenMessage = screenMessage;
     }
 }

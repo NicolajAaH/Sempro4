@@ -42,6 +42,9 @@ public class CollisionManager implements IPostEntityProcessingService {
                         world.removeEntity(iEntity);
                     iLifePart.setLife(iLifePart.getLife() - 1);
                     if (iLifePart.getLife() <= 0){
+                        if (iEntity.getType() == Types.PLAYER) {
+                            gameData.setPlayerDead(true);
+                        }
                         world.removeEntity(iEntity);
                     }
                 }

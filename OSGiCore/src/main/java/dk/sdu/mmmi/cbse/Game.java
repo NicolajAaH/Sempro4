@@ -4,20 +4,18 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import dk.sdu.mmmi.cbse.common.data.Attack;
-import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
-import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
@@ -25,70 +23,95 @@ import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class Game implements ApplicationListener {
 
     private OrthographicCamera cam;
-    private final GameData gameData = new GameData();
+    private final GameData gameData = new GameData(); // GameData object containing all the global variables of the game
     private static final World world = new World();
+
+    //Lists of services
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static final List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
+
+
     private OrthogonalTiledMapRenderer renderer;
     private SpriteBatch batch;
     public HashMap<Types, Texture> textures = new HashMap<>();
 
     private IMap map;
 
+    // Screen size
+    private final int MAP_SIZE = 58 * 12; //tile size in pixels * number of tiles
+    private final int SCREEN_WIDTH = MAP_SIZE + 200;
+    private final int SCREEN_HEIGHT = MAP_SIZE;
+
+
+    //FONTS
+    private BitmapFont scoreFont;
+    private BitmapFont moneyFont;
+    private BitmapFont lifeFont;
+    private BitmapFont messagesFont;
+
+
+
+
     public Game() {
         init();
-
-
     }
 
     public void init() {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "TowerDefense";
-        cfg.width = 1200;
-        cfg.height = 800;
+        cfg.width = SCREEN_WIDTH;
+        cfg.height = SCREEN_HEIGHT;
         cfg.useGL30 = false;
         cfg.resizable = false;
 
         new LwjglApplication(this, cfg);
     }
 
+
     @Override
     public void create() {
-        map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
-
-        PathFinder pathFinder = new PathFinder(map);
-        System.out.println("path: " + pathFinder.calculatePath());
-
-        gameData.setGameStartTime(System.currentTimeMillis());
-
-        for(int x = 0 ; x < 100 ; x++){
-            gameData.addAttack(new Attack(x*10000,x*2));
-        }
-
-        renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
-        batch = new SpriteBatch();
+        // setting initial values of games attributes
+        gameData.setLife(100);
+        gameData.setMoney(500);
+        gameData.setScore(0); //TODO: This is not changed anywhere (either fix it or remove it from the screen)
+        // Set the screen width and height (global variables) //TODO: Maybe these should be set in GameData.java and be final. these could also be used in init()
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
 
+        // Set the start time of the game to the current time
+        gameData.setGameStartTime(System.currentTimeMillis());
+
+        // Create the map
+        map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
+        renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
+
+        // Find the path for enemies to walk TODO: is this correct?
+        PathFinder pathFinder = new PathFinder(map);
+        System.out.println("path: " + pathFinder.calculatePath());
+
+        createAttacks();
+
+        // Create sprite batch
+        batch = new SpriteBatch();
+
+        //Fonts
+        createFonts();
+
         cam = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        cam.translate(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2);
+        cam.translate(gameData.getDisplayWidth() / 2f, gameData.getDisplayHeight() / 2f);
         cam.update();
 
+        // Input processor
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
-
-        // setting initial values of games attributes
-        gameData.setLife(100);
-        gameData.setMoney(200);
-        gameData.setScore(0);
 
         // adding sprites to textures
         textures.put(Types.PLAYER, new Texture(new OSGiFileHandle("/images/Sprites/player_nogun.png")));
@@ -97,28 +120,100 @@ public class Game implements ApplicationListener {
         textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/projectile.png")));
         world.setTextureHashMap(textures);
 
-        // starting plug in services
+        // starting plugin services
         for (IGamePluginService iGamePluginService : gamePluginList) {
             switch (iGamePluginService.getType()){
                 case PLAYER:
-                    Texture texturePlayer = textures.get(Types.PLAYER);
+                    textures.get(Types.PLAYER);
                     iGamePluginService.create(gameData, world);
                     break;
                 case ENEMY:
-                    Texture textureEnemy = textures.get(Types.ENEMY);
+                    textures.get(Types.ENEMY);
                     break;
 
                 case TOWER:
-                    Texture textureTower = textures.get(Types.TOWER);
+                    textures.get(Types.TOWER);
                     break;
 
                 case PROJECTILE:
-                    Texture textureProjectile = textures.get(Types.PROJECTILE);
+                    textures.get(Types.PROJECTILE);
                     break;
             }
         }
     }
+    private void createFonts() {
+        float fontSize = 0.1f;
 
+        //HighScore
+        scoreFont = new BitmapFont(); //create
+        scoreFont.setColor(Color.CYAN); //color
+        scoreFont.scale(fontSize); //resize
+
+        //Money
+        moneyFont = new BitmapFont();
+        moneyFont.setColor(Color.MAGENTA);
+        moneyFont.scale(fontSize);
+
+        //Life
+        lifeFont = new BitmapFont();
+        lifeFont.setColor(Color.GREEN);
+        lifeFont.scale(fontSize);
+
+        //Messages
+        messagesFont = new BitmapFont();
+        messagesFont.setColor(Color.RED);
+        messagesFont.scale(fontSize);
+
+    }
+
+
+    private void drawFonts() {
+        //Font positions
+        int fontSpacing = 25;
+        int fontX = SCREEN_WIDTH - 190;
+        int scoreY = SCREEN_HEIGHT - fontSpacing;
+        int lifeY = SCREEN_HEIGHT - 2 * fontSpacing;
+        int moneyY = SCREEN_HEIGHT - 3 * fontSpacing;
+
+        scoreFont.draw(batch, ("Score: " + gameData.getScore()), fontX, scoreY);
+        lifeFont.draw(batch, ("Life: " + gameData.getLife()), fontX, lifeY);
+        moneyFont.draw(batch, ("Money: " + gameData.getMoney()), fontX, moneyY);
+
+        // Message when player is dead from collision
+        if (gameData.isPlayerDead()) {
+            String message = "The Player is dead! " +
+                    "\n\nYou can no longer place " +
+                    "\nnew Towers";
+            messagesFont.drawMultiLine(batch, message, fontX, SCREEN_HEIGHT - 5 * fontSpacing);
+
+        }
+
+        if (!gameData.getScreenMessage().isEmpty()) {
+            messagesFont.drawMultiLine(batch, gameData.getScreenMessage(), fontX, SCREEN_HEIGHT - 9 * fontSpacing);
+        }
+
+/*
+        while (gameData.getScreenMessage().isEmpty()) {
+
+            lifeFont.draw(batch, "Testing", fontX, SCREEN_HEIGHT - 7 * fontSpacing);
+
+            long now = System.currentTimeMillis();
+            long later = now + TimeUnit.SECONDS.toMillis(5);
+
+            if (now == later) {
+                gameData.setScreenMessage("hej");
+            }
+
+        }
+
+ */
+    }
+
+    public void createAttacks() {
+        for(int x = 0 ; x < 100 ; x++){
+            gameData.addAttack(new Attack(x*10000,x*2));
+        }
+    }
 
     @Override
     public void render() {
@@ -131,6 +226,12 @@ public class Game implements ApplicationListener {
 
         renderer.setView(cam);
         renderer.render();
+
+        // Starting batch and drawing fonts
+        batch.begin();
+        drawFonts();
+        batch.end();
+
         update();
     }
 
@@ -168,14 +269,16 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose() {
+        batch.dispose();
+        lifeFont.dispose();
     }
 
     public void addEntityProcessingService(IEntityProcessingService eps) {
-        this.entityProcessorList.add(eps);
+        entityProcessorList.add(eps);
     }
 
     public void removeEntityProcessingService(IEntityProcessingService eps) {
-        this.entityProcessorList.remove(eps);
+        entityProcessorList.remove(eps);
     }
 
     public void addPostEntityProcessingService(IPostEntityProcessingService eps) {
@@ -187,15 +290,16 @@ public class Game implements ApplicationListener {
     }
 
     public void addGamePluginService(IGamePluginService plugin) {
-        this.gamePluginList.add(plugin);
+        gamePluginList.add(plugin);
         plugin.start(gameData, world);
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {
-        this.gamePluginList.remove(plugin);
+        gamePluginList.remove(plugin);
         plugin.stop(gameData, world);
     }
 
+    //TODO: Why are these here?
     public void setIMap(IMap map) {
         this.map = map;
     }
