@@ -157,7 +157,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
     public void setIMap(IMap map) {
         this.map = map;
     }
-
     public void removeIMap(IMap map){
         this.map = null;
     }
