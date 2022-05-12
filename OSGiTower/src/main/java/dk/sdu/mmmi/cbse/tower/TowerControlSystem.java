@@ -73,7 +73,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 Enemy selectedEnemy = reachableEnemies.peek();
 
                 // use print for adjusting weights
-                printHeuristics(selectedEnemy, selectedTower);
+                // printHeuristics(selectedEnemy, selectedTower);
 
                 // create projectile
                 if (projectileLauncher != null) {
@@ -174,8 +174,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         // Checking tileProperties if tower can be created
         if (!map.getTileType(xTile, yTile).equals("Grass")) {
             gameData.setScreenMessage("You can only place \nTowers on grass");
-            // System.out.println("can not place tower here");
-
             return null;
         }
 

@@ -41,16 +41,20 @@ public class CollisionManager implements IPostEntityProcessingService {
                     if (iEntity.getType() == Types.PROJECTILE)
                         world.removeEntity(iEntity);
                     iLifePart.setLife(iLifePart.getLife() - 1);
+
                     if (iLifePart.getLife() <= 0){
                         if (iEntity.getType() == Types.PLAYER) {
                             gameData.setPlayerDead(true);
                         }
+                        // checking if enemy is dead & updates score
+                        if (iEntity.getType() == Types.ENEMY){
+                            gameData.setScore(gameData.getScore() + 1);
+                        }
+
                         world.removeEntity(iEntity);
                     }
                 }
-
             }
-
         }
     }
 }
