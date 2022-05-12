@@ -38,8 +38,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             handleInput(positionPart, movingPart, keys);
 
-            if (gameData.getKeys().isDown(SPACE)) { //TODO: Should only be called once per SPACE press, even when space is held down
-
+            if (gameData.getKeys().isDown(SPACE)) {
                 System.out.println(gameData);
                 Tower tower;
 
@@ -51,7 +50,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
                     tower = null;
                     map.changeTileType(coordinates.x, coordinates.y, "Grass");
                     gameData.setScreenMessage("You don't have enough \nmoney to buy a Tower \n\nTower cost: " + buildCost);
-                    //System.out.println("not enough money to build tower");
                 }
 
                 if (tower != null) {
