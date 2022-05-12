@@ -43,8 +43,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         for (Entity enemy : enemies) {
             MovingPart movingPart = enemy.getPart(MovingPart.class);
-            LifePart lifePart = enemy.getPart(LifePart.class);
-
             movingPart.process(gameData, enemy);
 
         }
@@ -66,7 +64,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     private void setNewEnemyPath(Entity enemy, GameData gameData, World world){
         PathPart pathPart = enemy.getPart(PathPart.class);
-        LifePart lifePart = enemy.getPart(LifePart.class);
         PositionPart positionPart = enemy.getPart(PositionPart.class);
 
         PathDirection newTile = pathPart.getPath().pop();
