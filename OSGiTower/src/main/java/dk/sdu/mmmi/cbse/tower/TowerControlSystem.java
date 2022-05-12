@@ -56,7 +56,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                     }
                 }
             }
-
             // if no enemies is within range - rotate tower
             if (reachableEnemies.size() == 0) {
                 int shouldRotate = r.nextInt(100);
@@ -218,5 +217,13 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
     public void removeIMap(IMap map) {
         this.map = null;
+    }
+
+    public Random getR() {
+        return r;
+    }
+
+    public void setR(Random r) {
+        this.r = r;
     }
 }
