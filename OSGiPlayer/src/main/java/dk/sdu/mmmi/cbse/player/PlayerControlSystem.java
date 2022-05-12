@@ -57,8 +57,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 if (tower != null) {
                     world.addEntity(tower);
                     gameData.setMoney(gameData.getMoney() - tower.getBuildCost());
-                    gameData.setScore(gameData.getScore() + 10); //TODO: Score should not (only) be set here
                 }
+                gameData.getKeys().setKey(SPACE, false);
             }
 
             movingPart.process(gameData, player);
