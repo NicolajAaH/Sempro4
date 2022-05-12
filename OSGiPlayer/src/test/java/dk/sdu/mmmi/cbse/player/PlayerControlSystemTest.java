@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,7 +27,6 @@ public class PlayerControlSystemTest {
 
     @Mock
     World world;
-
     GameKeys keys;
 
     @Mock
@@ -39,10 +37,12 @@ public class PlayerControlSystemTest {
 
 
 
-
-    //TODO: test player movement
-    @Test
-    public void testPlayerMovementUp(){
+    /*
+    tests player movement by checking that movingpart.process
+    and positionpart.process is called once each, each time the playerControlSystem.process is run
+     */
+    @Test   //gameData.
+    public void testPlayerMovement(){
         PlayerControlSystem playerControlSystem = new PlayerControlSystem();
         keys = new GameKeys();
 
@@ -63,14 +63,15 @@ public class PlayerControlSystemTest {
 //        assertTrue(positionPart.getY()>10);
         when(world.getEntities(any())).thenReturn(new ArrayList<Entity>(){{
             add(entity1);
-        }});
+    }});
         when(gameData.getKeys()).thenReturn(keys);
-        when(keys.isDown(any())).thenReturn(true);
-        gameData.set
+        //when(gameData.getKeys().isDown(any())).thenReturn(false);
+
 
         playerControlSystem.process(gameData, world);
 
         verify(movingPart,times(1)).process(any(), any());
+        verify(positionPart, times(1)).process(any(), any());
 
 
     }
