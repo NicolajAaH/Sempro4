@@ -34,7 +34,9 @@ public class PlayerControlSystem implements IEntityProcessingService {
             GameKeys keys = gameData.getKeys();
 
 
-            if(keys.isDown(SHIFT)) System.out.println(gameData);
+            if(keys.isDown(SHIFT)) {
+                System.out.println(gameData);
+            }
 
             handleInput(positionPart, movingPart, keys);
 
@@ -49,7 +51,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
                     tower = null;
                     map.changeTileType(coordinates.x, coordinates.y, "Grass");
                     gameData.setScreenMessage("You don't have enough \nmoney to buy a Tower \n\nTower cost: " + buildCost);
-                    //System.out.println("not enough money to build tower");
                 }
 
                 if (tower != null) {

@@ -174,8 +174,6 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         // Checking tileProperties if tower can be created
         if (!map.getTileType(xTile, yTile).equals("Grass")) {
             gameData.setScreenMessage("You can only place \nTowers on grass");
-            // System.out.println("can not place tower here");
-
             return null;
         }
 
