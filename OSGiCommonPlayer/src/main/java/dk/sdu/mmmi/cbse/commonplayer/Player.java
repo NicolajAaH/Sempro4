@@ -8,9 +8,6 @@ import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
 public class Player extends Entity {
-
-    private float speed = 60 * 2;
-
     public Player(Sprite sprite, Types type) {
         super(sprite);
         this.type = type;

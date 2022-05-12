@@ -12,10 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import dk.sdu.mmmi.cbse.common.data.Attack;
-import dk.sdu.mmmi.cbse.common.data.GameData;
-import dk.sdu.mmmi.cbse.common.data.Types;
-import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.*;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
@@ -191,7 +188,9 @@ public class Game implements ApplicationListener {
 
     private void update() {
         if (gameData.getLife() <= 0) {
-            restart = true;
+            if(gameData.getKeys().isDown(GameKeys.SPACE)){
+                restart = true;
+            }
             for (IGamePluginService iGamePluginService : gamePluginList) {
                 iGamePluginService.stop(gameData, world);
             }
