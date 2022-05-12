@@ -53,7 +53,7 @@ public class TowerTest {
     WeaponPart weaponPartMock = mock(WeaponPart.class);
 
     @Test
-    public void testProcess(){
+    public void testCreateProjectile(){
         TowerControlSystem towerControlSystem = new TowerControlSystem();
 
         // injecting mock dependencies
