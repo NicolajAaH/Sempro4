@@ -35,13 +35,16 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
                 world.removeEntity(projectile);
             }
 
-            // check if reached left or right edge of map
-            if (positionPart.getX() > map.getMapWidth() - 5 || positionPart.getX() - 5 < 0) {
+            // check if outside map
+            float radius = projectile.getRadius();
+            float centerX = positionPart.getX() + map.getTileSize()/2f;
+            float centerY = positionPart.getY() + map.getTileSize()/2f;
+
+            if (!(map.isInsideMap(centerX+2+radius, centerY+2+radius))) {
                 world.removeEntity(projectile);
             }
 
-            // check if reached top or buttom edge of map
-            if (positionPart.getY() > map.getMapHeigth() - 5 || positionPart.getY() - 5 < 0) {
+            if (!(map.isInsideMap(centerX+2-radius, centerY+2-radius))) {
                 world.removeEntity(projectile);
             }
         }
