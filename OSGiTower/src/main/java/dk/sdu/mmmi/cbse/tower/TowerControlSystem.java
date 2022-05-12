@@ -73,7 +73,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 Enemy selectedEnemy = reachableEnemies.peek();
 
                 // use print for adjusting weights
-                printHeuristics(selectedEnemy, selectedTower);
+                // printHeuristics(selectedEnemy, selectedTower);
 
                 // create projectile
                 if (projectileLauncher != null) {
