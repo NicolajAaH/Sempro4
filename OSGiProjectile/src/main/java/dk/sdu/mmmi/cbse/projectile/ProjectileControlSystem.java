@@ -44,13 +44,11 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
 
             // check if reached left or right edge of map
             if (positionPart.getX() > map.getMapWidth()-5 || positionPart.getX()-5 < 0) {
-                System.out.println("move proj");
                 world.removeEntity(projectile);
             }
 
             // check if reached top or buttom edge of map
             if (positionPart.getY() > map.getMapHeigth()-5 || positionPart.getY()-5 < 0) {
-                System.out.println("move proj2");
                 world.removeEntity(projectile);
             }
         }
@@ -73,7 +71,6 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // setting rotation of sprite TODO: rotate image 90' degress and delete +90
         entity.setRotation(positionPart.getRadians()+90);
     }
-
     @Override
     public void createProjectile(Entity shooter, GameData gameData, World world) {
 
@@ -88,7 +85,6 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // parameters of projectile
         float speed = 6;
         float rotationSpeed = 0;
-
 
         // calculating offset from shooter (start coordinates of projectile)
         float bx = (float) cos(toRadians(radians)) * shooter.getRadius();

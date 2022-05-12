@@ -40,6 +40,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             selectedTower = (Tower) tower;
             PositionPart positionPart = tower.getPart(PositionPart.class);
             WeaponPart weaponPart = tower.getPart(WeaponPart.class);
+
             List<Entity> enemies = world.getEntities(Enemy.class);
 
             // checking if there is reachable enemies and placing them in queue (minHeap)
