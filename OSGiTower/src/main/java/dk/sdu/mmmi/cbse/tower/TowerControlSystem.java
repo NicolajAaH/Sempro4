@@ -48,10 +48,10 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
             if (enemies != null) {
                 for (Entity enemy : enemies) {
-                   int distance = getDistanceBetweenEntities(enemy, tower);
-                   if (distance < weaponPart.getRange()){
-                      reachableEnemies.add((Enemy) enemy);
-                  }
+                    int distance = getDistanceBetweenEntities(enemy, tower);
+                    if (distance < weaponPart.getRange()){
+                        reachableEnemies.add((Enemy) enemy);
+                    }
                 }
             }
 
@@ -75,17 +75,11 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 // use print for adjusting weights
                 printHeuristics(selectedEnemy, selectedTower);
 
-                    if (enemyHeuristic < minHuristics) {
-                        minHuristics = enemyHeuristic;
-                        selectedEnemy = enemy;
-                    }
-                }
-
                 // create projectile
                 if (projectileLauncher != null) {
                     // set angle so tower points towards target
                     positionPart.setRadians((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
-                    int shouldShoot = r.nextInt(20);
+                    int shouldShoot = r.nextInt(50);
                     if (shouldShoot < 1) {
                         projectileLauncher.createProjectile(tower, gameData, world);
                     }
@@ -169,9 +163,9 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
     @Override
     public void draw(SpriteBatch batch, World world) {
-       for (Entity tower : world.getEntities(Tower.class)) {
-           tower.draw(batch);
-       }
+        for (Entity tower : world.getEntities(Tower.class)) {
+            tower.draw(batch);
+        }
     }
 
     @Override

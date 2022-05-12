@@ -216,11 +216,11 @@ public class Game implements ApplicationListener {
         if(gameData.getLife() <=0){
             //TODO stop the game
             //access bundlecontext and unload all modules
-            Bundle bundle = FrameworkUtil.getBundle(IBulletCreation.class);
+            /*Bundle bundle = FrameworkUtil.getBundle(IBulletCreation.class);
             BundleContext bundleContext = bundle.getBundleContext();
             bundleContext.
             ServiceReference serviceReference = bundleContext.getServiceReference(IBulletCreation.class);
-            iBulletService = (IBulletCreation) bundleContext.getService(serviceReference);
+            iBulletService = (IBulletCreation) bundleContext.getService(serviceReference);*/
         }
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
