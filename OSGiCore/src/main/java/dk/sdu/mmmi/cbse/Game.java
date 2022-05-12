@@ -42,15 +42,18 @@ public class Game implements ApplicationListener {
 
     // Screen size
     private final int MAP_SIZE = 58 * 12; //tile size in pixels * number of tiles
-    private final int SCREEN_WIDTH = MAP_SIZE + 200;
-    private final int SCREEN_HEIGHT = MAP_SIZE;
+    private final int SCREEN_BAR_WIDTH = 300;
+    private final int SCREEN_WIDTH = MAP_SIZE + SCREEN_BAR_WIDTH;
+    private final int MAP_HEIGHT = MAP_SIZE;
 
 
     //FONTS
     private BitmapFont scoreFont;
     private BitmapFont moneyFont;
     private BitmapFont lifeFont;
-    private BitmapFont messagesFont;
+    private BitmapFont feedbackToPlayerFont;
+    private BitmapFont howToPlayFont;
+    private BitmapFont gameOverFont;
 
 
     public Game() {
@@ -61,7 +64,7 @@ public class Game implements ApplicationListener {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "TowerDefense";
         cfg.width = SCREEN_WIDTH;
-        cfg.height = SCREEN_HEIGHT;
+        cfg.height = MAP_HEIGHT;
         cfg.useGL30 = false;
         cfg.resizable = false;
 
@@ -72,7 +75,7 @@ public class Game implements ApplicationListener {
     @Override
     public void create() {
         // setting initial values of games attributes
-        gameData.setLife(10);
+        gameData.setLife(2);
         gameData.setMoney(500);
         gameData.setWave(0);
         gameData.setScore(0); //TODO: This is not changed anywhere (either fix it or remove it from the screen)
@@ -134,35 +137,64 @@ public class Game implements ApplicationListener {
         lifeFont.scale(fontSize);
 
         //Messages
-        messagesFont = new BitmapFont();
-        messagesFont.setColor(Color.RED);
-        messagesFont.scale(fontSize);
-    }
+        feedbackToPlayerFont = new BitmapFont();
+        feedbackToPlayerFont.setColor(Color.ORANGE);
+        feedbackToPlayerFont.scale(fontSize);
 
+        //How to play
+        howToPlayFont = new BitmapFont();
+        howToPlayFont.setColor(Color.WHITE);
+        howToPlayFont.scale(fontSize);
+
+        //Game Over
+        gameOverFont = new BitmapFont();
+        gameOverFont.setColor(Color.RED);
+        gameOverFont.scale(fontSize*2);
+    }
 
     private void drawFonts() {
         //Font positions
         int fontSpacing = 25;
-        int fontX = SCREEN_WIDTH - 190;
-        int scoreY = SCREEN_HEIGHT - fontSpacing;
-        int lifeY = SCREEN_HEIGHT - 2 * fontSpacing;
-        int moneyY = SCREEN_HEIGHT - 3 * fontSpacing;
+        int x = SCREEN_WIDTH - SCREEN_BAR_WIDTH + 10;
+        int scoreY = MAP_HEIGHT - fontSpacing;
+        int lifeY = MAP_HEIGHT - 2 * fontSpacing;
+        int moneyY = MAP_HEIGHT - 3 * fontSpacing;
+        int howToPlayY = MAP_HEIGHT - 24 * fontSpacing;
+        int messageY = MAP_HEIGHT - 15 * fontSpacing;
 
-        scoreFont.draw(batch, ("Score: " + gameData.getScore()), fontX, scoreY);
-        lifeFont.draw(batch, ("Life: " + gameData.getLife()), fontX, lifeY);
-        moneyFont.draw(batch, ("Money: " + gameData.getMoney()), fontX, moneyY);
+        // Info about score, life and money
+        scoreFont.draw(batch, ("Score: " + gameData.getScore()), x, scoreY);
+        lifeFont.draw(batch, ("Life: " + gameData.getLife()), x, lifeY);
+        moneyFont.draw(batch, ("Money: " + gameData.getMoney()), x, moneyY);
+
+        //How to play message
+        String howToPlay = "HOW TO PLAY: " +
+                "\n- Use the ARROWS to move the Player" +
+                "\n- Press SPACE to place a Tower" +
+                "\n- Don't run into the Monsters";
+        howToPlayFont.drawMultiLine(batch, howToPlay, x, howToPlayY);
 
         // Message when player is dead from collision
         if (gameData.isPlayerDead()) {
             String message = "The Player is dead! " +
                     "\n\nYou can no longer place " +
                     "\nnew Towers";
-            messagesFont.drawMultiLine(batch, message, fontX, SCREEN_HEIGHT - 5 * fontSpacing);
+            feedbackToPlayerFont.drawMultiLine(batch, message, x, messageY);
         }
 
-        // crate message on screen
+        // Messages for feedback to player during game
         if (!gameData.getScreenMessage().isEmpty()) {
-            messagesFont.drawMultiLine(batch, gameData.getScreenMessage(), fontX, SCREEN_HEIGHT - 9 * fontSpacing);
+            feedbackToPlayerFont.drawMultiLine(batch, gameData.getScreenMessage(), x, messageY);
+        }
+
+        // GAME OVER message when no more life TODO: change to if (gameData.getLife() <= 0)
+        if (gameData.isPlayerDead()) {
+            feedbackToPlayerFont.dispose(); // Remove messages to player
+            //TODO: remove all enemies from the game
+
+            String gameOver = "GAME OVER" +
+                    "\n\nYou have no more life";
+            gameOverFont.drawMultiLine(batch, gameOver, x, messageY);
         }
     }
 
