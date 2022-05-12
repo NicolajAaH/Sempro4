@@ -46,9 +46,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
 
             movingPart.process(gameData, enemy);
-            if (lifePart.getLife() <= 0){
-                world.removeEntity(enemy);
-            }
+
         }
 
         for (Entity enemy : enemies) {
@@ -61,12 +59,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 if(positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getGoal().y) return;
                 if(positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getGoal().y) return;
 
-                setNewEnemyPath(enemy, gameData);
+                setNewEnemyPath(enemy, gameData, world);
             });
         }
     }
 
-    private void setNewEnemyPath(Entity enemy, GameData gameData){
+    private void setNewEnemyPath(Entity enemy, GameData gameData, World world){
         PathPart pathPart = enemy.getPart(PathPart.class);
         LifePart lifePart = enemy.getPart(LifePart.class);
         PositionPart positionPart = enemy.getPart(PositionPart.class);
@@ -75,11 +73,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
         pathPart.setGoal(newTile.getGoal());
         positionPart.setRadians(newTile.getDirection());
 
+        // checking if reached end of path
         if(pathPart.getPath().isEmpty()){
-            gameData.setLife(gameData.getLife()-1);
-            lifePart.setLife(0);
+            world.removeEntity(enemy);
         }
-
     }
 
 
@@ -104,7 +101,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
         return PositionPart.down;
     }
 
-
     private void createEnemy(World world, GameData gameData){
         Point start = map.getStartTileCoor();
 
@@ -124,7 +120,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         enemy.add(new PositionPart(x- map.getTileSize() / 2, y- map.getTileSize() / 2, radians));
         enemy.add(new LifePart(10));
         enemy.add(path);
-        setNewEnemyPath(enemy, gameData);
+        setNewEnemyPath(enemy, gameData, world);
         world.addEntity(enemy);
     }
     @Override
@@ -139,5 +135,4 @@ public class EnemyControlSystem implements IEntityProcessingService {
     public void removeIMap(IMap map){
         this.map = null;
     }
-
 }

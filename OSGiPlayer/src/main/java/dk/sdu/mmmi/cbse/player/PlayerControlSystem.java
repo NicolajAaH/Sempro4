@@ -39,8 +39,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
             handleInput(positionPart, movingPart, keys);
 
             if (gameData.getKeys().isDown(SPACE)) { //TODO: Should only be called once per SPACE press, even when space is held down
-
-                System.out.println(gameData);
                 Tower tower;
 
                 Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
@@ -57,7 +55,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 if (tower != null) {
                     world.addEntity(tower);
                     gameData.setMoney(gameData.getMoney() - tower.getBuildCost());
-                    gameData.setScore(gameData.getScore() + 10); //TODO: Score should not (only) be set here
+                    gameData.setScore(gameData.getScore() + 5);
                 }
             }
 
