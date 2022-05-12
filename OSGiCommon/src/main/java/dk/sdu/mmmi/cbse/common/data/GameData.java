@@ -1,20 +1,24 @@
 package dk.sdu.mmmi.cbse.common.data;
 
-import dk.sdu.mmmi.cbse.common.events.Event;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+@Getter
+@Setter
 public class GameData {
 
     private float delta;
     private int displayWidth;
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
-    final private List<Event> events = new CopyOnWriteArrayList<>();
     final private ArrayList<Attack> attacks = new ArrayList<>();
     private long gameStartTime;
+    private int wave;
+    private int highestScore = 0;
 
     private boolean isPlayerDead = false;
 
@@ -28,14 +32,6 @@ public class GameData {
     private int life; // Decreases when monsters reach end of path, 0 = gameover!
 
 
-    public long getGameStartTime() {
-        return gameStartTime;
-    }
-
-    public void setGameStartTime(long startTime){
-        gameStartTime = startTime;
-    }
-
     public List<Attack> getCurrentAttacks(){
         return attacks.stream().filter(attack -> attack.getAttackTimeMs() + gameStartTime < System.currentTimeMillis() ).collect(Collectors.toList());
     }
@@ -48,83 +44,8 @@ public class GameData {
         attacks.remove(a);
     }
 
-    public void addEvent(Event e) {
-        events.add(e);
-    }
-
-    public void removeEvent(Event e) {
-        events.remove(e);
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public GameKeys getKeys() {
-        return keys;
-    }
-
-    public void setDelta(float delta) {
-        this.delta = delta;
-    }
-
-    public float getDelta() {
-        return delta;
-    }
-
-    public void setDisplayWidth(int width) {
-        this.displayWidth = width;
-    }
-
-    public int getDisplayWidth() {
-        return displayWidth;
-    }
-
-    public void setDisplayHeight(int height) {
-        this.displayHeight = height;
-    }
-
-    public int getDisplayHeight() {
-        return displayHeight;
-    }
-
-    public <E extends Event> List<Event> getEvents(Class<E> type, String sourceID) {
-        List<Event> r = new ArrayList();
-        for (Event event : events) {
-            if (event.getClass().equals(type) && event.getSource().getID().equals(sourceID)) {
-                r.add(event);
-            }
-        }
-
-        return r;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
     public void addMoney(int money){
         this.money += money;
-    }
-
-    public int getLife() {
-        return life;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
     }
 
     @Override
@@ -136,15 +57,4 @@ public class GameData {
         return isPlayerDead;
     }
 
-    public void setPlayerDead(boolean playerDead) {
-        isPlayerDead = playerDead;
-    }
-
-    public String getScreenMessage() {
-        return screenMessage;
-    }
-
-    public void setScreenMessage(String screenMessage) {
-        this.screenMessage = screenMessage;
-    }
 }

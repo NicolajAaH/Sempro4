@@ -22,10 +22,7 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
+import org.osgi.framework.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +34,7 @@ public class Game implements ApplicationListener {
     private OrthographicCamera cam;
     private final GameData gameData = new GameData(); // GameData object containing all the global variables of the game
     private static final World world = new World();
+    private boolean restart = false;
 
     //Lists of services
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
@@ -79,8 +77,9 @@ public class Game implements ApplicationListener {
     @Override
     public void create() {
         // setting initial values of games attributes
-        gameData.setLife(100);
+        gameData.setLife(10);
         gameData.setMoney(500);
+        gameData.setWave(0);
         gameData.setScore(0); //TODO: This is not changed anywhere (either fix it or remove it from the screen)
         // Set the screen width and height (global variables) //TODO: Maybe these should be set in GameData.java and be final. these could also be used in init()
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
@@ -97,6 +96,7 @@ public class Game implements ApplicationListener {
 
         for(int x = 0 ; x < 100 ; x++){
             gameData.addAttack(new Attack(x*7000,x));
+            gameData.setWave(gameData.getWave() + 1);
         }
 
         renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
@@ -214,13 +214,20 @@ public class Game implements ApplicationListener {
 
     private void update() {
         if(gameData.getLife() <=0){
-            //TODO stop the game
-            //access bundlecontext and unload all modules
-            /*Bundle bundle = FrameworkUtil.getBundle(IBulletCreation.class);
-            BundleContext bundleContext = bundle.getBundleContext();
-            bundleContext.
-            ServiceReference serviceReference = bundleContext.getServiceReference(IBulletCreation.class);
-            iBulletService = (IBulletCreation) bundleContext.getService(serviceReference);*/
+            restart = true;
+            for (IGamePluginService iGamePluginService : gamePluginList){
+                iGamePluginService.stop(gameData, world);
+            }
+        }
+        if (restart){
+            if(gameData.getHighestScore() < gameData.getScore())
+                gameData.setHighestScore(gameData.getScore());
+            restart = false;
+            create();
+            for (IGamePluginService iGamePluginService : gamePluginList){
+                iGamePluginService.start(gameData, world, textures);
+            }
+            return;
         }
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
