@@ -46,27 +46,14 @@ public class PlayerControlSystemTest {
         PlayerControlSystem playerControlSystem = new PlayerControlSystem();
         keys = new GameKeys();
 
-//        MovingPart movingPart = new MovingPart(10, 0);
-//        PositionPart positionPart = new PositionPart(10,10, 0);
-
         when(entity1.getPart(MovingPart.class)).thenReturn(movingPart);
         when(entity1.getPart(PositionPart.class)).thenReturn(positionPart);
         world.addEntity(entity1);
 
-
-//        System.out.println(movingPart.toString());
-//        when(keys.isDown(GameKeys.UP)).thenReturn(true);
-//        movingPart.setMoving(true);
-//        movingPart.process(gameData, entity1);
-//        positionPart.process(gameData, entity1);
-//        System.out.println(positionPart.getY());
-//        assertTrue(positionPart.getY()>10);
         when(world.getEntities(any())).thenReturn(new ArrayList<Entity>(){{
             add(entity1);
     }});
         when(gameData.getKeys()).thenReturn(keys);
-        //when(gameData.getKeys().isDown(any())).thenReturn(false);
-
 
         playerControlSystem.process(gameData, world);
 

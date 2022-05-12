@@ -32,9 +32,6 @@ public class PositionPart implements EntityPart {
         this.y = newY;
     }
 
-    public void setRadians(Integer radians) {
-        this.radians = radians;
-    }
 
     @Override
     public void process(GameData gameData, Entity entity) {
