@@ -7,6 +7,7 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import static java.lang.Math.cos;
@@ -22,14 +23,12 @@ public class MovingPart implements EntityPart {
 
     private boolean moving = false;
     private float rotationSpeed;
-
    static IMap map;
 
     public MovingPart(float speed, float rotationSpeed) {
         this.speed = speed;
         this.rotationSpeed = rotationSpeed;
     }
-
     public MovingPart(float speed, float rotationSpeed, boolean moving) {
         this.speed = speed;
         this.rotationSpeed = rotationSpeed;
@@ -73,7 +72,12 @@ public class MovingPart implements EntityPart {
         dx = (float) cos(radians2) * speed;
         dy = (float) sin(radians2) * speed;
 
-        if (map.isInsideMap(x + dx, y + dy) == true){
+
+        float radius = entity.getRadius();
+        float centerX = x -5 + map.getTileSize()/2f;
+        float centerY = y -5  + map.getTileSize()/2f;
+
+        if ( map.isInsideMap(centerX+dx+radius, centerY+dy+radius) && map.isInsideMap(centerX+dx-radius, centerY+dy-radius) ) {
             // set position
             x += dx;
             y += dy;
