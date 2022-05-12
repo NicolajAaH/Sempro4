@@ -182,7 +182,7 @@ public class Game implements ApplicationListener {
         batch.begin();
         drawFonts();
         batch.end();
-
+        
         update();
     }
 
