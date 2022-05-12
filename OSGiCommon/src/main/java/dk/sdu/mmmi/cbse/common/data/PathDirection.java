@@ -1,9 +1,12 @@
 package dk.sdu.mmmi.cbse.common.data;
 
-import dk.sdu.mmmi.cbse.common.data.Enums.Direction;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 
+@Getter
+@Setter
 public class PathDirection {
 
     private int direction;
@@ -11,14 +14,6 @@ public class PathDirection {
     public PathDirection(int direction, Point goal){
         this.direction = direction;
         this.goal = goal;
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public Point getGoal() {
-        return goal;
     }
 
     @Override

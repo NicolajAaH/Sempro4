@@ -22,12 +22,10 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
-import org.osgi.framework.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class Game implements ApplicationListener {
 
@@ -94,8 +92,8 @@ public class Game implements ApplicationListener {
 
         gameData.setGameStartTime(System.currentTimeMillis());
 
-        for(int x = 0 ; x < 100 ; x++){
-            gameData.addAttack(new Attack(x*7000,x));
+        for (int x = 0; x < 100; x++) {
+            gameData.addAttack(new Attack(x * 7000, x));
             gameData.setWave(gameData.getWave() + 1);
         }
 
@@ -169,27 +167,6 @@ public class Game implements ApplicationListener {
         if (!gameData.getScreenMessage().isEmpty()) {
             messagesFont.drawMultiLine(batch, gameData.getScreenMessage(), fontX, SCREEN_HEIGHT - 9 * fontSpacing);
         }
-
-/*
-        while (gameData.getScreenMessage().isEmpty()) {
-
-            lifeFont.draw(batch, "Testing", fontX, SCREEN_HEIGHT - 7 * fontSpacing);
-
-            long now = System.currentTimeMillis();
-            long later = now + TimeUnit.SECONDS.toMillis(5);
-
-            if (now == later) {
-                gameData.setScreenMessage("hej");
-            }
-        }
-
- */
-    }
-
-    public void createAttacks() {
-        for(int x = 0 ; x < 100 ; x++){
-            gameData.addAttack(new Attack(x*10000,x*2));
-        }
     }
 
     @Override
@@ -213,18 +190,18 @@ public class Game implements ApplicationListener {
     }
 
     private void update() {
-        if(gameData.getLife() <=0){
+        if (gameData.getLife() <= 0) {
             restart = true;
-            for (IGamePluginService iGamePluginService : gamePluginList){
+            for (IGamePluginService iGamePluginService : gamePluginList) {
                 iGamePluginService.stop(gameData, world);
             }
         }
-        if (restart){
-            if(gameData.getHighestScore() < gameData.getScore())
+        if (restart) {
+            if (gameData.getHighestScore() < gameData.getScore())
                 gameData.setHighestScore(gameData.getScore());
             restart = false;
             create();
-            for (IGamePluginService iGamePluginService : gamePluginList){
+            for (IGamePluginService iGamePluginService : gamePluginList) {
                 iGamePluginService.start(gameData, world, textures);
             }
             return;
@@ -286,7 +263,6 @@ public class Game implements ApplicationListener {
                 plugin.start(gameData, world, Game.textures);
             }
         });
-
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {
@@ -298,7 +274,7 @@ public class Game implements ApplicationListener {
         this.map = map;
     }
 
-    public void removeIMap(IMap map){
+    public void removeIMap(IMap map) {
         this.map = null;
     }
 }

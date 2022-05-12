@@ -26,29 +26,22 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
             PositionPart positionPart = projectile.getPart(PositionPart.class);
             MovingPart movingPart = projectile.getPart(MovingPart.class);
             WeaponPart weaponPart = projectile.getPart(WeaponPart.class);
-            LifePart lifePart = projectile.getPart(LifePart.class);
 
             movingPart.process(gameData, projectile);
             positionPart.process(gameData, projectile);
-            lifePart.process(gameData, projectile);
-
-            if(lifePart.isDead()){
-                world.removeEntity(projectile);
-                break;
-            }
 
             // checks if it has reached it's range
-            if (positionPart.getDistanceFromOrigin() > weaponPart.getRange()){
+            if (positionPart.getDistanceFromOrigin() > weaponPart.getRange()) {
                 world.removeEntity(projectile);
             }
 
             // check if reached left or right edge of map
-            if (positionPart.getX() > map.getMapWidth()-5 || positionPart.getX()-5 < 0) {
+            if (positionPart.getX() > map.getMapWidth() - 5 || positionPart.getX() - 5 < 0) {
                 world.removeEntity(projectile);
             }
 
             // check if reached top or buttom edge of map
-            if (positionPart.getY() > map.getMapHeigth()-5 || positionPart.getY()-5 < 0) {
+            if (positionPart.getY() > map.getMapHeigth() - 5 || positionPart.getY() - 5 < 0) {
                 world.removeEntity(projectile);
             }
         }
@@ -64,13 +57,14 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         }
     }
 
-    public void update(Entity entity){
+    public void update(Entity entity) {
         PositionPart positionPart = entity.getPart(PositionPart.class);
         // setting position of sprite
         entity.setPosition(positionPart.getX(), positionPart.getY());
         // setting rotation of sprite TODO: rotate image 90' degress and delete +90
-        entity.setRotation(positionPart.getRadians()+90);
+        entity.setRotation(positionPart.getRadians() + 90);
     }
+
     @Override
     public void createProjectile(Entity shooter, GameData gameData, World world) {
 
@@ -91,17 +85,17 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         float by = (float) sin(toRadians(radians)) * shooter.getRadius();
         float tileSize = (float) map.getTileSize();
         float projX = (x + tileSize / 2) + bx;
-        float projY = (y-4 + tileSize / 2) + by;
+        float projY = (y - 4 + tileSize / 2) + by;
 
         // getting sprite for projectile
         Texture texture = world.getTextureHashMap().get(Types.PROJECTILE);
         Sprite sprite = new Sprite(texture);
-        sprite.setCenter(sprite.getHeight()/2, sprite.getWidth()/2);
+        sprite.setCenter(sprite.getHeight() / 2, sprite.getWidth() / 2);
 
         // creating new projectile with entity parts and add to world
         Entity projectile = new Projectile(sprite, Types.PROJECTILE);
         projectile.setRadius(4);
-        projectile.add(new MovingPart( speed, rotationSpeed, true));
+        projectile.add(new MovingPart(speed, rotationSpeed, true));
         projectile.add(new PositionPart(projX, projY, radians));
         projectile.add(new LifePart(1));
         projectile.add(new TimerPart(1));
@@ -113,7 +107,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         this.map = map;
     }
 
-    public void removeIMap(IMap map){
+    public void removeIMap(IMap map) {
         this.map = null;
     }
 }

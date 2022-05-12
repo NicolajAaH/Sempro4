@@ -34,7 +34,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             GameKeys keys = gameData.getKeys();
 
 
-            if(keys.isDown(SHIFT)) {
+            if (keys.isDown(SHIFT)) {
                 System.out.println(gameData);
             }
 
@@ -43,10 +43,10 @@ public class PlayerControlSystem implements IEntityProcessingService {
             if (gameData.getKeys().isDown(SPACE)) { //TODO: Should only be called once per SPACE press, even when space is held down
                 Tower tower;
 
-                Point coordinates = map.mapCoorToTileCoor(positionPart.getX(),positionPart.getY());
+                Point coordinates = map.mapCoorToTileCoor(positionPart.getX(), positionPart.getY());
                 tower = (Tower) towerSPI.createTower(gameData, world, coordinates.x, coordinates.y);
 
-                if (tower !=null && tower.getBuildCost() > gameData.getMoney()) {
+                if (tower != null && tower.getBuildCost() > gameData.getMoney()) {
                     int buildCost = tower.getBuildCost();
                     tower = null;
                     map.changeTileType(coordinates.x, coordinates.y, "Grass");
