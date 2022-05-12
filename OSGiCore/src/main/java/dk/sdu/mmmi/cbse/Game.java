@@ -22,6 +22,10 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.filehandler.OSGiFileHandle;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 import java.util.HashMap;
 import java.util.List;
@@ -215,6 +219,11 @@ public class Game implements ApplicationListener {
         if(gameData.getLife() <=0){
             //TODO stop the game
             //access bundlecontext and unload all modules
+            Bundle bundle = FrameworkUtil.getBundle(IBulletCreation.class);
+            BundleContext bundleContext = bundle.getBundleContext();
+            bundleContext.
+            ServiceReference serviceReference = bundleContext.getServiceReference(IBulletCreation.class);
+            iBulletService = (IBulletCreation) bundleContext.getService(serviceReference);
         }
         // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
