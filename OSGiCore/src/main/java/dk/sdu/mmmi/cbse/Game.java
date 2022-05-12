@@ -38,8 +38,6 @@ public class Game implements ApplicationListener {
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static final List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-
-
     private OrthogonalTiledMapRenderer renderer;
     private SpriteBatch batch;
     private static HashMap<Types, Texture> textures = new HashMap<>();
@@ -117,6 +115,7 @@ public class Game implements ApplicationListener {
         textures.put(Types.PROJECTILE, new Texture(new OSGiFileHandle("/images/Sprites/projectile.png")));
         world.setTextureHashMap(textures);
     }
+
     private void createFonts() {
         float fontSize = 0.1f;
 
@@ -139,7 +138,6 @@ public class Game implements ApplicationListener {
         messagesFont = new BitmapFont();
         messagesFont.setColor(Color.RED);
         messagesFont.scale(fontSize);
-
     }
 
 
@@ -161,9 +159,9 @@ public class Game implements ApplicationListener {
                     "\n\nYou can no longer place " +
                     "\nnew Towers";
             messagesFont.drawMultiLine(batch, message, fontX, SCREEN_HEIGHT - 5 * fontSpacing);
-
         }
 
+        // crate message on screen
         if (!gameData.getScreenMessage().isEmpty()) {
             messagesFont.drawMultiLine(batch, gameData.getScreenMessage(), fontX, SCREEN_HEIGHT - 9 * fontSpacing);
         }
@@ -179,7 +177,6 @@ public class Game implements ApplicationListener {
             if (now == later) {
                 gameData.setScreenMessage("hej");
             }
-
         }
 
  */
@@ -226,7 +223,6 @@ public class Game implements ApplicationListener {
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
         }
-
     }
 
     @Override
