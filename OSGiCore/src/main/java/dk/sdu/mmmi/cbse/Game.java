@@ -95,13 +95,13 @@ public class Game implements ApplicationListener {
         map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
         renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
 
-        // Find the path for enemies to walk TODO: is this correct?
-        PathFinder pathFinder = new PathFinder(map);
-        System.out.println("path: " + pathFinder.calculatePath());
+        gameData.setGameStartTime(System.currentTimeMillis());
 
-        createAttacks();
+        for(int x = 0 ; x < 100 ; x++){
+            gameData.addAttack(new Attack(x*7000,x));
+        }
 
-        // Create sprite batch
+        renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
         batch = new SpriteBatch();
 
         //Fonts

@@ -9,6 +9,7 @@ import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 
@@ -17,6 +18,7 @@ public class MapType implements IMap {
 
     private TiledMap tiledMap;
     private ArrayList<TiledMapTileLayer.Cell> cells = new ArrayList<>();
+    private ArrayList<Point> path;
 
     public MapType() {
     }
@@ -30,7 +32,12 @@ public class MapType implements IMap {
     public void setTiledMap(TiledMap tiledMap) {
         this.tiledMap = tiledMap;
         collectCells();
+        setPath();
+    }
 
+    private void setPath(){
+        PathFinder pathFinder = new PathFinder(this);
+        path = pathFinder.calculatePath();
     }
 
     private void collectCells(){
@@ -139,6 +146,11 @@ public class MapType implements IMap {
     }
 
     @Override
+    public ArrayList<Point> getPath() {
+        return path;
+    }
+
+    @Override
     public void changeTileType(int x, int y, String tileType){
 
         //Get first layer of map
@@ -214,6 +226,14 @@ public class MapType implements IMap {
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
 
         return layer.getWidth() * getTileSize();
+    }
+
+    @Override
+    public Point getTileCenter(Point point) {
+        Point coor = tileCoorToMapCoor(point.x,point.y);
+        coor.x = coor.x - getTileSize()/2;
+        coor.y = coor.y - getTileSize()/2;
+        return coor;
     }
 
     @Override
