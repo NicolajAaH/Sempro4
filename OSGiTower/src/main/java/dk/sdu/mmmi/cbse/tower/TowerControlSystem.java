@@ -20,6 +20,7 @@ import dk.sdu.mmmi.cbse.commonmap.IMap;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+
 public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     private ProjectileSPI projectileLauncher;
     private IMap map;
@@ -32,6 +33,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     int weightLife = 10;
     int weightDistanceToStart = -1;
     int weightDistanceToTower = -1;
+
     @Override
     public void process(GameData gameData, World world) {
 
@@ -49,7 +51,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             if (enemies != null) {
                 for (Entity enemy : enemies) {
                     int distance = getDistanceBetweenEntities(enemy, tower);
-                    if (distance < weaponPart.getRange()){
+                    if (distance < weaponPart.getRange()) {
                         reachableEnemies.add((Enemy) enemy);
                     }
                 }
@@ -60,7 +62,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 int shouldRotate = r.nextInt(100);
                 if (shouldRotate < 20) {
                     int radians = positionPart.getRadians();
-                    radians +=1;
+                    radians += 1;
                     if (360 < radians) {
                         radians = 0;
                     }
@@ -88,7 +90,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         }
     }
 
-    private void printHeuristics(Enemy selectedEnemy, Tower tower){
+    private void printHeuristics(Enemy selectedEnemy, Tower tower) {
         System.out.println("Heuristcs total: " + getHeuristic(selectedEnemy, tower));
         System.out.println(" -- composed of -- ");
         System.out.println("distance to end " + weightDistanceToEnd * getDistanceToEnd(selectedEnemy));
@@ -115,7 +117,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         }
     }
 
-    private float getHeuristic(Enemy enemy, Tower tower){
+    private float getHeuristic(Enemy enemy, Tower tower) {
         // calculate heuristics of an enemy
         LifePart enemyLifePart = enemy.getPart(LifePart.class);
         float enemyHeuristic = 0;
@@ -133,23 +135,26 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         PositionPart positionPart = enemy.getPart(PositionPart.class);
         float deltaY = positionPart.getY() - (float) endMapCoordinates.getY();
         float deltaX = positionPart.getX() - (float) endMapCoordinates.getX();
-        return (float) Math.sqrt( ((deltaX * deltaX) + (deltaY * deltaY)));
+        return (float) Math.sqrt(((deltaX * deltaX) + (deltaY * deltaY)));
     }
+
     private float getDistanceToStart(Entity enemy) {
         Point startTileCoordinat = map.getStartTileCoor();
         Point endMapCoordinates = map.tileCoorToMapCoor((float) startTileCoordinat.x, (float) startTileCoordinat.y);
         PositionPart positionPart = enemy.getPart(PositionPart.class);
         float deltaY = positionPart.getY() - (float) endMapCoordinates.getY();
         float deltaX = positionPart.getX() - (float) endMapCoordinates.getX();
-        return (float) Math.sqrt( ((deltaX * deltaX) + (deltaY * deltaY)));
+        return (float) Math.sqrt(((deltaX * deltaX) + (deltaY * deltaY)));
     }
-    private int getDistanceBetweenEntities(Entity entity1, Entity entity2){
+
+    private int getDistanceBetweenEntities(Entity entity1, Entity entity2) {
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
         PositionPart positionPart2 = entity2.getPart(PositionPart.class);
         float deltaY = positionPart1.getY() - positionPart2.getY();
         float deltaX = positionPart1.getX() - positionPart2.getX();
-        return (int) Math.sqrt( ((deltaX * deltaX) + (deltaY * deltaY)));
+        return (int) Math.sqrt(((deltaX * deltaX) + (deltaY * deltaY)));
     }
+
     private int getAngleBetweenEntities(Entity entity1, Entity entity2) {
         // returning angle in degrees
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
@@ -211,7 +216,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         this.map = map;
     }
 
-    public void removeIMap(IMap map){
+    public void removeIMap(IMap map) {
         this.map = null;
     }
 }

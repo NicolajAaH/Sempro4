@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
+import lombok.Getter;
+import lombok.Setter;
 
-
+@Getter
+@Setter
 public class Tower extends Entity {
 
     private int buildCost = 100;
@@ -15,31 +18,21 @@ public class Tower extends Entity {
     public Tower(Sprite sprite, Types type) {
         super(sprite);
         this.type = type;
-        //this.buildCost;
     }
 
     @Override
     public void draw(Batch batch) {
-
-            batch.begin();
-            update(Gdx.graphics.getDeltaTime());
-            super.draw(batch);
-            batch.end();
+        batch.begin();
+        update(Gdx.graphics.getDeltaTime());
+        super.draw(batch);
+        batch.end();
     }
 
-    public void update(float delta){
+    public void update(float delta) {
         PositionPart positionPart = this.getPart(PositionPart.class);
-        // setting posistion of sprite
+        // setting position of sprite
         this.setPosition(positionPart.getX(), positionPart.getY());
         // setting rotation of sprite (using degrees NOT radians)
         this.setRotation(positionPart.getRadians());
-    }
-
-    public int getBuildCost() {
-        return buildCost;
-    }
-
-    public void setBuildCost(int buildCost) {
-        this.buildCost = buildCost;
     }
 }

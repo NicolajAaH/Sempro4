@@ -24,6 +24,7 @@ public interface IMap {
     Point getStartTileCoor();
 
     Point getEndTileCoor();
+
     ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property);
 
     MapLayers getLayers();

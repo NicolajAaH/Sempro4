@@ -1,14 +1,11 @@
 package dk.sdu.mmmi.cbse.map;
 
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 
 public class PathFinder {
-
-
     IMap map;
     private Point start;
     private Point goal;
@@ -17,7 +14,7 @@ public class PathFinder {
     private ArrayList<CalcPoint> closed = new ArrayList<>();
     private ArrayList<CalcPoint> path = new ArrayList<>();
 
-    PathFinder(IMap map){
+    PathFinder(IMap map) {
         this.map = map;
         start = map.getStartTileCoor();
         goal = map.getEndTileCoor();
@@ -27,25 +24,25 @@ public class PathFinder {
     public ArrayList<Point> calculatePath() {
         CalcPoint goal = null;
 
-        while (open.size() != 0){
+        while (open.size() != 0) {
             CalcPoint lowest = null;
-            for(CalcPoint calcPoint : open){
-                if(lowest == null || calcPoint.dist < lowest.dist) lowest = calcPoint;
+            for (CalcPoint calcPoint : open) {
+                if (lowest == null || calcPoint.dist < lowest.dist) lowest = calcPoint;
             }
 
             open.remove(lowest);
             closed.add(lowest);
 
-            if(lowest.type.equals("End")) {
+            if (lowest.type.equals("End")) {
                 goal = lowest;
                 break;
             }
-            if(!lowest.type.equals("Path") && !lowest.type.equals("Start")) continue;
+            if (!lowest.type.equals("Path") && !lowest.type.equals("Start")) continue;
 
             addSurroundingToFringe(lowest, lowest.pathDist + 1);
         }
 
-        if(goal == null) return null;
+        if (goal == null) return null;
 
         ArrayList<Point> path = new ArrayList<>();
 
@@ -54,25 +51,26 @@ public class PathFinder {
             path.add(goal.point);
             goal = goal.parent;
         }
-        while(goal.parent != null);
+        while (goal.parent != null);
 
         return path;
     }
 
-    private double calculateEuclideanDistance(Point a, Point b){
+    private double calculateEuclideanDistance(Point a, Point b) {
         return Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2));
     }
 
-    private void addToFringe(Point point, int pathDist, CalcPoint parent){
+    private void addToFringe(Point point, int pathDist, CalcPoint parent) {
         String type = map.getTileType(point.x, point.y);
 
-        if(type == null) return;
-        if(open.stream().anyMatch((calcPoint -> calcPoint.point.x == point.x && calcPoint.point.y == point.y))) return;
-        if(closed.stream().anyMatch((calcPoint -> calcPoint.point.x == point.x && calcPoint.point.y == point.y))) return;
+        if (type == null) return;
+        if (open.stream().anyMatch((calcPoint -> calcPoint.point.x == point.x && calcPoint.point.y == point.y))) return;
+        if (closed.stream().anyMatch((calcPoint -> calcPoint.point.x == point.x && calcPoint.point.y == point.y)))
+            return;
 
         open.add(
                 new CalcPoint(
-                        calculateEuclideanDistance(point,goal),
+                        calculateEuclideanDistance(point, goal),
                         point,
                         map.getTileType(point.x, point.y),
                         pathDist + 1,
@@ -81,14 +79,14 @@ public class PathFinder {
         );
     }
 
-    private void addSurroundingToFringe(CalcPoint calcPoint, int pathDist){
-        addToFringe(new Point(calcPoint.point.x, calcPoint.point.y+1), pathDist, calcPoint);
-        addToFringe(new Point(calcPoint.point.x, calcPoint.point.y-1), pathDist, calcPoint);
-        addToFringe(new Point(calcPoint.point.x+1,calcPoint. point.y), pathDist, calcPoint);
-        addToFringe(new Point(calcPoint.point.x-1,calcPoint. point.y), pathDist, calcPoint);
+    private void addSurroundingToFringe(CalcPoint calcPoint, int pathDist) {
+        addToFringe(new Point(calcPoint.point.x, calcPoint.point.y + 1), pathDist, calcPoint);
+        addToFringe(new Point(calcPoint.point.x, calcPoint.point.y - 1), pathDist, calcPoint);
+        addToFringe(new Point(calcPoint.point.x + 1, calcPoint.point.y), pathDist, calcPoint);
+        addToFringe(new Point(calcPoint.point.x - 1, calcPoint.point.y), pathDist, calcPoint);
     }
 
-    private class CalcPoint{
+    private class CalcPoint {
         Double dist;
         int pathDist;
         Point point;

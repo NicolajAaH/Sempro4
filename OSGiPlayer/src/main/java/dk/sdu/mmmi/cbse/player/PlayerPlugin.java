@@ -24,7 +24,7 @@ public class PlayerPlugin implements IGamePluginService {
     public void start(GameData gameData, World world, HashMap<Types, Texture> textures) {
         float speed = 3;
         float rotationSpeed = 0;
-        float x = gameData.getDisplayWidth() / 2f-50;
+        float x = gameData.getDisplayWidth() / 2f - 50;
         float y = gameData.getDisplayHeight() / 2f;
         int radians = 0;
         Texture texture = textures.get(Types.PLAYER);
@@ -45,10 +45,8 @@ public class PlayerPlugin implements IGamePluginService {
         }
     }
 
-
     @Override
     public Types getType() {
         return Types.PLAYER;
     }
-
 }

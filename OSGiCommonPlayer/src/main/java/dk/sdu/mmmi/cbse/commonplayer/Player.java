@@ -9,7 +9,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
 public class Player extends Entity {
 
-    private float speed = 60*2;
+    private float speed = 60 * 2;
 
     public Player(Sprite sprite, Types type) {
         super(sprite);
@@ -24,7 +24,7 @@ public class Player extends Entity {
         batch.end();
     }
 
-    public void update(float delta){
+    public void update(float delta) {
         PositionPart positionPart = this.getPart(PositionPart.class);
         this.setPosition(positionPart.getX(), positionPart.getY());
         this.setRotation((positionPart.getRadians() + 270) % 360);

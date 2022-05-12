@@ -4,15 +4,11 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.stream.Collectors;
-
-
 
 public class MapType implements IMap {
 
@@ -24,7 +20,7 @@ public class MapType implements IMap {
     }
 
     @Override
-    public TiledMap getTiledMap(){
+    public TiledMap getTiledMap() {
         return tiledMap;
     }
 
@@ -35,44 +31,44 @@ public class MapType implements IMap {
         setPath();
     }
 
-    private void setPath(){
+    private void setPath() {
         PathFinder pathFinder = new PathFinder(this);
         path = pathFinder.calculatePath();
     }
 
-    private void collectCells(){
+    private void collectCells() {
         cells.clear();
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
-        for(int y = 0 ; y < layer.getHeight() ; y++){
-            for(int x = 0 ; x < layer.getHeight() ; x++){
-                cells.add(layer.getCell(x,y));
+        for (int y = 0; y < layer.getHeight(); y++) {
+            for (int x = 0; x < layer.getHeight(); x++) {
+                cells.add(layer.getCell(x, y));
             }
         }
     }
 
     @Override
-    public String getTileType(int x, int y){
+    public String getTileType(int x, int y) {
 
         //get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
         // Get tile at position (x,y)
-        if(layer.getCell(x,y) == null) return null;
-        TiledMapTile tile = layer.getCell(x,y).getTile();
+        if (layer.getCell(x, y) == null) return null;
+        TiledMapTile tile = layer.getCell(x, y).getTile();
 
         // getting properties of tile
         return tile.getProperties().get("Tag", String.class);
     }
 
     @Override
-    public String getTileTypeByCoor(int x, int y){
+    public String getTileTypeByCoor(int x, int y) {
 
         //get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
         // Get tile at position (x,y)
-        Point point = getTileCoordinates(x,y);
-        TiledMapTile tile = layer.getCell(point.x,point.y).getTile();
+        Point point = getTileCoordinates(x, y);
+        TiledMapTile tile = layer.getCell(point.x, point.y).getTile();
 
         // getting properties of tile
         return tile.getProperties().get("Tag", String.class);
@@ -80,6 +76,7 @@ public class MapType implements IMap {
 
     /**
      * Calculate X and Y on the map from X and Y from a tile
+     *
      * @param x coordinate of tile
      * @param y coordiante of tile
      * @return point on map corresponding to the given x and y
@@ -88,27 +85,27 @@ public class MapType implements IMap {
     public Point tileCoorToMapCoor(float x, float y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
-        int mapX = (int) (x * layer.getTileWidth() + (layer.getTileWidth()/2));
-        int mapY = (int) (y * layer.getTileHeight() + (layer.getTileHeight()/2));
+        int mapX = (int) (x * layer.getTileWidth() + (layer.getTileWidth() / 2));
+        int mapY = (int) (y * layer.getTileHeight() + (layer.getTileHeight() / 2));
 
         return new Point(mapX, mapY);
     }
 
     @Override
-    public ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property){
+    public ArrayList<TiledMapTileLayer.Cell> getTilesOfType(String property) {
 
-       return cells.stream().filter(cell -> cell.getTile().getProperties().get("Tag").equals(property)).collect(Collectors.toCollection(ArrayList::new));
+        return cells.stream().filter(cell -> cell.getTile().getProperties().get("Tag").equals(property)).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
-    public Point getStartTileCoor(){
+    public Point getStartTileCoor() {
         TiledMapTileLayer.Cell startCell = getTilesOfType("Start").get(0);
 
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
-        for(int y = 0 ; y < layer.getHeight() ; y++){
-            for(int x = 0 ; x < layer.getHeight() ; x++){
-                if (layer.getCell(x,y).equals(startCell)){
-                    return new Point(x,y);
+        for (int y = 0; y < layer.getHeight(); y++) {
+            for (int x = 0; x < layer.getHeight(); x++) {
+                if (layer.getCell(x, y).equals(startCell)) {
+                    return new Point(x, y);
                 }
             }
         }
@@ -116,14 +113,14 @@ public class MapType implements IMap {
     }
 
     @Override
-    public Point getEndTileCoor(){
+    public Point getEndTileCoor() {
         TiledMapTileLayer.Cell endCell = getTilesOfType("End").get(0);
 
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
-        for(int y = 0 ; y < layer.getHeight() ; y++){
-            for(int x = 0 ; x < layer.getHeight() ; x++){
-                if (layer.getCell(x,y).equals(endCell)){
-                    return new Point(x,y);
+        for (int y = 0; y < layer.getHeight(); y++) {
+            for (int x = 0; x < layer.getHeight(); x++) {
+                if (layer.getCell(x, y).equals(endCell)) {
+                    return new Point(x, y);
                 }
             }
         }
@@ -131,7 +128,7 @@ public class MapType implements IMap {
     }
 
     @Override
-    public Point getTileCoordinates(float x, float y){
+    public Point getTileCoordinates(float x, float y) {
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
         int tileX = (int) Math.floor(x / layer.getTileHeight());
@@ -151,7 +148,7 @@ public class MapType implements IMap {
     }
 
     @Override
-    public void changeTileType(int x, int y, String tileType){
+    public void changeTileType(int x, int y, String tileType) {
 
         //Get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
@@ -166,12 +163,11 @@ public class MapType implements IMap {
         for (int id = 1; id <= tileSetSize; id++) {
             String property = tiledMap.getTileSets().getTileSet(0).getTile(id).getProperties().get("Tag", String.class);
             if (property.equals(tileType)) {
-                System.out.println(property);
+                //System.out.println(property);
                 tileId = id;
                 break;
             }
         }
-
 
 
         // setting tile to til with the id tileId in the map tileset
@@ -180,7 +176,7 @@ public class MapType implements IMap {
 
     @Override
     // Tiles are squares, so only one side is needed!
-    public int getTileSize(){
+    public int getTileSize() {
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
 
         return (int) layer.getTileHeight();
@@ -188,6 +184,7 @@ public class MapType implements IMap {
 
     /**
      * Calculate X and Y of a tile from X and Y on the map
+     *
      * @param x coordinate on map
      * @param y coordiante on map
      * @return point for tile corresponding to the given x and y
@@ -203,7 +200,7 @@ public class MapType implements IMap {
     }
 
     @Override
-    public int getTileId(int x, int y){
+    public int getTileId(int x, int y) {
         //Get first layer of map
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
@@ -215,14 +212,14 @@ public class MapType implements IMap {
     }
 
     @Override
-    public int getMapHeigth(){
+    public int getMapHeigth() {
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
 
         return layer.getHeight() * getTileSize();
     }
 
-     @Override
-     public int getMapWidth(){
+    @Override
+    public int getMapWidth() {
         TiledMapTileLayer layer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
 
         return layer.getWidth() * getTileSize();
@@ -230,19 +227,18 @@ public class MapType implements IMap {
 
     @Override
     public Point getTileCenter(Point point) {
-        Point coor = tileCoorToMapCoor(point.x,point.y);
-        coor.x = coor.x - getTileSize()/2;
-        coor.y = coor.y - getTileSize()/2;
+        Point coor = tileCoorToMapCoor(point.x, point.y);
+        coor.x = coor.x - getTileSize() / 2;
+        coor.y = coor.y - getTileSize() / 2;
         return coor;
     }
 
     @Override
-    public boolean isInsideMap(float x, float y){
-
-        if ((0 < x) && (x < (getMapWidth())) && (0 < y) && (y < (getMapHeigth()))){
+    public boolean isInsideMap(float x, float y) {
+        if ((0 < x) && (x < (getMapWidth())) && (0 < y) && (y < (getMapHeigth()))) {
             return true;
         }
-        else return false;
+        return false;
     }
 }
 

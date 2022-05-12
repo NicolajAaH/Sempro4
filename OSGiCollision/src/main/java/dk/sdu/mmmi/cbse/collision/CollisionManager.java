@@ -15,8 +15,7 @@ public class CollisionManager implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         ArrayList<Entity> entities = new ArrayList<>(world.getEntities());
 
-
-        for (Entity iEntity: entities) {
+        for (Entity iEntity : entities) {
             for (Entity oEntity : entities) {
 
                 if (iEntity.getType() == Types.TOWER || oEntity.getType() == Types.TOWER)
@@ -42,12 +41,12 @@ public class CollisionManager implements IPostEntityProcessingService {
                         world.removeEntity(iEntity);
                     iLifePart.setLife(iLifePart.getLife() - 1);
 
-                    if (iLifePart.getLife() <= 0){
+                    if (iLifePart.getLife() <= 0) {
                         if (iEntity.getType() == Types.PLAYER) {
                             gameData.setPlayerDead(true);
                         }
                         // checking if enemy is dead & updates score
-                        if (iEntity.getType() == Types.ENEMY){
+                        if (iEntity.getType() == Types.ENEMY) {
                             gameData.setScore(gameData.getScore() + 1);
                         }
 

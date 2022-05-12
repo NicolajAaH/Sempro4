@@ -1,7 +1,6 @@
 package dk.sdu.mmmi.cbse.map;
 
 import com.badlogic.gdx.graphics.Texture;
-import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
