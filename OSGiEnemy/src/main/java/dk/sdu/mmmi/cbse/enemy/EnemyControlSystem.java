@@ -77,7 +77,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
         }
     }
 
-
     private Stack<PathDirection> getPathDirectionStack(ArrayList<Point> path) {
         Stack<PathDirection> pathDirections = new Stack<>();
         for (int x = 1; x < path.size(); x++) {

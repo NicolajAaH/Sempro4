@@ -182,7 +182,7 @@ public class Game implements ApplicationListener {
         batch.begin();
         drawFonts();
         batch.end();
-        
+
         update();
     }
 
@@ -195,6 +195,7 @@ public class Game implements ApplicationListener {
                 iGamePluginService.stop(gameData, world);
             }
         }
+
         if (restart) {
             if (gameData.getHighestScore() < gameData.getScore())
                 gameData.setHighestScore(gameData.getScore());
