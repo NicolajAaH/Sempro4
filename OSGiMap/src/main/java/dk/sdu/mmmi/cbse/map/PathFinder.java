@@ -7,16 +7,14 @@ import java.util.ArrayList;
 
 public class PathFinder {
     IMap map;
-    private Point start;
-    private Point goal;
+    private final Point goal;
 
-    private ArrayList<CalcPoint> open = new ArrayList<>();
-    private ArrayList<CalcPoint> closed = new ArrayList<>();
-    private ArrayList<CalcPoint> path = new ArrayList<>();
+    private final ArrayList<CalcPoint> open = new ArrayList<>();
+    private final ArrayList<CalcPoint> closed = new ArrayList<>();
 
     PathFinder(IMap map) {
         this.map = map;
-        start = map.getStartTileCoor();
+        Point start = map.getStartTileCoor();
         goal = map.getEndTileCoor();
         addToFringe(start, 0, null);
     }
@@ -51,7 +49,7 @@ public class PathFinder {
             path.add(goal.point);
             goal = goal.parent;
         }
-        while (goal.parent != null);
+        while (goal != null);
 
         return path;
     }
