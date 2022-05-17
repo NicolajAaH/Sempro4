@@ -101,6 +101,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         projectile.add(new PositionPart(projX, projY, radians));
         projectile.add(new LifePart(1));
         projectile.add(weaponPart);
+
         world.addEntity(projectile);
     }
 

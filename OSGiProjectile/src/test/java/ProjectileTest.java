@@ -1,19 +1,20 @@
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.WeaponPart;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
-import dk.sdu.mmmi.cbse.commonprojectile.ProjectileSPI;
+import dk.sdu.mmmi.cbse.commonprojectile.Projectile;
 import dk.sdu.mmmi.cbse.projectile.ProjectileControlSystem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import static org.mockito.Mockito.*;
 
@@ -21,94 +22,66 @@ import static org.mockito.Mockito.*;
  * Test of requirement F9.1: A Projectile must be able to be generated
  */
 
+//@RunWith(PowerMockRunner.class)
+
 @ExtendWith(MockitoExtension.class)
 
 public class ProjectileTest {
 
     ProjectileControlSystem projectileControlSystem = new ProjectileControlSystem();
 
-    @Test
-    public void testGenerateProjectile(){
-        // test create projectile method
-
-    }
-
-/*
-@ExtendWith(MockitoExtension.class)
-public class TowerTest {
     @Mock
-    ProjectileSPI mockProjectileLauncer;
-
-    @Mock
-    IMap mockMap;
-
-    @Mock
-    GameData gameData;
-
-    @Mock
-    World world;
-
-    @Mock
-    Tower tower;
-
-    @Mock
-    Enemy enemy;
-
-    @Mock
-    Random mockRandom;
+    Entity shooter;
 
     @Mock
     PositionPart positionPartMock;
 
     @Mock
-    WeaponPart weaponPartMock = mock(WeaponPart.class);
+    WeaponPart weaponPartMock;
+
+    @Mock
+    World world;
+
+    @Mock
+    GameData gameData;
+
+    @Mock
+    IMap mockMap;
+
+    @Mock
+    Projectile projectile;
+
+    @Mock
+    Sprite sprite;
+
+    @Mock
+    Texture texture;
 
     @Test
-    public void testCreateProjectile(){
-        TowerControlSystem towerControlSystem = new TowerControlSystem();
+    public void testGenerateProjectile() throws Exception {
 
         // injecting mock dependencies
-        towerControlSystem.setIMap(mockMap);
-        towerControlSystem.setProjectileSPI(mockProjectileLauncer);
-        towerControlSystem.setR(mockRandom);
+        projectileControlSystem.setIMap(mockMap);
 
-        /* Unneccesary Mock of Map!
-        when(mockMap.getEndTileCoor()).thenReturn(new Point(0,4));
-        when(mockMap.tileCoorToMapCoor(0, 4)).thenReturn(new Point(0, 4*58));
-        when(mockMap.getStartTileCoor()).thenReturn(new Point(11,8));
-        when(mockMap.tileCoorToMapCoor(11,8)).thenReturn(new Point(11*58, 8*58));
-        when(mockMap.getTileType(anyInt(),anyInt()).equals("Grass")).thenReturn(true);
-         */
-/*
-        // Mock of world
-        List<Entity> towerEntities = new ArrayList<>();
-        towerEntities.add(tower);
-        when(world.getEntities(Tower.class)).thenReturn(towerEntities);
-
-        List<Entity> enemyEntities = new ArrayList<>();
-        enemyEntities.add(enemy);
-        when(world.getEntities(Enemy.class)).thenReturn(enemyEntities);
-
-        // creating mock of PositionPart & Weapon Part methods
+        // creating mock of shooters Weapon and Position Part
         when(positionPartMock.getX()).thenReturn(100F);
         when(positionPartMock.getY()).thenReturn(100F);
-        when(weaponPartMock.getRange()).thenReturn(30f);
+        when(positionPartMock.getRadians()).thenReturn(0);
+        when(weaponPartMock.getProjectileSpeed()).thenReturn(6F);
 
-        // adding entityparts mocks to tower & enemy mocks
-        when(tower.getPart(PositionPart.class)).thenReturn(positionPartMock);
-        when(tower.getPart(WeaponPart.class)).thenReturn(weaponPartMock);
-        when(enemy.getPart(PositionPart.class)).thenReturn(positionPartMock);
+        //when(mockMap.getTileSize()).thenReturn(58);
 
-        // Mocking random variable
-        when(mockRandom.nextInt(anyInt())).thenReturn(0);
+        // adding mocks to shooter entity
+        when(shooter.getPart(PositionPart.class)).thenReturn(positionPartMock);
+        when(shooter.getPart(WeaponPart.class)).thenReturn(weaponPartMock);
 
-        // running the code
-        towerControlSystem.process(gameData,world);
+        MockedConstruction<Sprite>
+        // calling method
+        projectileControlSystem.createProjectile(shooter, gameData, world);
 
-        // verifyCreateProjectile is called
-        verify(mockProjectileLauncer, times(1)).createProjectile(tower,gameData,world);
+        // assert the world contains a projectile
+        verify(world, times(1)).addEntity(any(Projectile.class));
     }
-    */
 }
 
 

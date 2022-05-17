@@ -50,7 +50,7 @@ public class TowerTest {
     PositionPart positionPartMock;
 
     @Mock
-    WeaponPart weaponPartMock = mock(WeaponPart.class);
+    WeaponPart weaponPartMock;
 
     @Test
     public void testCreateProjectile(){
