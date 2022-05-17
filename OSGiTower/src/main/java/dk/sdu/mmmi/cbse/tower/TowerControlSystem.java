@@ -199,7 +199,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         tower.add(new MovingPart(speed, rotationSpeed));
         tower.add(new PositionPart(x, y, 0));
         tower.setRadius(20);
-        tower.add(new WeaponPart(200, 5, 10));
+        tower.add(new WeaponPart(200, 5, 10,6));
         return tower;
     }
 
