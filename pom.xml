@@ -74,6 +74,7 @@
     <module>OSGiCommonTower</module>
     <module>OSGiMap</module>
     <module>OSGiCommonMap</module>
+    <module>OSGiTest</module>
   </modules>
 
   <build>

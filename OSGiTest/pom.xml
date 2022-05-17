@@ -8,18 +8,19 @@
     </parent>
 
     <properties>
-        <bundle.symbolicName>dk.sdu.mmmi.tower</bundle.symbolicName>
+        <bundle.symbolicName>dk.sdu.mmmi.cbse.test</bundle.symbolicName>
         <bundle.namespace>dk.sdu.mmmi</bundle.namespace>
     </properties>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>OSGiTower</artifactId>
+    <artifactId>OSGiTest</artifactId>
     <packaging>bundle</packaging>
-    <name>OSGiTower</name>
-    <dependencies>    
+    <name>OSGiTest</name>
+    <dependencies>
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.core</artifactId>
-            <optional>true</optional>
+            <artifactId>osgi.core</artifactId>
+            <version>8.0.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
@@ -34,34 +35,32 @@
         </dependency>
         <dependency>
             <groupId>dk.sdu.mmmi.build</groupId>
-            <artifactId>OSGiCommonTower</artifactId>
+            <artifactId>provision</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>dk.sdu.mmmi.build</groupId>
-            <artifactId>OSGiCommonProjectile</artifactId>
+            <artifactId>OSGiProjectile</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>dk.sdu.mmmi.build</groupId>
-            <artifactId>OSGiCommonPlayer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>dk.sdu.mmmi.build</groupId>
             <artifactId>OSGiCommonEnemy</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>dk.sdu.mmmi.build</groupId>
+            <artifactId>OSGiEnemy</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>dk.sdu.mmmi.build</groupId>
             <artifactId>OSGiCommonMap</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
+
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -80,5 +79,48 @@
             <version>4.5.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-junit4</artifactId>
+            <version>4.13.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam</artifactId>
+            <version>4.13.5</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-container-native</artifactId>
+            <version>4.13.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-link-mvn</artifactId>
+            <version>4.13.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.framework</artifactId>
+            <version>7.0.3</version>
+        </dependency>
+
     </dependencies>
 </project>
