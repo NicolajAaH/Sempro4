@@ -72,7 +72,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         // checking if reached end of path, updating life and removing enemy
         if (pathPart.getPath().isEmpty()) {
-            gameData.setLife(gameData.getLife() -1);
+            gameData.setLife(gameData.getLife() - 1);
             world.removeEntity(enemy);
         }
     }
