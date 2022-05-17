@@ -27,14 +27,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         List<Attack> currentAttacks = gameData.getCurrentAttacks();
 
         for (Attack attack : currentAttacks) {
-            if (attack.getAttackNumber() > 0) {
-                createEnemy(world, gameData);
-                attack.setAttackNumber(attack.getAttackNumber() - 1);
-                attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
-                gameData.addMoney(2);
-            } else {
-                gameData.removeAttack(attack);
-            }
+            processAttack(attack, world, gameData, map);
         }
 
         List<Entity> enemies = world.getEntities(Enemy.class);
@@ -49,20 +42,31 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 PathPart pathPart = enemy.getPart(PathPart.class);
                 PositionPart positionPart = enemy.getPart(PositionPart.class);
 
-                if (positionPart.getRadians() == PositionPart.left && positionPart.getX() > pathPart.getGoal().x)
-                    return;
-                if (positionPart.getRadians() == PositionPart.right && positionPart.getX() < pathPart.getGoal().x)
-                    return;
-                if (positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getGoal().y)
-                    return;
-                if (positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getGoal().y) return;
-
-                setNewEnemyPath(enemy, gameData, world);
+                if(checkEnemyOutOfBounds(positionPart, pathPart)) {
+                    setNewEnemyPath(enemy, () -> goalReached(enemy, gameData, world));
+                }
             });
         }
     }
 
-    private void setNewEnemyPath(Entity enemy, GameData gameData, World world) {
+    private boolean checkEnemyOutOfBounds(PositionPart positionPart, PathPart pathPart){
+        if (positionPart.getRadians() == PositionPart.left && positionPart.getX() > pathPart.getGoal().x)
+            return false;
+        if (positionPart.getRadians() == PositionPart.right && positionPart.getX() < pathPart.getGoal().x)
+            return false;
+        if (positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getGoal().y)
+            return false;
+        if (positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getGoal().y) return false;
+
+        return  true;
+    }
+
+    private void goalReached(Entity enemy, GameData gameData, World world){
+        gameData.setLife(gameData.getLife() - 1);
+        world.removeEntity(enemy);
+    }
+
+    private void setNewEnemyPath(Entity enemy, Function onGoalReached) {
         PathPart pathPart = enemy.getPart(PathPart.class);
         PositionPart positionPart = enemy.getPart(PositionPart.class);
 
@@ -71,10 +75,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
         positionPart.setRadians(newTile.getDirection());
 
         // checking if reached end of path, updating life and removing enemy
-        if (pathPart.getPath().isEmpty()) {
-            gameData.setLife(gameData.getLife() - 1);
-            world.removeEntity(enemy);
-        }
+        if (pathPart.getPath().isEmpty()) onGoalReached.function();
+
     }
 
     private Stack<PathDirection> getPathDirectionStack(ArrayList<Point> path) {
@@ -97,18 +99,28 @@ public class EnemyControlSystem implements IEntityProcessingService {
         return PositionPart.down;
     }
 
-    private void createEnemy(World world, GameData gameData) {
-        Point start = map.getStartTileCoor();
+    protected void processAttack(Attack attack, World world, GameData gameData, IMap map){
+        if (attack.getAttackNumber() > 0) {
+            Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
+            Entity enemy = createEnemy(sprite, map);
+            setNewEnemyPath(enemy, () -> goalReached(enemy, gameData, world));
+            world.addEntity(enemy);
+            attack.setAttackNumber(attack.getAttackNumber() - 1);
+            attack.setAttackTimeMs(attack.getAttackTimeMs() + 500);
+            gameData.addMoney(2);
+        } else {
+            gameData.removeAttack(attack);
+        }
+    }
 
+    private Entity createEnemy(Sprite sprite, IMap map) {
+        Point start = map.getStartTileCoor();
         float speed = 1;
         Point point = map.tileCoorToMapCoor(start.x, start.y);
         float x = point.x;
         float y = point.y;
         int radians = PositionPart.left;
-
         PathPart path = new PathPart(getPathDirectionStack(map.getPath()));
-
-        Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.ENEMY));
         sprite.setCenter(sprite.getHeight() / 2, sprite.getWidth() / 2);
         Entity enemy = new Enemy(sprite, Types.ENEMY);
         enemy.setRadius(24);
@@ -116,8 +128,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         enemy.add(new PositionPart(x - map.getTileSize() / 2, y - map.getTileSize() / 2, radians));
         enemy.add(new LifePart(10));
         enemy.add(path);
-        setNewEnemyPath(enemy, gameData, world);
-        world.addEntity(enemy);
+        return enemy;
     }
 
     @Override
@@ -133,5 +144,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     public void removeIMap(IMap map) {
         this.map = null;
+    }
+
+    private interface Function{
+        void function();
     }
 }
