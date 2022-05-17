@@ -1,6 +1,5 @@
 package dk.sdu.mmmi.cbse;
 
-import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -10,13 +9,13 @@ import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
-import java.util.Arrays;
+import java.io.File;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -28,25 +27,131 @@ public class ApplicationITest {
     public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
         System.out.println("TestProbeBuilder gets called");
         probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*");
-        probe.setHeader(Constants.EXPORT_PACKAGE, "com.bssys.ebpp.paxexam");
+        probe.setHeader(Constants.EXPORT_PACKAGE, "*");
         return probe;
     }
 
-    @Configuration
-    public Option[] config() {
-        return options(
-               // mavenBundle().artifactId("osgi.core").groupId("org.osgi").version("8.0.0"),
-                //mavenBundle().artifactId("org.osgi.compendium").groupId("org.osgi").version("5.0.0"),
-                mavenBundle().artifactId("OSGiLibGDX").groupId("dk.sdu.mmmi.build").version("1.0-SNAPSHOT"),
-                mavenBundle().artifactId("OSGiCommon").groupId("dk.sdu.mmmi.build").version("1.0-SNAPSHOT")
-                );
+
+    @Test
+    public void Test_Loading_Unloading_Player() throws Exception {
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiPlayer")) {
+                if (bundle_started.getState() != Bundle.ACTIVE) {
+                    throw new Exception("NOT ACTIVE");
+                }
+                bundle_started.stop();
+                if (bundle_started.getState() != Bundle.RESOLVED) {
+                    throw new Exception("NOT RESOLVED");
+                }
+                bundle_started.start();
+                if (bundle_started.getState() != Bundle.ACTIVE) {
+                    throw new Exception("NOT ACTIVE");
+                }
+                bundle_started.uninstall();
+            }
+        }
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiPlayer")) {
+                throw new Exception("IS NOT UNINSTALLED");
+            }
+        }
+        bundleContext.installBundle("file:bundles/OSGiPlayer.jar");
+        boolean installed = false;
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiPlayer")) {
+                installed = true;
+                break;
+            }
+        }
+        if(!installed)
+            throw new Exception("NOT INSTALLED");
     }
 
     @Test
-    public void testtt() {
-        System.out.println("BUNDLES");
-        System.out.println(Arrays.toString(bundleContext.getBundles()));
-        System.out.println(bundleContext.getService(bundleContext.getServiceReference(IEntityProcessingService.class)));
+    public void Test_Loading_Unloading_Enemy() throws Exception {
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiEnemy")) {
+                if (bundle_started.getState() != Bundle.ACTIVE) {
+                    throw new Exception("NOT ACTIVE");
+                }
+                bundle_started.stop();
+                if (bundle_started.getState() != Bundle.RESOLVED) {
+                    throw new Exception("NOT RESOLVED");
+                }
+                bundle_started.start();
+                if (bundle_started.getState() != Bundle.ACTIVE) {
+                    throw new Exception("NOT ACTIVE");
+                }
+                bundle_started.uninstall();
+            }
+        }
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiEnemy")) {
+                throw new Exception("IS NOT UNINSTALLED");
+            }
+        }
+        bundleContext.installBundle("file:bundles/OSGiEnemy.jar");
+        boolean installed = false;
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiEnemy")) {
+                installed = true;
+                break;
+            }
+        }
+        if(!installed)
+            throw new Exception("NOT INSTALLED");
+    }
+
+    @Test
+    public void Test_Loading_Unloading_Projectile() throws Exception {
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiProjectile")) {
+                if (bundle_started.getState() != Bundle.ACTIVE) {
+                    throw new Exception("NOT ACTIVE");
+                }
+                bundle_started.stop();
+                if (bundle_started.getState() != Bundle.RESOLVED) {
+                    throw new Exception("NOT RESOLVED");
+                }
+                bundle_started.start();
+                if (bundle_started.getState() != Bundle.ACTIVE) {
+                    throw new Exception("NOT ACTIVE");
+                }
+                bundle_started.uninstall();
+            }
+        }
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiProjectile")) {
+                throw new Exception("IS NOT UNINSTALLED");
+            }
+        }
+        bundleContext.installBundle("file:bundles/OSGiProjectile.jar");
+        boolean installed = false;
+        for (Bundle bundle_started : bundleContext.getBundles()) {
+            if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiProjectile")) {
+                installed = true;
+                break;
+            }
+        }
+        if(!installed)
+            throw new Exception("NOT INSTALLED");
+    }
+
+    private static String toFileURI(String path) {
+        return new File(path).toURI().toString();
+    }
+    @Configuration
+    public static Option[] configuration() {
+        return options(
+                provision(
+                        bundle(toFileURI("bundles/OSGiPlayer.jar")),
+                        bundle(toFileURI("bundles/OSGiEnemy.jar")),
+                        bundle(toFileURI("bundles/OSGiProjectile.jar")),
+                        mavenBundle("org.osgi", "org.osgi.compendium", "4.2.0"),
+                        mavenBundle("org.ops4j.pax.swissbox", "pax-swissbox-tinybundles",
+                                "1.0.0")
+                )
+        );
     }
 
 }

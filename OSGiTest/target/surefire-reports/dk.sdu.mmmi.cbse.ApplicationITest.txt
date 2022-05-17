@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: dk.sdu.mmmi.cbse.ApplicationITest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.25 s <<< FAILURE! - in dk.sdu.mmmi.cbse.ApplicationITest
-dk.sdu.mmmi.cbse.ApplicationITest.testtt  Time elapsed: 1.219 s  <<< ERROR!
-java.lang.ClassNotFoundException: dk.sdu.mmmi.cbse.common.services.IEntityProcessingService not found by PAXEXAM-PROBE-b9150ba5-2d8b-4908-b96c-06908c39c62d [14]
-	at dk.sdu.mmmi.cbse.ApplicationITest.testtt(ApplicationITest.java:49)
-
