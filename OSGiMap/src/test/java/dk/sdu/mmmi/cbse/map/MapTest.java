@@ -3,37 +3,22 @@ package dk.sdu.mmmi.cbse.map;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MapTest {
 
     @Ignore
     @Test
     public void test1() {
-        HashMap<Point, String> tileTypes = new HashMap<>();
-        tileTypes.put(new Point(0,0),"Grass");
-        tileTypes.put(new Point(0,1),"Grass");
-        tileTypes.put(new Point(0,2),"End");
-        tileTypes.put(new Point(0,3),"Grass");
-        tileTypes.put(new Point(1,0),"Grass");
-        tileTypes.put(new Point(1,1),"Path");
-        tileTypes.put(new Point(1,2),"Path");
-        tileTypes.put(new Point(1,3),"Grass");
-        tileTypes.put(new Point(2,0),"Grass");
-        tileTypes.put(new Point(2,1),"Path");
-        tileTypes.put(new Point(2,2),"Path");
-        tileTypes.put(new Point(2,3),"Grass");
-        tileTypes.put(new Point(3,0),"Grass");
-        tileTypes.put(new Point(3,1),"Grass");
-        tileTypes.put(new Point(3,2),"Start");
-        tileTypes.put(new Point(3,3),"Grass");
-        Point startPoint = new Point(3,2);
-        Point endPoint = new Point(0,2);
+
+        IMap map = mock(IMap.class);
 
         ArrayList<Point> expectedPath = new ArrayList<>();
         expectedPath.add(new Point(3, 3));
@@ -41,11 +26,27 @@ public class MapTest {
         expectedPath.add(new Point(1, 3));
         expectedPath.add(new Point(0, 3));
 
-        IMap map = new MockMap(tileTypes, startPoint, endPoint);
+        when(map.getStartTileCoor()).thenReturn(new Point(3,2));
+        when(map.getEndTileCoor()).thenReturn(new Point(0,2));
+        when(map.getTileType(0,0)).thenReturn("Grass");
+        when(map.getTileType(0,1)).thenReturn("Grass");
+        when(map.getTileType(0,2)).thenReturn("End");
+        when(map.getTileType(0,3)).thenReturn("Grass");
+        when(map.getTileType(0,0)).thenReturn("Grass");
+        when(map.getTileType(0,1)).thenReturn("Path");
+        when(map.getTileType(0,2)).thenReturn("Path");
+        when(map.getTileType(0,3)).thenReturn("Grass");
+        when(map.getTileType(0,0)).thenReturn("Grass");
+        when(map.getTileType(0,1)).thenReturn("Path");
+        when(map.getTileType(0,2)).thenReturn("Path");
+        when(map.getTileType(0,3)).thenReturn("Grass");
+        when(map.getTileType(0,0)).thenReturn("Grass");
+        when(map.getTileType(0,1)).thenReturn("Grass");
+        when(map.getTileType(0,2)).thenReturn("Start");
+        when(map.getTileType(0,3)).thenReturn("Grass");
 
-        ArrayList<Point> path = map.getPath();
-
-        System.out.println(path);
+        PathFinder pathFinder = new PathFinder(map);
+        ArrayList<Point> path = pathFinder.calculatePath();
 
         assertEquals(expectedPath.size(), path.size());
         for (int x = 0; x < path.size(); x++) {
@@ -56,25 +57,7 @@ public class MapTest {
     @Ignore
     @Test
     public void test2() {
-        HashMap<Point, String> tileTypes = new HashMap<>();
-        tileTypes.put(new Point(0,0),"Path");
-        tileTypes.put(new Point(0,1),"Path");
-        tileTypes.put(new Point(0,2),"Path");
-        tileTypes.put(new Point(0,3),"Path");
-        tileTypes.put(new Point(1,0),"Path");
-        tileTypes.put(new Point(1,1),"Grass");
-        tileTypes.put(new Point(1,2),"Grass");
-        tileTypes.put(new Point(1,3),"Path");
-        tileTypes.put(new Point(2,0),"Path");
-        tileTypes.put(new Point(2,1),"Grass");
-        tileTypes.put(new Point(2,2),"Grass");
-        tileTypes.put(new Point(2,3),"Path");
-        tileTypes.put(new Point(3,0),"End");
-        tileTypes.put(new Point(3,1),"Grass");
-        tileTypes.put(new Point(3,2),"Grass");
-        tileTypes.put(new Point(3,3),"Start");
-        Point startPoint = new Point(3,3);
-        Point endPoint = new Point(3,0);
+        IMap map = mock(IMap.class);
 
         ArrayList<Point> expectedPath = new ArrayList<>();
         expectedPath.add(new Point(3, 0));
@@ -88,11 +71,27 @@ public class MapTest {
         expectedPath.add(new Point(2, 3));
         expectedPath.add(new Point(3, 3));
 
-        IMap map = new MockMap(tileTypes, startPoint, endPoint);
+        when(map.getStartTileCoor()).thenReturn(new Point(3,3));
+        when(map.getEndTileCoor()).thenReturn(new Point(3,0));
+        when(map.getTileType(0,0)).thenReturn("Path");
+        when(map.getTileType(0,1)).thenReturn("Path");
+        when(map.getTileType(0,2)).thenReturn("Path");
+        when(map.getTileType(0,3)).thenReturn("Path");
+        when(map.getTileType(0,0)).thenReturn("Path");
+        when(map.getTileType(0,1)).thenReturn("Grass");
+        when(map.getTileType(0,2)).thenReturn("Grass");
+        when(map.getTileType(0,3)).thenReturn("Path");
+        when(map.getTileType(0,0)).thenReturn("Path");
+        when(map.getTileType(0,1)).thenReturn("Grass");
+        when(map.getTileType(0,2)).thenReturn("Grass");
+        when(map.getTileType(0,3)).thenReturn("Path");
+        when(map.getTileType(0,0)).thenReturn("End");
+        when(map.getTileType(0,1)).thenReturn("Grass");
+        when(map.getTileType(0,2)).thenReturn("Grass");
+        when(map.getTileType(0,3)).thenReturn("Start");
 
-        ArrayList<Point> path = map.getPath();
-
-        System.out.println(path);
+        PathFinder pathFinder = new PathFinder(map);
+        ArrayList<Point> path = pathFinder.calculatePath();
 
         assertEquals(expectedPath.size(), path.size());
         for (int x = 0; x < path.size(); x++) {
@@ -103,25 +102,7 @@ public class MapTest {
     @Ignore
     @Test
     public void test3() {
-        HashMap<Point, String> tileTypes = new HashMap<>();
-        tileTypes.put(new Point(0,0),"Path");
-        tileTypes.put(new Point(0,1),"Path");
-        tileTypes.put(new Point(0,2),"Path");
-        tileTypes.put(new Point(0,3),"Path");
-        tileTypes.put(new Point(1,0),"Path");
-        tileTypes.put(new Point(1,1),"Grass");
-        tileTypes.put(new Point(1,2),"Grass");
-        tileTypes.put(new Point(1,3),"Path");
-        tileTypes.put(new Point(2,0),"Path");
-        tileTypes.put(new Point(2,1),"Path");
-        tileTypes.put(new Point(2,2),"Path");
-        tileTypes.put(new Point(2,3),"Path");
-        tileTypes.put(new Point(3,0),"End");
-        tileTypes.put(new Point(3,1),"Grass");
-        tileTypes.put(new Point(3,2),"Grass");
-        tileTypes.put(new Point(3,3),"Start");
-        Point startPoint = new Point(3,3);
-        Point endPoint = new Point(3,0);
+        IMap map = mock(IMap.class);
 
         ArrayList<Point> expectedPath = new ArrayList<>();
         expectedPath.add(new Point(3, 0));
@@ -131,11 +112,27 @@ public class MapTest {
         expectedPath.add(new Point(2, 3));
         expectedPath.add(new Point(3, 3));
 
-        IMap map = new MockMap(tileTypes, startPoint, endPoint);
+        when(map.getStartTileCoor()).thenReturn(new Point(3,3));
+        when(map.getEndTileCoor()).thenReturn(new Point(3,0));
+        when(map.getTileType(0,0)).thenReturn("Path");
+        when(map.getTileType(0,1)).thenReturn("Path");
+        when(map.getTileType(0,2)).thenReturn("Path");
+        when(map.getTileType(0,3)).thenReturn("Path");
+        when(map.getTileType(0,0)).thenReturn("Path");
+        when(map.getTileType(0,1)).thenReturn("Grass");
+        when(map.getTileType(0,2)).thenReturn("Grass");
+        when(map.getTileType(0,3)).thenReturn("Path");
+        when(map.getTileType(0,0)).thenReturn("Path");
+        when(map.getTileType(0,1)).thenReturn("Path");
+        when(map.getTileType(0,2)).thenReturn("Path");
+        when(map.getTileType(0,3)).thenReturn("Path");
+        when(map.getTileType(0,0)).thenReturn("End");
+        when(map.getTileType(0,1)).thenReturn("Grass");
+        when(map.getTileType(0,2)).thenReturn("Grass");
+        when(map.getTileType(0,3)).thenReturn("Start");
 
-        ArrayList<Point> path = map.getPath();
-
-        System.out.println(path);
+        PathFinder pathFinder = new PathFinder(map);
+        ArrayList<Point> path = pathFinder.calculatePath();
 
         assertEquals(expectedPath.size(), path.size());
         for (int x = 0; x < path.size(); x++) {
