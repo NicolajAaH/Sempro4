@@ -97,7 +97,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         return PositionPart.down;
     }
 
-    private void createEnemy(World world, GameData gameData) {
+    void createEnemy(World world, GameData gameData) {
         Point start = map.getStartTileCoor();
 
         float speed = 1;
