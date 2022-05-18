@@ -40,7 +40,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             handleInput(positionPart, movingPart, keys);
 
-            if (gameData.getKeys().isDown(SPACE)) { //TODO: Should only be called once per SPACE press, even when space is held down
+            if (gameData.getKeys().isDown(SPACE) && towerSPI != null) {
                 Tower tower;
 
                 Point coordinates = map.mapCoorToTileCoor(positionPart.getX(), positionPart.getY());
