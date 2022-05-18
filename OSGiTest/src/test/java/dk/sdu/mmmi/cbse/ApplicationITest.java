@@ -33,9 +33,12 @@ public class ApplicationITest {
         return probe;
     }
 
-
+    /**
+     * Tests that loading and unloading dynamically is possible, and that it contains the player-bundle
+     * @throws Exception thrown if it fails
+     */
     @Test
-    public void Test_Loading_Unloading_Player() throws Exception {
+    public void Test_Loading_Unloading_Contains_Player() throws Exception {
         for (Bundle bundle_started : bundleContext.getBundles()) {
             if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiPlayer")) {
                 log.info("Bundle found: OSGiPlayer");
@@ -81,8 +84,12 @@ public class ApplicationITest {
         }
     }
 
+    /**
+     * Tests that loading and unloading dynamically is possible, and that it contains the enemy-bundle
+     * @throws Exception thrown if it fails
+     */
     @Test
-    public void Test_Loading_Unloading_Enemy() throws Exception {
+    public void Test_Loading_Unloading_Contains_Enemy() throws Exception {
         for (Bundle bundle_started : bundleContext.getBundles()) {
             if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiEnemy")) {
                 log.info("Bundle found: OSGiEnemy");
@@ -127,8 +134,12 @@ public class ApplicationITest {
         }
     }
 
+    /**
+     * Tests that loading and unloading dynamically is possible, and that it contains the projectile-bundle
+     * @throws Exception thrown if it fails
+     */
     @Test
-    public void Test_Loading_Unloading_Projectile() throws Exception {
+    public void Test_Loading_Unloading_Contains_Projectile() throws Exception {
         for (Bundle bundle_started : bundleContext.getBundles()) {
             if (bundle_started.getHeaders().get("Bundle-Name") != null && bundle_started.getHeaders().get("Bundle-Name").equals("OSGiProjectile")) {
                 if (bundle_started.getState() != Bundle.ACTIVE) {
@@ -172,17 +183,53 @@ public class ApplicationITest {
         }
     }
 
+    /**
+     * Checks that the map-bundle exists
+     * @throws Exception thrown if it fails
+     */
+    @Test
+    public void containsMap() throws Exception {
+        for (Bundle bundle : bundleContext.getBundles()){
+            if(bundle.getHeaders().get("Bundle-Name") != null && bundle.getHeaders().get("Bundle-Name").equals("OSGiMap")){
+                log.info("CONTAINS OSGiMAP");
+                return;
+            }
+        }
+        log.error("DOES NOT CONTAIN OSGiMAP");
+        throw new Exception("DOES NOT CONTAIN MAP");
+    }
+
+    /**
+     * Tests that the Core-bundle exists
+     * @throws Exception thrown if fails
+     */
+    @Test
+    public void containsCore() throws Exception {
+        for (Bundle bundle : bundleContext.getBundles()){
+            if(bundle.getHeaders().get("Bundle-Name") != null && bundle.getHeaders().get("Bundle-Name").equals("OSGiCore")){
+                log.info("CONTAINS OSGiCORE");
+                return;
+            }
+        }
+        log.error("DOES NOT CONTAIN OSGiCORE");
+        throw new Exception("DOES NOT CONTAIN CORE");
+    }
+
     private static String toFileURI(String path) {
         return new File(path).toURI().toString();
     }
 
+    //importing all the bundles
     @Configuration
     public static Option[] configuration() {
         return options(
                 provision(
+                        bundle(toFileURI("bundles/OSGiLibGDX.jar")),
                         bundle(toFileURI("bundles/OSGiPlayer.jar")),
                         bundle(toFileURI("bundles/OSGiEnemy.jar")),
                         bundle(toFileURI("bundles/OSGiProjectile.jar")),
+                        bundle(toFileURI("bundles/OSGiCore.jar")),
+                        bundle(toFileURI("bundles/OSGiMap.jar")),
                         mavenBundle("org.osgi", "org.osgi.compendium", "4.2.0"),
                         mavenBundle("org.ops4j.pax.swissbox", "pax-swissbox-tinybundles",
                                 "1.0.0")
