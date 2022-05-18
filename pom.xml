@@ -82,6 +82,11 @@
         <artifactId>maven-pax-plugin</artifactId>
         <version>1.6.0</version>
         <configuration>
+          <excludes>
+            <exclude>
+              OSGiTest
+            </exclude>
+          </excludes>
           <!--
                      | some example Pax-Runner settings
                     -->
