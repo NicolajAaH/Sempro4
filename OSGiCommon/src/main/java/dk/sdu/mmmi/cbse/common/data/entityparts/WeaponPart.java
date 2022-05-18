@@ -13,10 +13,13 @@ public class WeaponPart implements EntityPart {
     private float shootingFrequency;
     private float damage;
 
-    public WeaponPart(float range, float shootingFrequency, float damage) {
+    private float projectileSpeed;
+
+    public WeaponPart(float range, float shootingFrequency, float damage, float projectileSpeed) {
         this.range = range;
         this.shootingFrequency = shootingFrequency;
         this.damage = damage;
+        this.projectileSpeed = projectileSpeed;
     }
 
     @Override
