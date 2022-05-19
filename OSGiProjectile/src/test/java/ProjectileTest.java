@@ -129,5 +129,3 @@ public class ProjectileTest {
         assertEquals(projectilePositionPart.getOriginY() + projectileMovingPart.getSpeed(), projectilePositionPart.getY());
     }
 }
-
-// TODO: Refactor Weapon and Movingpart - delete unused elements - eg. rotation speed in mp and frequency and damage in waepon part. Refacter all X & Y's to Points!
