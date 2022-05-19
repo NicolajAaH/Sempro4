@@ -28,7 +28,6 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
             WeaponPart weaponPart = projectile.getPart(WeaponPart.class);
 
             movingPart.process(gameData, projectile);
-            positionPart.process(gameData, projectile);
 
             // checks if it has reached it's range
             if (positionPart.getDistanceFromOrigin() > weaponPart.getRange()) {
