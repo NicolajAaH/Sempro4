@@ -3,28 +3,33 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.WeaponPart;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.commonprojectile.Projectile;
 import dk.sdu.mmmi.cbse.projectile.ProjectileControlSystem;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashMap;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-/**
- * Test of requirement F9.1: A Projectile must be able to be generated
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class ProjectileTest {
+
+    ProjectileControlSystem projectileControlSystem;
+
     @Mock
-    Entity shooter;
+    Entity entityMock;
 
     @Mock
     PositionPart positionPartMock;
@@ -33,23 +38,34 @@ public class ProjectileTest {
     WeaponPart weaponPartMock;
 
     @Mock
-    World world;
+    World worldMock;
 
     @Mock
-    GameData gameData;
+    GameData gameDataMock;
 
     @Mock
-    IMap mockMap;
+    IMap mapMock;
 
     @Mock
-    Texture texture;
+    Texture textureMock;
 
-    @Test
-    public void testGenerateProjectile() throws Exception {
-        ProjectileControlSystem projectileControlSystem = new ProjectileControlSystem();
+    @BeforeEach
+    public void setup(){
+        projectileControlSystem = new ProjectileControlSystem();
+
 
         // injecting mock dependencies
-        projectileControlSystem.setIMap(mockMap);
+        projectileControlSystem.setIMap(mapMock);
+    }
+
+
+
+    /**
+     * Test of requirement F9.1: A Projectile must be able to be generated
+     */
+    @Test
+    public void testGenerateProjectile() {
+        Entity shooter = entityMock;
 
         // creating mock of shooters Weapon and Position Part
         when(positionPartMock.getX()).thenReturn(100F);
@@ -60,19 +76,58 @@ public class ProjectileTest {
         when(shooter.getPart(PositionPart.class)).thenReturn(positionPartMock);
         when(shooter.getPart(WeaponPart.class)).thenReturn(weaponPartMock);
 
-        //MockedConstruction<Sprite>
+        // mock for sprite creation
         HashMap<Types, Texture> hashMap = new HashMap<Types, Texture>(){{
-            put(Types.PROJECTILE, texture);
+            put(Types.PROJECTILE, textureMock);
         }};
-        when(world.getTextureHashMap()).thenReturn(hashMap);
+        when(worldMock.getTextureHashMap()).thenReturn(hashMap);
 
         // calling method
-        projectileControlSystem.createProjectile(shooter, gameData, world);
+        projectileControlSystem.createProjectile(shooter, gameDataMock, worldMock);
 
-        // assert the world contains a projectile
-        verify(world, times(1)).addEntity(any(Projectile.class));
+        // assert the addEntity has been called on worldMock with an Entity of Projectile class
+        verify(worldMock, times(1)).addEntity(any(Projectile.class));
+    }
+
+
+    /**
+     * Test of requirement F9.2:
+     * A Projectile must be able to move in a straight line with a defined speed
+     */
+
+    @Test
+    public void testStraightLineAndDefinedSpeed(){
+        Entity projectile = entityMock;
+
+        when(mapMock.isInsideMap(anyFloat(),anyFloat())).thenReturn(true);
+        when(mapMock.getTileSize()).thenReturn(58);
+
+        // Create a projectile: starting point (10,10), direction 0 degrees, speed: 6
+        PositionPart projectilePositionPart = new PositionPart(10,10,0);
+        MovingPart projectileMovingPart = new MovingPart(6,0,true);
+        projectileMovingPart.setIMap(mapMock);
+        when(projectile.getPart(PositionPart.class)).thenReturn(projectilePositionPart);
+        when(projectile.getPart(MovingPart.class)).thenReturn(projectileMovingPart);
+        when(projectile.getPart(WeaponPart.class)).thenReturn(weaponPartMock);
+
+        // making world return created mocked projectile
+        List<Entity> entityList = new ArrayList<Entity>(){{
+            add(projectile);
+        }};
+        when(worldMock.getEntities(Projectile.class)).thenReturn(entityList);
+
+        // call process method and assert that projectile has moved at it's speed along the x-axis
+        projectileControlSystem.process(gameDataMock, worldMock);
+        float speed = projectileMovingPart.getSpeed();
+        float originX = projectilePositionPart.getOriginX();
+        float newX = projectilePositionPart.getX();
+        assertEquals(originX+speed, newX);
+
+        // changing direction to 90 degrees and assert if moving at it's speed along the y-axis
+        projectilePositionPart.setRadians(90);
+        projectileControlSystem.process(gameDataMock, worldMock);
+        assertEquals(projectilePositionPart.getOriginY() + projectileMovingPart.getSpeed(), projectilePositionPart.getY());
     }
 }
 
-
-
+// TODO: Refactor Weapon and Movingpart - delete unused elements - eg. rotation speed in mp and frequency and damage in waepon part. Refacter all X & Y's to Points!
