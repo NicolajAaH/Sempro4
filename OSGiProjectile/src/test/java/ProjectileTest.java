@@ -70,7 +70,7 @@ public class ProjectileTest {
         // creating mock of shooters Weapon and Position Part
         when(positionPartMock.getX()).thenReturn(100F);
         when(positionPartMock.getY()).thenReturn(100F);
-        when(positionPartMock.getRadians()).thenReturn(0);
+        when(positionPartMock.getAngle()).thenReturn(0);
 
         // adding mocks to shooter entity
         when(shooter.getPart(PositionPart.class)).thenReturn(positionPartMock);
@@ -124,7 +124,7 @@ public class ProjectileTest {
         assertEquals(originX+speed, newX);
 
         // changing direction to 90 degrees and assert if moving at it's speed along the y-axis
-        projectilePositionPart.setRadians(90);
+        projectilePositionPart.setAngle(90);
         projectileControlSystem.process(gameDataMock, worldMock);
         assertEquals(projectilePositionPart.getOriginY() + projectileMovingPart.getSpeed(), projectilePositionPart.getY());
     }

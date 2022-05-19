@@ -60,12 +60,12 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             if (reachableEnemies.size() == 0) {
                 int shouldRotate = r.nextInt(100);
                 if (shouldRotate < 20) {
-                    int radians = positionPart.getRadians();
+                    int radians = positionPart.getAngle();
                     radians += 1;
                     if (360 < radians) {
                         radians = 0;
                     }
-                    positionPart.setRadians(radians);
+                    positionPart.setAngle(radians);
                 }
             }
 
@@ -79,7 +79,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                 // create projectile
                 if (projectileLauncher != null) {
                     // set angle so tower points towards target
-                    positionPart.setRadians((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
+                    positionPart.setAngle((getAngleBetweenEntities(tower, selectedEnemy) + 180) % 360);
                     int shouldShoot = r.nextInt(50);
                     if (shouldShoot < 1) {
                         projectileLauncher.createProjectile(tower, gameData, world);

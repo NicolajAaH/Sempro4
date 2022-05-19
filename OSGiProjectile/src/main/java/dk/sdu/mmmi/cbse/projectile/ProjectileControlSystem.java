@@ -64,7 +64,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // setting position of sprite
         entity.setPosition(positionPart.getX(), positionPart.getY());
         // setting rotation of sprite
-        entity.setRotation(positionPart.getRadians() + 90);
+        entity.setRotation(positionPart.getAngle() + 90);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
         // shooter entity parameteres
         float x = shooterPos.getX();
         float y = shooterPos.getY();
-        int radians = shooterPos.getRadians();
+        int radians = shooterPos.getAngle();
 
         // speed of projectile
         float projectileSpeed = weaponPart.getProjectileSpeed();

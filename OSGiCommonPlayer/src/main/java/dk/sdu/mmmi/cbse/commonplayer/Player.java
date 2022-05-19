@@ -24,6 +24,6 @@ public class Player extends Entity {
     public void update(float delta) {
         PositionPart positionPart = this.getPart(PositionPart.class);
         this.setPosition(positionPart.getX(), positionPart.getY());
-        this.setRotation((positionPart.getRadians() + 270) % 360);
+        this.setRotation((positionPart.getAngle() + 270) % 360);
     }
 }

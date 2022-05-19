@@ -39,7 +39,7 @@ public class MovingPart implements EntityPart {
         PositionPart positionPart = entity.getPart(PositionPart.class);
         float x = positionPart.getX();
         float y = positionPart.getY();
-        int radians = positionPart.getRadians();
+        int radians = positionPart.getAngle();
 
         float radians2 = (float) Math.toRadians(radians);
         dx = (float) cos(radians2) * speed;
@@ -56,7 +56,7 @@ public class MovingPart implements EntityPart {
             x += dx;
             y += dy;
             positionPart.setPosition(x, y);
-            positionPart.setRadians(radians);
+            positionPart.setAngle(radians);
         }
     }
 
