@@ -5,10 +5,11 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,9 +20,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class MovingPartTest {
 
-//    @Mock
-//    PositionPart positionPart;
-
     @Mock
     GameData gameData;
 
@@ -31,15 +29,16 @@ public class MovingPartTest {
     @Mock
     IMap map;
 
+    @Before
+    public void setUp(){
+        MockitoAnnotations.openMocks(this);
+    }
 
     /* testing movement by checking if movingPart.process changes x,y coordinates*/
-
-    @Ignore //TODO fix test
     @Test
-    public void movementTest(){
+    public void movingPartProcessTest(){
         MovingPart movingPart = new MovingPart(1, 0);
         movingPart.setIMap(map);
-
 
         movingPart.setMoving(true);
         PositionPart positionPart = new PositionPart(12, 10, 90);
@@ -56,7 +55,6 @@ public class MovingPartTest {
         System.out.println();
         movingPart.process(gameData, entity);
         PositionPart positionPart2 = entity.getPart(PositionPart.class);
-
 
         assertTrue(positionPart2.getX()!=12 || positionPart2.getY()!=10);
 
