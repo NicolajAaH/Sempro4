@@ -19,6 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test of F8: A Collision system must be able to detect collisions between player, enemies and projectiles
+ */
 @ExtendWith(MockitoExtension.class)
 class CollisionManagerTest {
 

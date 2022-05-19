@@ -28,8 +28,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
         for (Entity player : world.getEntities(Player.class)) {
             PositionPart positionPart = player.getPart(PositionPart.class);
             MovingPart movingPart = player.getPart(MovingPart.class);
-            LifePart lifePart = player.getPart(LifePart.class);
-
 
             GameKeys keys = gameData.getKeys();
 

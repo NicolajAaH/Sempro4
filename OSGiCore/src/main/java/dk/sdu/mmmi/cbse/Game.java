@@ -78,8 +78,8 @@ public class Game implements ApplicationListener {
         gameData.setLife(2);
         gameData.setMoney(500);
         gameData.setWave(0);
-        gameData.setScore(0); //TODO: This is not changed anywhere (either fix it or remove it from the screen)
-        // Set the screen width and height (global variables) //TODO: Maybe these should be set in GameData.java and be final. these could also be used in init()
+        gameData.setScore(0);
+        // Set the screen width and height (global variables)
         gameData.setDisplayWidth(Gdx.graphics.getWidth());
         gameData.setDisplayHeight(Gdx.graphics.getHeight());
 
@@ -97,7 +97,6 @@ public class Game implements ApplicationListener {
             gameData.setWave(gameData.getWave() + 1);
         }
 
-        renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
         batch = new SpriteBatch();
 
         //Fonts
@@ -187,13 +186,16 @@ public class Game implements ApplicationListener {
             feedbackToPlayerFont.drawMultiLine(batch, gameData.getScreenMessage(), x, messageY);
         }
 
-        // GAME OVER message when no more life TODO: change to if (gameData.getLife() <= 0)
-        if (gameData.isPlayerDead()) {
+        // GAME OVER message when no more life
+        if (gameData.getLife() <= 0) {
             feedbackToPlayerFont.dispose(); // Remove messages to player
-            //TODO: remove all enemies from the game
+            for (Attack attack : gameData.getCurrentAttacks())
+                gameData.removeAttack(attack);
+            for(Entity entity : world.getEntities())
+                world.removeEntity(entity);
 
             String gameOver = "GAME OVER" +
-                    "\n\nYou have no more life";
+                    "\n\nYou have no more life" + "\n\nPress ENTER to restart";
             gameOverFont.drawMultiLine(batch, gameOver, x, messageY);
         }
     }
@@ -220,18 +222,21 @@ public class Game implements ApplicationListener {
 
     private void update() {
         if (gameData.getLife() <= 0) {
-            if(gameData.getKeys().isDown(GameKeys.SPACE)){
+            if(gameData.getKeys().isDown(GameKeys.ENTER)){
                 restart = true;
             }
             for (IGamePluginService iGamePluginService : gamePluginList) {
                 iGamePluginService.stop(gameData, world);
             }
+            renderer.render();
         }
 
         if (restart) {
             if (gameData.getHighestScore() < gameData.getScore())
                 gameData.setHighestScore(gameData.getScore());
             restart = false;
+            gameData.setPlayerDead(false);
+            feedbackToPlayerFont.dispose();
             create();
             for (IGamePluginService iGamePluginService : gamePluginList) {
                 iGamePluginService.start(gameData, world, textures);

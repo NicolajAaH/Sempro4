@@ -18,6 +18,10 @@ import java.io.File;
 
 import static org.ops4j.pax.exam.CoreOptions.*;
 
+/**
+ * Test of F1: Must be possible to dynamically load/unload Player, Enemy, Weapon
+ * Test of F2: Must contain components Player, Weapon, Enemy, Map, Core
+ */
 @Slf4j
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)

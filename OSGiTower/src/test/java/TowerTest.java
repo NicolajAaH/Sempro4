@@ -61,14 +61,6 @@ public class TowerTest {
         towerControlSystem.setProjectileSPI(mockProjectileLauncer);
         towerControlSystem.setR(mockRandom);
 
-        /* Unneccesary Mock of Map!
-        when(mockMap.getEndTileCoor()).thenReturn(new Point(0,4));
-        when(mockMap.tileCoorToMapCoor(0, 4)).thenReturn(new Point(0, 4*58));
-        when(mockMap.getStartTileCoor()).thenReturn(new Point(11,8));
-        when(mockMap.tileCoorToMapCoor(11,8)).thenReturn(new Point(11*58, 8*58));
-        when(mockMap.getTileType(anyInt(),anyInt()).equals("Grass")).thenReturn(true);
-         */
-
         // Mock of world
         List<Entity> towerEntities = new ArrayList<>();
         towerEntities.add(tower);
