@@ -48,18 +48,19 @@ public class MovingPart implements EntityPart {
         dx = (float) cos(radians2) * speed;
         dy = (float) sin(radians2) * speed;
 
-        float radius = entity.getRadius();
+
+        // calculating center of a tile
         float centerX = x -5 + map.getTileSize()/2f;
         float centerY = y -5  + map.getTileSize()/2f;
+        float radius = entity.getRadius();
 
+        // set position if new position is inside map
         if ( map.isInsideMap(centerX+dx+radius, centerY+dy+radius) && map.isInsideMap(centerX+dx-radius, centerY+dy-radius) ) {
-            // set position
             x += dx;
             y += dy;
+            positionPart.setPosition(x, y);
+            positionPart.setRadians(radians);
         }
-
-        positionPart.setPosition(x, y);
-        positionPart.setRadians(radians);
     }
 
     public void setIMap(IMap map) {
