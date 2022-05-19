@@ -104,7 +104,7 @@ public class ProjectileTest {
 
         // Create a projectile: starting point (10,10), direction 0 degrees, speed: 6
         PositionPart projectilePositionPart = new PositionPart(10,10,0);
-        MovingPart projectileMovingPart = new MovingPart(6,0,true);
+        MovingPart projectileMovingPart = new MovingPart(6, true);
         projectileMovingPart.setIMap(mapMock);
         when(projectile.getPart(PositionPart.class)).thenReturn(projectilePositionPart);
         when(projectile.getPart(MovingPart.class)).thenReturn(projectileMovingPart);

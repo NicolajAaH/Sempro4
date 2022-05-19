@@ -20,18 +20,15 @@ public class MovingPart implements EntityPart {
     private float speed;
 
     private boolean moving = false;
-    private float rotationSpeed;
 
     static IMap map;
 
-    public MovingPart(float speed, float rotationSpeed) {
+    public MovingPart(float speed) {
         this.speed = speed;
-        this.rotationSpeed = rotationSpeed;
     }
 
-    public MovingPart(float speed, float rotationSpeed, boolean moving) {
+    public MovingPart(float speed, boolean moving) {
         this.speed = speed;
-        this.rotationSpeed = rotationSpeed;
         this.moving = moving;
     }
 

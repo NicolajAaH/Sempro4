@@ -10,15 +10,11 @@ import lombok.Setter;
 public class WeaponPart implements EntityPart {
 
     private float range;
-    private float shootingFrequency;
-    private float damage;
 
     private float projectileSpeed;
 
-    public WeaponPart(float range, float shootingFrequency, float damage, float projectileSpeed) {
+    public WeaponPart(float range, float projectileSpeed) {
         this.range = range;
-        this.shootingFrequency = shootingFrequency;
-        this.damage = damage;
         this.projectileSpeed = projectileSpeed;
     }
 

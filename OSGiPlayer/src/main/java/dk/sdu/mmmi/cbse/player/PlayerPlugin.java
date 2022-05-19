@@ -30,7 +30,7 @@ public class PlayerPlugin implements IGamePluginService {
         Texture texture = textures.get(Types.PLAYER);
         Sprite sprite = new Sprite(texture);
         Entity player = new Player(sprite, Types.PLAYER);
-        player.add(new MovingPart(speed, rotationSpeed));
+        player.add(new MovingPart(speed));
         player.add(new PositionPart(x, y, radians));
         player.add(new LifePart(1));
         player.setRadius(20);

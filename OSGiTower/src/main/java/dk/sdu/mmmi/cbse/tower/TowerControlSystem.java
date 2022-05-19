@@ -196,10 +196,10 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         float x = (float) coordinate.x - map.getTileSize() / 2;
         float y = (float) coordinate.y - map.getTileSize() / 2;
 
-        tower.add(new MovingPart(speed, rotationSpeed));
+        tower.add(new MovingPart(speed));
         tower.add(new PositionPart(x, y, 0));
         tower.setRadius(20);
-        tower.add(new WeaponPart(200, 5, 10,6));
+        tower.add(new WeaponPart(200, 6));
         return tower;
     }
 

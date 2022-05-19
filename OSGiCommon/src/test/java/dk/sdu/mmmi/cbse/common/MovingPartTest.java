@@ -37,7 +37,7 @@ public class MovingPartTest {
     /* testing movement by checking if movingPart.process changes x,y coordinates*/
     @Test
     public void movingPartProcessTest(){
-        MovingPart movingPart = new MovingPart(1, 0);
+        MovingPart movingPart = new MovingPart(1);
         movingPart.setIMap(map);
 
         movingPart.setMoving(true);
