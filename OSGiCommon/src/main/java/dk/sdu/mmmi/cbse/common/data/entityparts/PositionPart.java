@@ -15,16 +15,16 @@ public class PositionPart implements EntityPart {
     public static final int down = 270;
     private float x;
     private float y;
-    private int radians = 0; // direction of movement
+    private int angle = 0; // direction of movement
     private String lastChange;
     private float originX, originY;
 
-    public PositionPart(float x, float y, int radians) {
+    public PositionPart(float x, float y, int angle) {
         this.x = x;
         this.y = y;
         this.originX = x;
         this.originY = y;
-        this.radians = radians;
+        this.angle = angle;
     }
 
     public void setPosition(float newX, float newY) {

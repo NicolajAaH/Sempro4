@@ -50,13 +50,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
     }
 
     private boolean checkEnemyOutOfBounds(PositionPart positionPart, PathPart pathPart){
-        if (positionPart.getRadians() == PositionPart.left && positionPart.getX() > pathPart.getGoal().x)
+        if (positionPart.getAngle() == PositionPart.left && positionPart.getX() > pathPart.getGoal().x)
             return false;
-        if (positionPart.getRadians() == PositionPart.right && positionPart.getX() < pathPart.getGoal().x)
+        if (positionPart.getAngle() == PositionPart.right && positionPart.getX() < pathPart.getGoal().x)
             return false;
-        if (positionPart.getRadians() == PositionPart.down && positionPart.getY() > pathPart.getGoal().y)
+        if (positionPart.getAngle() == PositionPart.down && positionPart.getY() > pathPart.getGoal().y)
             return false;
-        if (positionPart.getRadians() == PositionPart.up && positionPart.getY() < pathPart.getGoal().y) return false;
+        if (positionPart.getAngle() == PositionPart.up && positionPart.getY() < pathPart.getGoal().y) return false;
 
         return  true;
     }
@@ -72,7 +72,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         PathDirection newTile = pathPart.getPath().pop();
         pathPart.setGoal(newTile.getGoal());
-        positionPart.setRadians(newTile.getDirection());
+        positionPart.setAngle(newTile.getDirection());
 
         // checking if reached end of path, updating life and removing enemy
         if (pathPart.getPath().isEmpty()) onGoalReached.function();

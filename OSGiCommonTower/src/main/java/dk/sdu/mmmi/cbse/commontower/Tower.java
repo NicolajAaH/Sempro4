@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class Tower extends Entity {
 
-    private int buildCost = 100;
+    private int buildCost = 60;
 
     public Tower(Sprite sprite, Types type) {
         super(sprite);
@@ -33,6 +33,6 @@ public class Tower extends Entity {
         // setting position of sprite
         this.setPosition(positionPart.getX(), positionPart.getY());
         // setting rotation of sprite (using degrees NOT radians)
-        this.setRotation(positionPart.getRadians());
+        this.setRotation(positionPart.getAngle());
     }
 }

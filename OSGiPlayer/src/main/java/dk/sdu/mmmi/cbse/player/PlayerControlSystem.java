@@ -5,7 +5,6 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
 import dk.sdu.mmmi.cbse.common.data.World;
-import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
@@ -67,16 +66,16 @@ public class PlayerControlSystem implements IEntityProcessingService {
     private void handleInput(PositionPart positionPart, MovingPart movingPart, GameKeys keys) {
 
         if (keys.isDown(LEFT)) {
-            positionPart.setRadians(PositionPart.left);
+            positionPart.setAngle(PositionPart.left);
             movingPart.setMoving(true);
         } else if (keys.isDown(RIGHT)) {
-            positionPart.setRadians(PositionPart.right);
+            positionPart.setAngle(PositionPart.right);
             movingPart.setMoving(true);
         } else if (keys.isDown(UP)) {
-            positionPart.setRadians(PositionPart.up);
+            positionPart.setAngle(PositionPart.up);
             movingPart.setMoving(true);
         } else if (keys.isDown(DOWN)) {
-            positionPart.setRadians(PositionPart.down);
+            positionPart.setAngle(PositionPart.down);
             movingPart.setMoving(true);
         } else {
             movingPart.setMoving(false);

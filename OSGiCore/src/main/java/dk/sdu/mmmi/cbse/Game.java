@@ -75,7 +75,7 @@ public class Game implements ApplicationListener {
     @Override
     public void create() {
         // setting initial values of games attributes
-        gameData.setLife(2);
+        gameData.setLife(20);
         gameData.setMoney(500);
         gameData.setWave(0);
         gameData.setScore(0);
