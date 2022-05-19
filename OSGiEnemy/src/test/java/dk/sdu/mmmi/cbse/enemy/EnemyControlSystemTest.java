@@ -1,32 +1,24 @@
 package dk.sdu.mmmi.cbse.enemy;
 
-import dk.sdu.mmmi.cbse.common.data.Attack;
-import dk.sdu.mmmi.cbse.common.data.Entity;
-import dk.sdu.mmmi.cbse.common.data.GameData;
-import dk.sdu.mmmi.cbse.common.data.World;
+import com.badlogic.gdx.graphics.Texture;
+import dk.sdu.mmmi.cbse.common.data.*;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PathPart;
 import dk.sdu.mmmi.cbse.commonenemy.Enemy;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Stack;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyFloat;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -37,9 +29,6 @@ public class EnemyControlSystemTest {
 
     @Mock
     World world;
-
-    @Mock
-    List<Attack> currentAttacks;
 
     @Mock
     Entity entity;
@@ -53,40 +42,51 @@ public class EnemyControlSystemTest {
     @Mock
     IMap map;
 
-//    @Mock
-//    Point point;
+    @Mock
+    Texture texture;
 
-    EnemyControlSystem enemyControlSystem;
+    @Mock
+    PathPart pathPart;
 
-    @Before
-    public void setUp(){
-       // currentAttacks = new ArrayList<Attack>(3);
-        MockitoAnnotations.openMocks(this);
-    }
+    @Mock
+    PathDirection pathDirection;
+
+    @Mock
+    MovingPart movingPart;
 
     @Test
     public void EnemyLoadAttacksTest(){
-//        currentAttacks = new ArrayList<Attack>();
-//        currentAttacks.add(attack);
-
         Point point = new Point(10, 10);
         EnemyControlSystem enemyControlSystem = new EnemyControlSystem();
         enemyControlSystem.setIMap(map);
         when(gameData.getCurrentAttacks()).thenReturn(new ArrayList<Attack>(){{add(attack);}});
         when(attack.getAttackNumber()).thenReturn(2);
-        //when(map.getStartTileCoor()).thenReturn(point);
-        //when(enemyControlSystem.createEnemy(world, gameData))
-
+        when(map.getStartTileCoor()).thenReturn(point);
+        when(map.tileCoorToMapCoor(anyFloat(), anyFloat())).thenReturn(point);
+        when(map.getTileCenter(any())).thenReturn(point);
+        HashMap<Types, Texture> hashMap = new HashMap<Types, Texture>(){{
+            put(Types.ENEMY, texture);
+        }};
+        when(world.getTextureHashMap()).thenReturn(hashMap);
+        ArrayList<Point> points = new ArrayList<Point>(){{
+            add(point);
+            add(new Point(5,5));
+        }};
+        when(map.getPath()).thenReturn(points);
         enemyControlSystem.process(gameData, world);
-        assertTrue(gameData.getMoney()==2);
-
-
-
-
+        verify(gameData, times(1)).addMoney(2);
     }
 
-
-
-
-
+    @Test
+    public void testEnemyMovement(){
+        EnemyControlSystem enemyControlSystem = new EnemyControlSystem();
+        enemyControlSystem.setIMap(map);
+        when(gameData.getCurrentAttacks()).thenReturn(new ArrayList<>());
+        when(world.getEntities(Enemy.class)).thenReturn(new ArrayList<Entity>(){{
+            add(enemy);
+        }});
+        when(enemy.getPart(MovingPart.class)).thenReturn(movingPart);
+        enemyControlSystem.process(gameData, world);
+        verify(movingPart, times(1)).process(any(), any());
+    }
 }

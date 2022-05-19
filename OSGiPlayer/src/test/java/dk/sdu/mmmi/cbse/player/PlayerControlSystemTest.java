@@ -1,14 +1,15 @@
 package dk.sdu.mmmi.cbse.player;
 
 
-import dk.sdu.mmmi.cbse.common.data.*;
-
+import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.GameKeys;
+import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import dk.sdu.mmmi.cbse.commontower.TowerSPI;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
