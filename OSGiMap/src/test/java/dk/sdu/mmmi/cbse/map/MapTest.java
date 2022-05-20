@@ -19,7 +19,7 @@ public class MapTest {
     IMap map;
 
     @Test
-    public void test1() {
+    public void testAStar() {
         ArrayList<Point> expectedPath = new ArrayList<>();
         expectedPath.add(new Point(0, 2));
         expectedPath.add(new Point(1,2));
