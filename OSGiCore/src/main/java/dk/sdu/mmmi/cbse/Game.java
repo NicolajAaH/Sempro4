@@ -161,6 +161,7 @@ public class Game implements ApplicationListener {
         int moneyY = MAP_HEIGHT - 4 * fontSpacing;
         int howToPlayY = MAP_HEIGHT - 24 * fontSpacing;
         int messageY = MAP_HEIGHT - 15 * fontSpacing;
+        int deadPlayerY = MAP_HEIGHT - 10 * fontSpacing;
 
         // Info about score, life and money
         scoreFont.draw(batch, ("Score: " + gameData.getScore()), x, scoreY);
@@ -186,7 +187,8 @@ public class Game implements ApplicationListener {
             String message = "The Player is dead! " +
                     "\n\nYou can no longer place " +
                     "\nnew Towers";
-            feedbackToPlayerFont.drawMultiLine(batch, message, x, messageY);
+
+            gameData.setScreenMessage(message);
         }
 
         // Messages for feedback to player during game
