@@ -155,9 +155,10 @@ public class Game implements ApplicationListener {
         //Font positions
         int fontSpacing = 25;
         int x = SCREEN_WIDTH - SCREEN_BAR_WIDTH + 10;
-        int scoreY = MAP_HEIGHT - fontSpacing;
-        int lifeY = MAP_HEIGHT - 2 * fontSpacing;
-        int moneyY = MAP_HEIGHT - 3 * fontSpacing;
+        int highestScoreY = MAP_HEIGHT - fontSpacing;
+        int scoreY = MAP_HEIGHT - 2 * fontSpacing;
+        int lifeY = MAP_HEIGHT - 3 * fontSpacing;
+        int moneyY = MAP_HEIGHT - 4 * fontSpacing;
         int howToPlayY = MAP_HEIGHT - 24 * fontSpacing;
         int messageY = MAP_HEIGHT - 15 * fontSpacing;
 
@@ -165,6 +166,13 @@ public class Game implements ApplicationListener {
         scoreFont.draw(batch, ("Score: " + gameData.getScore()), x, scoreY);
         lifeFont.draw(batch, ("Life: " + gameData.getLife()), x, lifeY);
         moneyFont.draw(batch, ("Money: " + gameData.getMoney()), x, moneyY);
+
+        // Highest score
+        if (gameData.getScore() > gameData.getHighestScore()) {
+            gameData.setHighestScore(gameData.getScore());
+        }
+
+        scoreFont. draw(batch, ("Highest Score: " + gameData.getHighestScore()), x, highestScoreY);
 
         //How to play message
         String howToPlay = "HOW TO PLAY: " +
