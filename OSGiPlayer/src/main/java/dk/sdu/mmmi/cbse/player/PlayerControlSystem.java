@@ -30,11 +30,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             GameKeys keys = gameData.getKeys();
 
-
-            if (keys.isDown(SHIFT)) {
-                System.out.println(gameData);
-            }
-
             handleInput(positionPart, movingPart, keys);
 
             if (gameData.getKeys().isDown(SPACE) && towerSPI != null) {

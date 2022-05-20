@@ -49,6 +49,12 @@ public class ProjectileTest {
     @Mock
     Texture textureMock;
 
+    @Mock
+    Projectile projectile;
+
+    @Mock
+    MovingPart movingPart;
+
     @BeforeEach
     public void setup(){
         projectileControlSystem = new ProjectileControlSystem();
@@ -127,5 +133,19 @@ public class ProjectileTest {
         projectilePositionPart.setAngle(90);
         projectileControlSystem.process(gameDataMock, worldMock);
         assertEquals(projectilePositionPart.getOriginY() + projectileMovingPart.getSpeed(), projectilePositionPart.getY());
+    }
+
+    @Test
+    public void TestProjectileOutsideMap(){
+        ArrayList<Entity> projectiles = new ArrayList<Entity>(){{
+            add(projectile);
+        }};
+        when(projectile.getPart(MovingPart.class)).thenReturn(movingPart);
+        when(projectile.getPart(PositionPart.class)).thenReturn(positionPartMock);
+        when(projectile.getPart(WeaponPart.class)).thenReturn(weaponPartMock);
+        when(worldMock.getEntities(Projectile.class)).thenReturn(projectiles);
+        when(mapMock.isInsideMap(anyFloat(), anyFloat())).thenReturn(false);
+        projectileControlSystem.process(gameDataMock, worldMock);
+        verify(worldMock, times(2)).removeEntity(projectile);
     }
 }

@@ -75,7 +75,7 @@ public class Game implements ApplicationListener {
     @Override
     public void create() {
         // setting initial values of games attributes
-        gameData.setLife(20);
+        gameData.setLife(3);
         gameData.setMoney(500);
         gameData.setWave(0);
         gameData.setScore(0);
@@ -246,6 +246,7 @@ public class Game implements ApplicationListener {
                 gameData.setHighestScore(gameData.getScore());
             restart = false;
             gameData.setPlayerDead(false);
+            gameData.setScreenMessage("");
             feedbackToPlayerFont.dispose();
             create();
             for (IGamePluginService iGamePluginService : gamePluginList) {
