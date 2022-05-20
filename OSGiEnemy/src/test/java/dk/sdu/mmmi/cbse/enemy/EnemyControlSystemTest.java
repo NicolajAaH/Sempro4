@@ -33,9 +33,6 @@ public class EnemyControlSystemTest {
     World world;
 
     @Mock
-    Entity entity;
-
-    @Mock
     Enemy enemy;
 
     @Mock
@@ -46,12 +43,6 @@ public class EnemyControlSystemTest {
 
     @Mock
     Texture texture;
-
-    @Mock
-    PathPart pathPart;
-
-    @Mock
-    PathDirection pathDirection;
 
     @Mock
     MovingPart movingPart;
@@ -111,6 +102,6 @@ public class EnemyControlSystemTest {
         assertEquals(output.pop().getDirection(), PositionPart.right);
         assertEquals(output.pop().getDirection(),PositionPart.down);
         assertEquals(output.pop().getDirection(),PositionPart.left);
-        
+
     }
 }
