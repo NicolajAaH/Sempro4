@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import dk.sdu.mmmi.cbse.common.data.*;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PathPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.commonenemy.Enemy;
 import dk.sdu.mmmi.cbse.commonmap.IMap;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.Mockito.*;
@@ -88,5 +90,27 @@ public class EnemyControlSystemTest {
         when(enemy.getPart(MovingPart.class)).thenReturn(movingPart);
         enemyControlSystem.process(gameData, world);
         verify(movingPart, times(1)).process(any(), any());
+    }
+
+    @Test
+    public void testPathToDirectionConversion(){
+        EnemyControlSystem enemyControlSystem = new EnemyControlSystem();
+        enemyControlSystem.setIMap(map);
+        when(map.getTileCenter(any())).thenReturn(new Point(0,0));
+
+        ArrayList<Point> input = new ArrayList<>();
+
+        input.add(new Point(0,0));
+        input.add(new Point(1,0));
+        input.add(new Point(1,1));
+        input.add(new Point(0,1));
+
+        Stack<PathDirection> output = enemyControlSystem.getPathDirectionStack(input);
+
+        assertEquals(3, output.size());
+        assertEquals(output.pop().getDirection(), PositionPart.right);
+        assertEquals(output.pop().getDirection(),PositionPart.down);
+        assertEquals(output.pop().getDirection(),PositionPart.left);
+        
     }
 }
