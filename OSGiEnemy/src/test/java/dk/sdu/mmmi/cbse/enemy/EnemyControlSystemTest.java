@@ -31,9 +31,6 @@ public class EnemyControlSystemTest {
     World world;
 
     @Mock
-    Entity entity;
-
-    @Mock
     Enemy enemy;
 
     @Mock
@@ -44,12 +41,6 @@ public class EnemyControlSystemTest {
 
     @Mock
     Texture texture;
-
-    @Mock
-    PathPart pathPart;
-
-    @Mock
-    PathDirection pathDirection;
 
     @Mock
     MovingPart movingPart;
