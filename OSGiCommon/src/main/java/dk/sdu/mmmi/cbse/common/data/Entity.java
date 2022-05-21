@@ -16,8 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Setter
 public class Entity extends Sprite implements Serializable {
 
-    protected Sprite sprite;
-    protected Texture texture;
+    private Sprite sprite;
+    private Texture texture;
     protected Types type;
 
     private final UUID ID = UUID.randomUUID();
