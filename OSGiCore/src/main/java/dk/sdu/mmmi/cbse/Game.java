@@ -89,9 +89,7 @@ public class Game implements ApplicationListener {
         // Create the map
         map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
         renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
-
-        gameData.setGameStartTime(System.currentTimeMillis());
-
+        
         for (int x = 0; x < 100; x++) {
             gameData.addAttack(new Attack(x * 7000, x));
             gameData.setWave(gameData.getWave() + 1);
@@ -229,7 +227,6 @@ public class Game implements ApplicationListener {
 
         update();
     }
-
     private void update() {
         if (gameData.getLife() <= 0) {
             if(gameData.getKeys().isDown(GameKeys.ENTER)){
