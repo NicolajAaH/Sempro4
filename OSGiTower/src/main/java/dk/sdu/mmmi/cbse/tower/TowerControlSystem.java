@@ -43,9 +43,8 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             PositionPart positionPart = tower.getPart(PositionPart.class);
             WeaponPart weaponPart = tower.getPart(WeaponPart.class);
 
-            List<Entity> enemies = world.getEntities(Enemy.class);
-
             // checking if there is reachable enemies and placing them in queue (minHeap)
+            List<Entity> enemies = world.getEntities(Enemy.class);
             PriorityQueue<Enemy> reachableEnemies = new PriorityQueue<>(10, new enemyComparator());
 
             if (enemies != null) {
@@ -188,16 +187,12 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         // Replacing af tile on the map at pos (x,y) with tower tile.
         map.changeTileType(xTile, yTile, "Tower");
 
-        // setting variables
-        float speed = 0;
-        float rotationSpeed = 5;
-
+        // setting tower attributes
         Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
         float x = (float) coordinate.x - map.getTileSize() / 2;
         float y = (float) coordinate.y - map.getTileSize() / 2;
-
-        tower.add(new MovingPart(speed));
         tower.add(new PositionPart(x, y, 0));
+        tower.add(new MovingPart(0));
         tower.setRadius(20);
         tower.add(new WeaponPart(200, 6));
         return tower;
