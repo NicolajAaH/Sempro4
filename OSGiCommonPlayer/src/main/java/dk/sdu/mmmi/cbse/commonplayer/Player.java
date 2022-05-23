@@ -9,8 +9,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
 public class Player extends Entity {
     public Player(Sprite sprite, Types type) {
-        super(sprite);
-        this.type = type;
+        super(sprite, type);
     }
 
     @Override

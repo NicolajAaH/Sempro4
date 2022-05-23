@@ -18,19 +18,16 @@ public class Entity extends Sprite implements Serializable {
 
     private Sprite sprite;
     private Texture texture;
-    protected Types type;
+    private Types type;
 
     private final UUID ID = UUID.randomUUID();
-
-    private Vector2 velocity; //movement velocity
-
-    private float speed;
 
     private float radius;
     private Map<Class, EntityPart> parts;
 
-    public Entity(Sprite sprite) {
+    public Entity(Sprite sprite, Types type) {
         super(sprite);
+        this.type = type;
         parts = new ConcurrentHashMap<>();
     }
 
