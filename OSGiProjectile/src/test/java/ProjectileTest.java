@@ -59,7 +59,6 @@ public class ProjectileTest {
     public void setup(){
         projectileControlSystem = new ProjectileControlSystem();
 
-
         // injecting mock dependencies
         projectileControlSystem.setIMap(mapMock);
     }
