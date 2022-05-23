@@ -25,14 +25,13 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     private ProjectileSPI projectileLauncher;
     private IMap map;
     private Random r = new Random();
-
     private Tower selectedTower;
 
     // weight of heuristics
-    int weightDistanceToEnd = 6;
-    int weightLife = 10;
-    int weightDistanceToStart = -1;
-    int weightDistanceToTower = -1;
+    private int weightDistanceToEnd = 6;
+    private int weightLife = 10;
+    private int weightDistanceToStart = -1;
+    private int weightDistanceToTower = -1;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -43,9 +42,8 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             PositionPart positionPart = tower.getPart(PositionPart.class);
             WeaponPart weaponPart = tower.getPart(WeaponPart.class);
 
-            List<Entity> enemies = world.getEntities(Enemy.class);
-
             // checking if there is reachable enemies and placing them in queue (minHeap)
+            List<Entity> enemies = world.getEntities(Enemy.class);
             PriorityQueue<Enemy> reachableEnemies = new PriorityQueue<>(10, new enemyComparator());
 
             if (enemies != null) {
@@ -154,7 +152,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         return (int) Math.sqrt(((deltaX * deltaX) + (deltaY * deltaY)));
     }
 
-    private int getAngleBetweenEntities(Entity entity1, Entity entity2) {
+        private int getAngleBetweenEntities(Entity entity1, Entity entity2) {
         // returning angle in degrees
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
         PositionPart positionPart2 = entity2.getPart(PositionPart.class);
@@ -188,16 +186,12 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         // Replacing af tile on the map at pos (x,y) with tower tile.
         map.changeTileType(xTile, yTile, "Tower");
 
-        // setting variables
-        float speed = 0;
-        float rotationSpeed = 5;
-
+        // setting tower attributes
         Point coordinate = map.tileCoorToMapCoor(xTile, yTile);
         float x = (float) coordinate.x - map.getTileSize() / 2;
         float y = (float) coordinate.y - map.getTileSize() / 2;
-
-        tower.add(new MovingPart(speed));
         tower.add(new PositionPart(x, y, 0));
+        tower.add(new MovingPart(0));
         tower.setRadius(20);
         tower.add(new WeaponPart(200, 6));
         return tower;
