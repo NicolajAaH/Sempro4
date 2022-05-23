@@ -25,14 +25,13 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     private ProjectileSPI projectileLauncher;
     private IMap map;
     private Random r = new Random();
-
     private Tower selectedTower;
 
     // weight of heuristics
-    int weightDistanceToEnd = 6;
-    int weightLife = 10;
-    int weightDistanceToStart = -1;
-    int weightDistanceToTower = -1;
+    private int weightDistanceToEnd = 6;
+    private int weightLife = 10;
+    private int weightDistanceToStart = -1;
+    private int weightDistanceToTower = -1;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -153,7 +152,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
         return (int) Math.sqrt(((deltaX * deltaX) + (deltaY * deltaY)));
     }
 
-    private int getAngleBetweenEntities(Entity entity1, Entity entity2) {
+        private int getAngleBetweenEntities(Entity entity1, Entity entity2) {
         // returning angle in degrees
         PositionPart positionPart1 = entity1.getPart(PositionPart.class);
         PositionPart positionPart2 = entity2.getPart(PositionPart.class);
