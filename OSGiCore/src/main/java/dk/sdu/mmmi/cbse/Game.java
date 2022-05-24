@@ -233,22 +233,20 @@ public class Game implements ApplicationListener {
         boolean restart = false;
 
         if (gameData.getLife() <= 0) {
-            if(gameData.getKeys().isDown(GameKeys.ENTER)){
-                restart = true;
-            }
             // Stop all entities
             for (IGamePluginService iGamePluginService : gamePluginList) {
                 iGamePluginService.stop(gameData, world);
+            }
+            // Set restart if enter is pressed
+            if(gameData.getKeys().isDown(GameKeys.ENTER)){
+                restart = true;
             }
             mapRenderer.render();
         }
 
         if (restart) {
-            if (gameData.getHighestScore() < gameData.getScore())
-                gameData.setHighestScore(gameData.getScore());
             gameData.setPlayerDead(false);
             gameData.setScreenMessage("");
-            feedbackToPlayerFont.dispose();
             create();
             for (IGamePluginService iGamePluginService : gamePluginList) {
                 iGamePluginService.start(gameData, world, textures);
