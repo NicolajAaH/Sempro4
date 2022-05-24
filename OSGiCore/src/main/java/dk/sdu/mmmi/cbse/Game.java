@@ -26,16 +26,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
 
-    private OrthographicCamera cam;
+    private OrthographicCamera camera;
     private final GameData gameData = new GameData(); // GameData object containing all the global variables of the game
     private static final World world = new World();
-    private boolean restart = false;
+
 
     //Lists of services
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static final List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-    private OrthogonalTiledMapRenderer renderer;
+    private OrthogonalTiledMapRenderer mapRenderer;
     private SpriteBatch batch;
     private static HashMap<Types, Texture> textures = new HashMap<>();
     private IMap map;
@@ -74,7 +74,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        // setting initial values of games attributes
+        // setting initial values of games atitributes
         gameData.setLife(3);
         gameData.setMoney(500);
         gameData.setWave(0);
@@ -88,7 +88,7 @@ public class Game implements ApplicationListener {
 
         // Create the map
         map.setTiledMap(new TmxMapLoader().load("Map.tmx"));
-        renderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
+        mapRenderer = new OrthogonalTiledMapRenderer(map.getTiledMap());
 
         // Creating 100 attacks
         for (int x = 0; x < 100; x++) {
@@ -101,9 +101,9 @@ public class Game implements ApplicationListener {
         //Fonts
         createFonts();
 
-        cam = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        cam.translate(gameData.getDisplayWidth() / 2f, gameData.getDisplayHeight() / 2f);
-        cam.update();
+        camera = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
+        camera.translate(gameData.getDisplayWidth() / 2f, gameData.getDisplayHeight() / 2f);
+        camera.update();
 
         // Input processor
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
@@ -211,15 +211,15 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
-        // clear screen to black
+        // Set screen color
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
-        renderer.setView(cam);
-        renderer.render();
+        mapRenderer.setView(camera);
+        mapRenderer.render();
 
         // Starting batch and drawing fonts
         batch.begin();
@@ -228,21 +228,24 @@ public class Game implements ApplicationListener {
 
         update();
     }
+
     private void update() {
+        boolean restart = false;
+
         if (gameData.getLife() <= 0) {
             if(gameData.getKeys().isDown(GameKeys.ENTER)){
                 restart = true;
             }
+            // Stop all entities
             for (IGamePluginService iGamePluginService : gamePluginList) {
                 iGamePluginService.stop(gameData, world);
             }
-            renderer.render();
+            mapRenderer.render();
         }
 
         if (restart) {
             if (gameData.getHighestScore() < gameData.getScore())
                 gameData.setHighestScore(gameData.getScore());
-            restart = false;
             gameData.setPlayerDead(false);
             gameData.setScreenMessage("");
             feedbackToPlayerFont.dispose();
@@ -263,14 +266,10 @@ public class Game implements ApplicationListener {
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
         }
-
     }
 
     @Override
     public void resize(int width, int height) {
-        cam.viewportHeight = height;
-        cam.viewportWidth = width;
-        cam.update();
     }
 
     @Override
@@ -283,24 +282,22 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        lifeFont.dispose();
     }
 
-    public void addEntityProcessingService(IEntityProcessingService eps) {
-        entityProcessorList.add(eps);
+    public void addEntityProcessingService(IEntityProcessingService service) {
+        entityProcessorList.add(service);
     }
 
-    public void removeEntityProcessingService(IEntityProcessingService eps) {
-        entityProcessorList.remove(eps);
+    public void removeEntityProcessingService(IEntityProcessingService service) {
+        entityProcessorList.remove(service);
     }
 
-    public void addPostEntityProcessingService(IPostEntityProcessingService eps) {
-        postEntityProcessorList.add(eps);
+    public void addPostEntityProcessingService(IPostEntityProcessingService service) {
+        postEntityProcessorList.add(service);
     }
 
-    public void removePostEntityProcessingService(IPostEntityProcessingService eps) {
-        postEntityProcessorList.remove(eps);
+    public void removePostEntityProcessingService(IPostEntityProcessingService service) {
+        postEntityProcessorList.remove(service);
     }
 
     public void addGamePluginService(IGamePluginService plugin) {
