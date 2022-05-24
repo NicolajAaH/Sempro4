@@ -29,8 +29,4 @@ public class ProjectilePlugin implements IGamePluginService {
         }
     }
 
-    @Override
-    public Types getType() {
-        return Types.PROJECTILE;
-    }
 }
