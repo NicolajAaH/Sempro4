@@ -24,8 +24,4 @@ public class EnemyPlugin implements IGamePluginService {
         }
     }
 
-    @Override
-    public Types getType() {
-        return Types.ENEMY;
-    }
 }

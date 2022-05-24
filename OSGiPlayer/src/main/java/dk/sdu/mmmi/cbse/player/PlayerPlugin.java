@@ -45,8 +45,4 @@ public class PlayerPlugin implements IGamePluginService {
         }
     }
 
-    @Override
-    public Types getType() {
-        return Types.PLAYER;
-    }
 }

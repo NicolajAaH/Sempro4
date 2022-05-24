@@ -25,8 +25,4 @@ public class TowerPlugin implements IGamePluginService {
         }
     }
 
-    @Override
-    public Types getType() {
-        return Types.TOWER;
-    }
 }

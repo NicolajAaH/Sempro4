@@ -12,7 +12,4 @@ public interface IGamePluginService {
     void start(GameData gameData, World world, HashMap<Types, Texture> textures);
 
     void stop(GameData gameData, World world);
-
-    Types getType();
-
 }
