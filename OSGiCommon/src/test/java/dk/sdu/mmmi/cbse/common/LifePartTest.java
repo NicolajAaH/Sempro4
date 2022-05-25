@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.common;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import org.junit.Test;
 
@@ -10,8 +11,8 @@ import static org.junit.Assert.assertEquals;
 public class LifePartTest {
 
     @Test
-    public void test(){
-        Entity entity = new Entity(new Sprite());
+    public void lifePartTest(){
+        Entity entity = new Entity(new Sprite(), Types.PLAYER);
         LifePart lifePart = new LifePart(0);
 
         assertEquals(0,lifePart.getLife());

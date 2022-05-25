@@ -16,21 +16,18 @@ import java.util.concurrent.ConcurrentHashMap;
 @Setter
 public class Entity extends Sprite implements Serializable {
 
-    protected Sprite sprite;
-    protected Texture texture;
-    protected Types type;
+    private Sprite sprite;
+    private Texture texture;
+    private Types type;
 
     private final UUID ID = UUID.randomUUID();
-
-    private Vector2 velocity; //movement velocity
-
-    private float speed;
 
     private float radius;
     private Map<Class, EntityPart> parts;
 
-    public Entity(Sprite sprite) {
+    public Entity(Sprite sprite, Types type) {
         super(sprite);
+        this.type = type;
         parts = new ConcurrentHashMap<>();
     }
 

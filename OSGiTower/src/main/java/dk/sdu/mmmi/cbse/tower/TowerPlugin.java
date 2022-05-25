@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class TowerPlugin implements IGamePluginService {
 
     private Entity tower;
+
     @Override
     public void start(GameData gameData, World world, HashMap<Types, Texture> textures) {
     }
@@ -24,8 +25,4 @@ public class TowerPlugin implements IGamePluginService {
         }
     }
 
-    @Override
-    public Types getType() {
-        return Types.TOWER;
-    }
 }

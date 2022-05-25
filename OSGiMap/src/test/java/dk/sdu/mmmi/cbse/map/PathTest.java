@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.map;
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
 import org.junit.Test;
 import java.util.List;
 import java.util.ArrayList;

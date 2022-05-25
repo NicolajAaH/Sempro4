@@ -52,19 +52,8 @@ public class ProjectileControlSystem implements IEntityProcessingService, Projec
     @Override
     public void draw(SpriteBatch batch, World world) {
         for (Entity projectile : world.getEntities(Projectile.class)) {
-            update(projectile);
-            batch.begin();
             projectile.draw(batch);
-            batch.end();
         }
-    }
-
-    public void update(Entity entity) {
-        PositionPart positionPart = entity.getPart(PositionPart.class);
-        // setting position of sprite
-        entity.setPosition(positionPart.getX(), positionPart.getY());
-        // setting rotation of sprite
-        entity.setRotation(positionPart.getAngle() + 90);
     }
 
     @Override

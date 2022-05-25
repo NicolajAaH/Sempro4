@@ -8,11 +8,9 @@ import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 
 public class Enemy extends Entity {
-    private float speed = 60 * 2;
 
     public Enemy(Sprite sprite, Types type) {
-        super(sprite);
-        this.type = type;
+        super(sprite, type);
     }
 
     @Override

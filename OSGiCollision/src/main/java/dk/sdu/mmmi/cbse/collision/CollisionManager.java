@@ -14,16 +14,12 @@ public class CollisionManager implements IPostEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         ArrayList<Entity> entities = new ArrayList<>(world.getEntities());
-
         for (Entity iEntity : entities) {
             for (Entity oEntity : entities) {
-
                 if (iEntity.getType() == Types.TOWER || oEntity.getType() == Types.TOWER)
                     continue;
-
                 if (iEntity.getType() == oEntity.getType()) //Should not collide when equal type
                     continue;
-
                 if ((iEntity.getType() == Types.PLAYER || oEntity.getType() == Types.PLAYER) && (iEntity.getType() == Types.PROJECTILE || oEntity.getType() == Types.PROJECTILE))
                     continue; //Player and projectile should not collide
 
@@ -34,22 +30,17 @@ public class CollisionManager implements IPostEntityProcessingService {
                 // Calculate distance between two entities
                 double distance = Math.sqrt(Math.pow((iPosition.getX() - oPosition.getX()), 2) + Math.pow((iPosition.getY() - oPosition.getY()), 2));
 
-                if (distance < (iEntity.getRadius() + oEntity.getRadius())) {
-
+                if (distance < (iEntity.getRadius() + oEntity.getRadius())) { //Collides
                     LifePart iLifePart = iEntity.getPart(LifePart.class);
                     if (iEntity.getType() == Types.PROJECTILE)
                         world.removeEntity(iEntity);
                     iLifePart.setLife(iLifePart.getLife() - 1);
-
                     if (iLifePart.getLife() <= 0) {
-                        if (iEntity.getType() == Types.PLAYER) {
+                        if (iEntity.getType() == Types.PLAYER)
                             gameData.setPlayerDead(true);
-                        }
                         // checking if enemy is dead & updates score
-                        if (iEntity.getType() == Types.ENEMY) {
+                        if (iEntity.getType() == Types.ENEMY)
                             gameData.setScore(gameData.getScore() + 1);
-                        }
-
                         world.removeEntity(iEntity);
                     }
                 }
