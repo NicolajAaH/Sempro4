@@ -24,12 +24,13 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
+        GameKeys keys = gameData.getKeys();
+
         for (Entity player : world.getEntities(Player.class)) {
             PositionPart positionPart = player.getPart(PositionPart.class);
             MovingPart movingPart = player.getPart(MovingPart.class);
 
-            GameKeys keys = gameData.getKeys();
-
+            
 
             if (keys.isDown(SHIFT)) {
                 System.out.println(gameData);

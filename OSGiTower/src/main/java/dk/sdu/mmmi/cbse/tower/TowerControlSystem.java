@@ -37,13 +37,13 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
     @Override
     public void process(GameData gameData, World world) {
 
+        List<Entity> enemies = world.getEntities(Enemy.class);
+
         // iterating through all towers
         for (Entity tower : world.getEntities(Tower.class)) {
             selectedTower = (Tower) tower;
             PositionPart positionPart = tower.getPart(PositionPart.class);
             WeaponPart weaponPart = tower.getPart(WeaponPart.class);
-
-            List<Entity> enemies = world.getEntities(Enemy.class);
 
             // checking if there is reachable enemies and placing them in queue (minHeap)
             PriorityQueue<Enemy> reachableEnemies = new PriorityQueue<>(10, new enemyComparator());
@@ -56,6 +56,7 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
                     }
                 }
             }
+
             // if no enemies is within range - rotate tower
             if (reachableEnemies.size() == 0) {
                 int shouldRotate = r.nextInt(100);
@@ -181,12 +182,12 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
             return null;
         }
 
+        // Replacing af tile on the map at pos (x,y) with tower tile.
+        map.changeTileType(xTile, yTile, "Tower");
+
         // creating a tower entity
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
         Entity tower = new Tower(sprite, Types.TOWER); //throws exception nulpointer
-
-        // Replacing af tile on the map at pos (x,y) with tower tile.
-        map.changeTileType(xTile, yTile, "Tower");
 
         // setting variables
         float speed = 0;
