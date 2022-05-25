@@ -24,17 +24,18 @@ public class PathFinder {
         while (open.size() != 0) {
             CalcPoint lowest = null;
             for (CalcPoint calcPoint : open) {
-                if (lowest == null || (calcPoint.dist + calcPoint.pathDist) < (lowest.dist + lowest.pathDist)) lowest = calcPoint;
+                if (lowest == null || ((calcPoint.dist + calcPoint.pathDist) < (lowest.dist + lowest.pathDist))) lowest = calcPoint;
             }
 
             open.remove(lowest);
             closed.add(lowest);
 
+            if (lowest.type == null || (!lowest.type.equals("End") && !lowest.type.equals("Path") && !lowest.type.equals("Start") )) continue;
+
             if (lowest.type.equals("End")) {
                 goal = lowest;
                 break;
             }
-            if (!lowest.type.equals("Path") && !lowest.type.equals("Start")) continue;
 
             addSurroundingToFringe(lowest, lowest.pathDist + 1);
         }
