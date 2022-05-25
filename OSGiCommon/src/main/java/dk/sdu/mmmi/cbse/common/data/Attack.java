@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public class Attack {
 
-    private int attackTimeMs;
-    private int attackNumber;
+    private int attackTimeMs; // when to launch the attack compared to game start
+    private int attackNumber; // number of enemies in an attack
 
     public Attack(int attackTimeMs, int attackNumber){
         this.attackTimeMs = attackTimeMs;
