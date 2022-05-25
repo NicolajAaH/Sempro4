@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class LifePartTest {
 
     @Test
-    public void test(){
+    public void lifePartTest(){
         Entity entity = new Entity(new Sprite(), Types.PLAYER);
         LifePart lifePart = new LifePart(0);
 

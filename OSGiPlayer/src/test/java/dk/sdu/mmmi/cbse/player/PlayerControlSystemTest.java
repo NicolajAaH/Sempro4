@@ -70,8 +70,6 @@ public class PlayerControlSystemTest {
 
         verify(movingPart,times(1)).process(any(), any());
         verify(positionPart, times(1)).process(any(), any());
-
-
     }
 
     @Test
