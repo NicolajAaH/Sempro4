@@ -183,9 +183,9 @@ public class TowerControlSystem implements IEntityProcessingService, TowerSPI {
 
         // creating a tower entity
         Sprite sprite = new Sprite(world.getTextureHashMap().get(Types.TOWER));
-        Entity tower = new Tower(sprite, Types.TOWER); //throws exception nulpointer
+        Entity tower = new Tower(sprite, Types.TOWER);
 
-        // Replacing af tile on the map at pos (x,y) with tower tile.
+        // Replacing of tile on the map at pos (x,y) with tower tile.
         map.changeTileType(xTile, yTile, "Tower");
 
         // setting tower attributes

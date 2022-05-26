@@ -1,5 +1,7 @@
+import com.badlogic.gdx.graphics.Texture;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Types;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.WeaponPart;
@@ -13,7 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -52,6 +56,9 @@ public class TowerTest {
     @Mock
     WeaponPart weaponPartMock;
 
+    @Mock
+    Texture texture;
+
     @Test
     public void testCreateProjectile(){
         TowerControlSystem towerControlSystem = new TowerControlSystem();
@@ -88,5 +95,22 @@ public class TowerTest {
 
         // verifyCreateProjectile is called
         verify(mockProjectileLauncer, times(1)).createProjectile(tower,gameData,world);
+    }
+
+    @Test
+    public void placeTowerTest(){
+        TowerControlSystem towerControlSystem = new TowerControlSystem();
+        towerControlSystem.setIMap(mockMap);
+        when(mockMap.getTileType(anyInt(), anyInt())).thenReturn("Grass");
+        HashMap<Types, Texture> hashMap = new HashMap<Types, Texture>(){{
+            put(Types.TOWER, texture);
+        }};
+        when(mockMap.tileCoorToMapCoor(anyFloat(), anyFloat())).thenReturn(new Point(1,1));
+        when(world.getTextureHashMap()).thenReturn(hashMap);
+        when(mockMap.getTileSize()).thenReturn(58);
+        // injecting mock dependencies
+        towerControlSystem.setIMap(mockMap);
+        towerControlSystem.createTower(gameData, world, 1, 1);
+        verify(mockMap, times(1)).changeTileType(1,1, "Tower");
     }
 }
